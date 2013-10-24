@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessClient", "ChessClient\ChessClient.csproj", "{382A9295-EB98-48DC-8C80-2BD4DF8D88CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessClient.Tests", "ChessClient.Tests\ChessClient.Tests.csproj", "{293FDB0E-7050-4575-AF75-67B1BF059BDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{382A9295-EB98-48DC-8C80-2BD4DF8D88CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{382A9295-EB98-48DC-8C80-2BD4DF8D88CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{382A9295-EB98-48DC-8C80-2BD4DF8D88CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{382A9295-EB98-48DC-8C80-2BD4DF8D88CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{293FDB0E-7050-4575-AF75-67B1BF059BDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{293FDB0E-7050-4575-AF75-67B1BF059BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{293FDB0E-7050-4575-AF75-67B1BF059BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{293FDB0E-7050-4575-AF75-67B1BF059BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
