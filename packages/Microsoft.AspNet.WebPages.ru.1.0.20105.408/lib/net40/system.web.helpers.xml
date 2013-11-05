@@ -1,0 +1,458 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>System.Web.Helpers</name>
+  </assembly>
+  <members>
+    <member name="T:System.Web.Helpers.Chart">
+      <summary>Отображает данные в виде изображения диаграммы.</summary>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.#ctor(System.Int32,System.Int32,System.String,System.String)">
+      <summary>Инициализирует новый экземпляр класса <see cref="T:System.Web.Helpers.Chart" />.</summary>
+      <param name="width">Ширина всего изображения диаграммы в пикселях.</param>
+      <param name="height">Высота всего изображения диаграммы в пикселях.</param>
+      <param name="theme">Шаблон, применяемый к диаграмме.</param>
+      <param name="themePath">Путь и имя шаблона, применяемого к диаграмме.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.AddLegend(System.String,System.String)">
+      <summary>Представляет легенду для изображения диаграммы.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="title">Текст заголовка легенды.</param>
+      <param name="name">Имя легенды.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.AddSeries(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Collections.IEnumerable,System.String,System.Collections.IEnumerable,System.String)">
+      <summary>Предоставляет точки данных и атрибуты ряда для диаграммы.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="name">Уникальное имя последовательности.</param>
+      <param name="chartType">Тип диаграммы последовательности.</param>
+      <param name="chartArea">Имя области диаграммы, используемой для отображения последовательности данных.</param>
+      <param name="axisLabel">Подпись оси последовательности.</param>
+      <param name="legend">Имя последовательности, связанной с легендой.</param>
+      <param name="markerStep">Значение, определяющее частоту отображения маркеров точек данных.</param>
+      <param name="xValue">Значения, построение которых выполняется по оси Х.</param>
+      <param name="xField">Имя поля для значений X.</param>
+      <param name="yValues">Значения, построение которых выполняется по оси Y.</param>
+      <param name="yFields">Список разделенных запятыми имен полей для значений Y.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.AddTitle(System.String,System.String)">
+      <summary>Представляет заголовок всего изображения диаграммы.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="text">Указанный текст заголовка.</param>
+      <param name="name">Уникальное имя заголовка.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.DataBindCrossTable(System.Collections.IEnumerable,System.String,System.String,System.String,System.String,System.String)">
+      <summary>Осуществляет привязку диаграммы к таблице данных; при этом для каждого уникального значения в заданном столбце создается один ряд.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="dataSource">Источник данных диаграммы.</param>
+      <param name="groupByField">Имя столбца, используемого для группировки данных в ряды.</param>
+      <param name="xField">Имя столбца для точек оси X.</param>
+      <param name="yFields">Разделенные запятыми имена столбцов для значений оси Y.</param>
+      <param name="otherFields">Другие свойства точки данных, для которых можно выполнить привязку.</param>
+      <param name="pointSortOrder">Указанный порядок, в котором будут сортироваться ряды. Значение по умолчанию — Ascending.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.DataBindTable(System.Collections.IEnumerable,System.String)">
+      <summary>Создает ряды, выполняет привязку их данных к указанной таблице данных и, при необходимости, заполняет значения Y.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="dataSource">Источник данных диаграммы.</param>
+      <param name="xField">Имя столбца таблицы, используемого для значений Х ряда.</param>
+    </member>
+    <member name="P:System.Web.Helpers.Chart.FileName">
+      <summary>Возвращает или задает имя файла, содержащего изображение диаграммы.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.GetBytes(System.String)">
+      <summary>Возвращает изображения диаграммы в виде массива байтов.</summary>
+      <returns>Возвращает <see cref="T:System.Byte" />.</returns>
+      <param name="format">Формат изображения. Значение по умолчанию — jpeg.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.GetFromCache(System.String)">
+      <summary>Извлекает заданную диаграмму из кэша.</summary>
+      <returns>Возвращает <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="key">Ключ элемента кэша, который содержит диаграмму.</param>
+    </member>
+    <member name="P:System.Web.Helpers.Chart.Height">
+      <summary>Получает или задает высоту изображения диаграммы.</summary>
+      <returns>Возвращает значение <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.Save(System.String,System.String)">
+      <summary>Сохраняет изображение диаграммы с указанным путем и именем файла.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="path">Имя и расположение файла изображения.</param>
+      <param name="format">Формат файла изображения.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.SaveToCache(System.String,System.Int32,System.Boolean)">
+      <summary>Сохраняет диаграмму в кэш.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+      <param name="key">Значение, используемое для ссылки на диаграмму в кэше.</param>
+      <param name="minutesToCache">Время хранения кэшированной диаграммы в минутах.</param>
+      <param name="slidingExpiration">Значение, определяющее, будет ли храниться кэшированная диаграмма в памяти в течение указанного времени (<see cref="minutesToCache" />) после доступа к ней.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.SaveXml(System.String)">
+      <summary>Сохраняет диаграмму как XML-файл.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="path">Путь имя файла, в котором сохраняется XML-файл.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.SetXAxis(System.String,System.Double,System.Double)">
+      <summary>Задает значения для горизонтальной оси.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="title">Заголовок горизонтальной оси.</param>
+      <param name="min">Минимальное значение горизонтальной оси.</param>
+      <param name="max">Максимальное значение горизонтальной оси.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.SetYAxis(System.String,System.Double,System.Double)">
+      <summary>Задает значения для вертикальной оси.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="title">Заголовок вертикальной оси.</param>
+      <param name="min">Минимальное значение вертикальной оси.</param>
+      <param name="max">Минимальное значение вертикальной оси.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.ToWebImage(System.String)">
+      <summary>Создает объект <see cref="T:System.Web.Helpers.WebImage" /> на основе данных из текущего объекта <see cref="T:System.Web.Helpers.Chart" />.</summary>
+      <returns>Возвращает <see cref="T:System.Web.Helpers.WebImage" />.</returns>
+      <param name="format">Формат изображения в классе <see cref="T:System.Web.Helpers.WebImage" />. Значение по умолчанию — jpeg.</param>
+    </member>
+    <member name="P:System.Web.Helpers.Chart.Width">
+      <summary>Получает или задает ширину изображения диаграммы.</summary>
+      <returns>Возвращает значение <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.Write(System.String)">
+      <summary>Отображает выходные данные объекта <see cref="T:System.Web.Helpers.Chart" /> в виде изображения.</summary>
+      <returns>Возвращает <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="format">Формат изображения. Значение по умолчанию — jpeg.</param>
+    </member>
+    <member name="M:System.Web.Helpers.Chart.WriteFromCache(System.String,System.String)">
+      <summary>Отображает выходные данные объекта <see cref="T:System.Web.Helpers.Chart" />, которые были кэшированы в виде изображения.</summary>
+      <returns>Возвращает <see cref="T:System.Web.Helpers.Chart" />.</returns>
+      <param name="key">Значение, используемое для извлечения диаграммы из кэша.</param>
+      <param name="format">Формат изображения. Значение по умолчанию — jpeg.</param>
+    </member>
+    <member name="T:System.Web.Helpers.ChartTheme"></member>
+    <member name="F:System.Web.Helpers.ChartTheme.Blue"></member>
+    <member name="F:System.Web.Helpers.ChartTheme.Green"></member>
+    <member name="F:System.Web.Helpers.ChartTheme.Vanilla"></member>
+    <member name="F:System.Web.Helpers.ChartTheme.Vanilla3D"></member>
+    <member name="F:System.Web.Helpers.ChartTheme.Yellow"></member>
+    <member name="T:System.Web.Helpers.Crypto"></member>
+    <member name="M:System.Web.Helpers.Crypto.GenerateSalt(System.Int32)"></member>
+    <member name="M:System.Web.Helpers.Crypto.Hash(System.Byte[],System.String)"></member>
+    <member name="M:System.Web.Helpers.Crypto.Hash(System.String,System.String)"></member>
+    <member name="M:System.Web.Helpers.Crypto.HashPassword(System.String)"></member>
+    <member name="M:System.Web.Helpers.Crypto.SHA1(System.String)"></member>
+    <member name="M:System.Web.Helpers.Crypto.SHA256(System.String)"></member>
+    <member name="M:System.Web.Helpers.Crypto.VerifyHashedPassword(System.String,System.String)"></member>
+    <member name="T:System.Web.Helpers.DynamicJsonArray"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonArray.#ctor(System.Object[])"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonArray.GetEnumerator"></member>
+    <member name="P:System.Web.Helpers.DynamicJsonArray.Item(System.Int32)"></member>
+    <member name="P:System.Web.Helpers.DynamicJsonArray.Length"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonArray.op_Implicit(System.Web.Helpers.DynamicJsonArray)~System.Array"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonArray.op_Implicit(System.Web.Helpers.DynamicJsonArray)~System.Object[]"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonArray.System#Collections#Generic#IEnumerable{T}#GetEnumerator"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonArray.TryConvert(System.Dynamic.ConvertBinder,System.Object@)"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonArray.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)"></member>
+    <member name="T:System.Web.Helpers.DynamicJsonObject"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonObject.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonObject.GetDynamicMemberNames"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonObject.TryConvert(System.Dynamic.ConvertBinder,System.Object@)"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonObject.TryGetIndex(System.Dynamic.GetIndexBinder,System.Object[],System.Object@)"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonObject.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonObject.TrySetIndex(System.Dynamic.SetIndexBinder,System.Object[],System.Object)"></member>
+    <member name="M:System.Web.Helpers.DynamicJsonObject.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)"></member>
+    <member name="T:System.Web.Helpers.Json"></member>
+    <member name="M:System.Web.Helpers.Json.Decode``1(System.String)">
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.Web.Helpers.Json.Decode(System.String)"></member>
+    <member name="M:System.Web.Helpers.Json.Decode(System.String,System.Type)"></member>
+    <member name="M:System.Web.Helpers.Json.Encode(System.Object)"></member>
+    <member name="M:System.Web.Helpers.Json.Write(System.Object,System.IO.TextWriter)"></member>
+    <member name="T:System.Web.Helpers.ObjectInfo"></member>
+    <member name="M:System.Web.Helpers.ObjectInfo.Print(System.Object,System.Int32,System.Int32)"></member>
+    <member name="T:System.Web.Helpers.ServerInfo">
+      <summary>Отображает сведения о среде веб-сервера, на котором размещается текущая веб-страница.</summary>
+    </member>
+    <member name="M:System.Web.Helpers.ServerInfo.GetHtml">
+      <summary>Отображает сведения о среде веб-сервера.</summary>
+      <returns>Строка пар "имя-значение", содержащая сведения о веб-сервере. </returns>
+    </member>
+    <member name="T:System.Web.Helpers.SortDirection">
+      <summary>Указывает направление сортировки элементов списка.</summary>
+    </member>
+    <member name="F:System.Web.Helpers.SortDirection.Ascending">
+      <summary>Сортировка в порядке возрастания. Например, от A до Z.</summary>
+    </member>
+    <member name="F:System.Web.Helpers.SortDirection.Descending">
+      <summary>Сортировка в порядке убывания. Например, от Z до A.</summary>
+    </member>
+    <member name="T:System.Web.Helpers.WebCache"></member>
+    <member name="M:System.Web.Helpers.WebCache.Get(System.String)"></member>
+    <member name="M:System.Web.Helpers.WebCache.Remove(System.String)"></member>
+    <member name="M:System.Web.Helpers.WebCache.Set(System.String,System.Object,System.Int32,System.Boolean)"></member>
+    <member name="T:System.Web.Helpers.WebGrid">
+      <summary>Предоставляет таблицу для отображения элементов из источника данных.</summary>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.#ctor(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32,System.Boolean,System.Boolean,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+      <summary>Инициализирует новый экземпляр класса <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <param name="source">Источник данных.</param>
+      <param name="columnNames">Коллекция имен столбцов источника данных. По умолчанию заполняется автоматически.</param>
+      <param name="defaultSort">Столбец, используемый для сортировки таблицы по умолчанию.</param>
+      <param name="rowsPerPage">Число строк, отображаемых при визуализации страницы. Значение по умолчанию равно 10.</param>
+      <param name="canPage">Значение true, если <see cref="T:System.Web.Helpers.WebGrid" /> может отобразить страницы; в противном случае — значение false. Значение по умолчанию — true. </param>
+      <param name="canSort">Значение true, если <see cref="T:System.Web.Helpers.WebGrid" /> может выполнять сортировку на основе столбца. Значение по умолчанию — true.</param>
+      <param name="ajaxUpdateContainerId">Идентификатор HTML-элемента, содержащегося в объекте <see cref="T:System.Web.Helpers.WebGrid" /> и используемого для частичного обновления страниц (поддержка Ajax).</param>
+      <param name="ajaxUpdateCallback">Функция, вызываемая после обновления HTML-элемента, указанного в (<see cref="P:System.Web.Helpers.WebGrid.AjaxUpdateContainerId" />).</param>
+      <param name="fieldNamePrefix">Префикс для полей строки запроса для поддержки нескольких решеток.</param>
+      <param name="pageFieldName">Имя поля строки запроса для номера страницы.</param>
+      <param name="selectionFieldName">Имя поля строки запроса для выбранного номера строки.</param>
+      <param name="sortFieldName">Имя поля строки запроса столбца для сортировки.</param>
+      <param name="sortDirectionFieldName">Имя поля строки запроса для направления сортировки.</param>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.AjaxUpdateCallback">
+      <summary>Получает имя функции, вызываемой после обновления HTML-элемента, указанного в <see cref="P:System.Web.Helpers.WebGrid.AjaxUpdateCallback" />.</summary>
+      <returns>Возвращает значение <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.AjaxUpdateContainerId">
+      <summary>Получает идентификатор HTML-элемента, содержащегося в объекте <see cref="T:System.Web.Helpers.WebGrid" /> и используемого для частичного обновления страниц (поддержка Ajax).</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.Bind(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.Int32)"></member>
+    <member name="M:System.Web.Helpers.WebGrid.Column(System.String,System.String,System.Func`2,System.Boolean,System.Object)">
+      <summary>Добавляет объект столбца в объект <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает <see cref="T:System.Web.Helpers.WebGridColumn" />.</returns>
+      <param name="columnName">Имя столбца.</param>
+      <param name="header">Заголовок столбца.</param>
+      <param name="format">Строка, указывающая форматирование столбца.</param>
+      <param name="style">Строка, указывающая стиль столбца.</param>
+      <param name="canSort">Значение true, если столбец можно упорядочивать; в противном случае — значение false. Значение по умолчанию — true.</param>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.ColumnNames">
+      <summary>Извлекает коллекцию имен столбцов, полученных из источника данных.</summary>
+      <returns>Возвращает <see cref="T:System.Collections.Generic.IEnumerable`1" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.Columns(System.Web.Helpers.WebGridColumn[])">
+      <summary>Добавляет коллекцию объектов столбцов в объект <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает <see cref="T:System.Web.Helpers.WebGridColumn" />.</returns>
+      <param name="columnSet">Объект <see cref="M:System.Web.Helpers.WebGrid.Columns(System.Web.Helpers.WebGridColumn[])" />, представляющий столбцы <see cref="T:System.Web.Helpers.WebGrid" />.</param>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.FieldNamePrefix">
+      <summary>Возвращает префикс для полей строки запроса.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.GetContainerUpdateScript(System.String)">
+      <summary>Обновляет <see cref="T:System.Web.Helpers.WebGrid" /> на основании заданного пути.</summary>
+      <returns>Возвращает <see cref="T:System.Web.IHtmlString" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.GetHtml(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.Collections.Generic.IEnumerable{System.Web.Helpers.WebGridColumn},System.Collections.Generic.IEnumerable{System.String},System.Web.Helpers.WebGridPagerModes,System.String,System.String,System.String,System.String,System.Int32,System.Object)">
+      <summary>Предоставляет HTML, используемый для обработки <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает <see cref="T:System.Web.IHtmlString" />.</returns>
+      <param name="tableStyle">Класс CSS для стиля таблицы.</param>
+      <param name="headerStyle">Класс CSS для стиля строки заголовка таблицы.</param>
+      <param name="footerStyle">Класс CSS для стиля строки нижнего колонтитула таблицы.</param>
+      <param name="rowStyle">Класс CSS для стиля каждой строки таблицы.</param>
+      <param name="alternatingRowStyle">Класс CSS для стиля четных строк таблицы.</param>
+      <param name="selectedRowStyle">Класс CSS для стиля выбранных строк таблицы.</param>
+      <param name="caption">Заголовок таблицы.</param>
+      <param name="displayHeader">Значение true, если заголовок таблицы отображается; в противном случае — значение false. Значение по умолчанию — true.</param>
+      <param name="fillEmptyRows">Значение true, если таблица может добавить пустые строки для сохранения количества строк <see cref="P:System.Web.Helpers.WebGrid.RowsPerPage" />; в противном случае — значение false. Значение по умолчанию — false.</param>
+      <param name="emptyRowCellValue">Текст, используемый для заполнения пустых строк. Для параметра fillEmptyRows должно быть установлено значение true, чтобы отображать это значение.</param>
+      <param name="columns">Модель столбца для настройки отображения столбцов.</param>
+      <param name="exclusions">Столбцы, исключаемые при автоматическом заполнении столбцов.</param>
+      <param name="mode">Режимы для поддержки визуализации страницы.</param>
+      <param name="firstText">Текст ссылки на первую страницу результатов.</param>
+      <param name="previousText">Текст ссылки на предыдущую страницу результатов.</param>
+      <param name="nextText">Текст ссылки на следующую страницу результатов.</param>
+      <param name="lastText">Текст ссылки на последнюю страницу результатов.</param>
+      <param name="numericLinksCount">Количество отображаемых числовых ссылок.</param>
+      <param name="htmlAttributes">Объект, содержащий атрибуты HTML, которые следует задать для элемента.</param>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.GetPageUrl(System.Int32)">
+      <summary>Предоставляет URL-адрес страницы, которая будет отображаться <see cref="T:System.Web.Helpers.WebGrid" /> на основе индекса страницы.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+      <param name="pageIndex">Значение, представляющее отображаемую страницу.</param>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.GetSortUrl(System.String)">
+      <summary>Предоставляет URL-адрес, используемый для сортировки данных в <see cref="T:System.Web.Helpers.WebGrid" /> на основе имени столбца.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+      <param name="column">Столбец, который необходимо сортировать.</param>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.HasSelection">
+      <summary>Получает значение, определяющее, выбрана ли какая-либо строка <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.PageCount">
+      <summary>Получает число страниц, доступных для отображения, в <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает значение <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.PageFieldName">
+      <summary>Получает имя столбца для страницы.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.PageIndex">
+      <summary>Получает или задает индекс страничного навигатора.</summary>
+      <returns>Возвращает значение <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.Pager(System.Web.Helpers.WebGridPagerModes,System.String,System.String,System.String,System.String,System.Int32)">
+      <summary>Предоставляет HTML, необходимый для поддержки разбиения по страницам.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.WebPages.HelperResult" />.</returns>
+      <param name="mode">Режимы для поддержки визуализации страницы.</param>
+      <param name="firstText">Текст ссылки на первую страницу.</param>
+      <param name="previousText">Текст ссылки на предыдущую страницу.</param>
+      <param name="nextText">Текст ссылки на следующую страницу.</param>
+      <param name="lastText">Текст ссылки на последнюю страницу.</param>
+      <param name="numericLinksCount">Количество отображаемых числовых ссылок.</param>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.Rows">
+      <summary>Получает список строк, содержащихся в <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает <see cref="T:System.Collections.Generic.IList`1" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.RowsPerPage">
+      <summary>Получает число строк, отображаемых на каждой странице.</summary>
+      <returns>Возвращает значение <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.SelectedIndex">
+      <summary>Получает или задает индекс выбранной строки.</summary>
+      <returns>Возвращает значение <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.SelectedRow">
+      <summary>Получает выбранную строку <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает <see cref="T:System.Web.Helpers.WebGridRow" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.SelectionFieldName">
+      <summary>Получает имя выбранного столбца.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.SortColumn">
+      <summary>Получает или задает имя столбца, используемого для сортировки <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.SortDirection">
+      <summary>Получает или задает направление сортировки <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.Helpers.SortDirection" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.SortDirectionFieldName">
+      <summary>Получает строку, представляющую префикс столбца и имя столбца, по которому выполняется сортировка в указанном направлении.</summary>
+      <returns>Возвращает значение <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.SortFieldName">
+      <summary>Получает строку, представляющую префикс столбца и имя столбца, по которому выполняется сортировка.</summary>
+      <returns>Возвращает значение <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.WebGrid.Table(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.Collections.Generic.IEnumerable{System.Web.Helpers.WebGridColumn},System.Collections.Generic.IEnumerable{System.String},System.Func`2,System.Boolean)">
+      <summary>Предоставляет HTML для таблиц, поддерживающих разбиение по страницам.</summary>
+      <returns>Возвращает значение <see cref="T:System.Web.IHtmlString" />.</returns>
+      <param name="tableStyle">Класс таблицы.</param>
+      <param name="headerStyle">Класс строки заголовка.</param>
+      <param name="footerStyle">Класс строки нижнего колонтитула.</param>
+      <param name="rowStyle">Класс строки для нечетных строк.</param>
+      <param name="alternatingRowStyle">Класс строки для четных строк.</param>
+      <param name="selectedRowStyle">Класс CSS, используемый для определения стиля выбранной строки.</param>
+      <param name="caption">Текст, отображаемый как заголовок таблицы <see cref="T:System.Web.Helpers.WebGrid" />.</param>
+      <param name="displayHeader">Значение, используемое для определения того, будет ли строка заголовка отображаться в таблице <see cref="T:System.Web.Helpers.WebGrid" />.</param>
+      <param name="fillEmptyRows">Значение, используемое для того, чтобы определить, может ли таблица добавить пустые строки для сохранения числа строк <see cref="P:System.Web.Helpers.WebGrid.RowsPerPage" />.</param>
+      <param name="emptyRowCellValue">Текст, используемый для заполнения пустых строк.</param>
+      <param name="columns">Модель столбца для настройки отображения столбцов.</param>
+      <param name="exclusions">Столбцы, исключаемые при автоматическом заполнении столбцов.</param>
+      <param name="footer">Шаблон нижнего колонтитула таблицы.</param>
+      <param name="htmlAttributes">Объект, содержащий атрибуты HTML, которые следует задать для элемента.</param>
+    </member>
+    <member name="P:System.Web.Helpers.WebGrid.TotalRowCount">
+      <summary>Получает общее число строк для объекта <see cref="T:System.Web.Helpers.WebGrid" />.</summary>
+      <returns>Возвращает значение <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="T:System.Web.Helpers.WebGridColumn"></member>
+    <member name="M:System.Web.Helpers.WebGridColumn.#ctor"></member>
+    <member name="P:System.Web.Helpers.WebGridColumn.CanSort"></member>
+    <member name="P:System.Web.Helpers.WebGridColumn.ColumnName"></member>
+    <member name="P:System.Web.Helpers.WebGridColumn.Format"></member>
+    <member name="P:System.Web.Helpers.WebGridColumn.Header"></member>
+    <member name="P:System.Web.Helpers.WebGridColumn.Style"></member>
+    <member name="T:System.Web.Helpers.WebGridPagerModes"></member>
+    <member name="F:System.Web.Helpers.WebGridPagerModes.Numeric">
+      <summary />
+    </member>
+    <member name="F:System.Web.Helpers.WebGridPagerModes.NextPrevious">
+      <summary />
+    </member>
+    <member name="F:System.Web.Helpers.WebGridPagerModes.FirstLast">
+      <summary />
+    </member>
+    <member name="F:System.Web.Helpers.WebGridPagerModes.All">
+      <summary />
+    </member>
+    <member name="T:System.Web.Helpers.WebGridRow"></member>
+    <member name="M:System.Web.Helpers.WebGridRow.GetEnumerator"></member>
+    <member name="M:System.Web.Helpers.WebGridRow.GetSelectLink(System.String)"></member>
+    <member name="M:System.Web.Helpers.WebGridRow.GetSelectUrl"></member>
+    <member name="P:System.Web.Helpers.WebGridRow.Item(System.Int32)"></member>
+    <member name="P:System.Web.Helpers.WebGridRow.Item(System.String)"></member>
+    <member name="M:System.Web.Helpers.WebGridRow.System#Collections#IEnumerable#GetEnumerator"></member>
+    <member name="M:System.Web.Helpers.WebGridRow.ToString"></member>
+    <member name="M:System.Web.Helpers.WebGridRow.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)"></member>
+    <member name="P:System.Web.Helpers.WebGridRow.Value"></member>
+    <member name="P:System.Web.Helpers.WebGridRow.WebGrid"></member>
+    <member name="T:System.Web.Helpers.WebImage"></member>
+    <member name="M:System.Web.Helpers.WebImage.#ctor(System.Byte[])"></member>
+    <member name="M:System.Web.Helpers.WebImage.#ctor(System.IO.Stream)"></member>
+    <member name="M:System.Web.Helpers.WebImage.#ctor(System.String)"></member>
+    <member name="M:System.Web.Helpers.WebImage.AddImageWatermark(System.String,System.Int32,System.Int32,System.String,System.String,System.Int32,System.Int32)"></member>
+    <member name="M:System.Web.Helpers.WebImage.AddImageWatermark(System.Web.Helpers.WebImage,System.Int32,System.Int32,System.String,System.String,System.Int32,System.Int32)"></member>
+    <member name="M:System.Web.Helpers.WebImage.AddTextWatermark(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.Int32,System.Int32)"></member>
+    <member name="M:System.Web.Helpers.WebImage.Clone"></member>
+    <member name="M:System.Web.Helpers.WebImage.Crop(System.Int32,System.Int32,System.Int32,System.Int32)"></member>
+    <member name="P:System.Web.Helpers.WebImage.FileName"></member>
+    <member name="M:System.Web.Helpers.WebImage.FlipHorizontal"></member>
+    <member name="M:System.Web.Helpers.WebImage.FlipVertical"></member>
+    <member name="M:System.Web.Helpers.WebImage.GetBytes(System.String)"></member>
+    <member name="M:System.Web.Helpers.WebImage.GetImageFromRequest(System.String)"></member>
+    <member name="P:System.Web.Helpers.WebImage.Height"></member>
+    <member name="P:System.Web.Helpers.WebImage.ImageFormat"></member>
+    <member name="M:System.Web.Helpers.WebImage.Resize(System.Int32,System.Int32,System.Boolean,System.Boolean)"></member>
+    <member name="M:System.Web.Helpers.WebImage.RotateLeft"></member>
+    <member name="M:System.Web.Helpers.WebImage.RotateRight"></member>
+    <member name="M:System.Web.Helpers.WebImage.Save(System.String,System.String,System.Boolean)"></member>
+    <member name="P:System.Web.Helpers.WebImage.Width"></member>
+    <member name="M:System.Web.Helpers.WebImage.Write(System.String)"></member>
+    <member name="T:System.Web.Helpers.WebMail">
+      <summary>Предоставляет возможность составить и отправить сообщение электронной почты по протоколу SMTP.</summary>
+    </member>
+    <member name="P:System.Web.Helpers.WebMail.EnableSsl">
+      <summary>Получает или задает значение, указывающее, используется ли протокол SSL для шифрования подключения при отправке почты.</summary>
+      <returns>Значение true, если SSL используется для шифрования соединения, в противном случае — false.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebMail.From">
+      <summary>Получает или задает адрес электронной почты отправителя.</summary>
+      <returns>Адрес электронной почты отправителя.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebMail.Password">
+      <summary>Возвращает или задает пароль отправителя в зависимости от используемой учетной записи электронной почты.</summary>
+      <returns>Пароль отправителя.</returns>
+    </member>
+    <member name="M:System.Web.Helpers.WebMail.Send(System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.Collections.Generic.IEnumerable{System.String})">
+      <summary>Отправляет указанное сообщение на сервер SMTP для доставки.</summary>
+      <param name="to">Получатели сообщения электронной почты. Можно указывать несколько получателей, отделяя их друг от друга точкой с запятой (;).</param>
+      <param name="subject">Тема сообщения электронной почты.</param>
+      <param name="body">Текст сообщения электронной почты. Если значение <paramref name="isBodyHtml" /> равно true, HTML в тексте сообщения интерпретируется как разметка.</param>
+      <param name="from">Адрес электронной почты отправителя.</param>
+      <param name="cc">Имена получателей копии сообщения электронной почты (CC), если такие имеются.</param>
+      <param name="filesToAttach">Коллекция имен файлов, которая определяет файлы вложения в сообщении электронной почты.</param>
+      <param name="isBodyHtml">Значение true, чтобы указать, что текст сообщения представлен в формате HTML; значение false, чтобы указать, что текст сообщения представлен обычном текстовом формате.</param>
+      <param name="additionalHeaders">Коллекция заголовков, отправляемых с этим сообщением.</param>
+    </member>
+    <member name="P:System.Web.Helpers.WebMail.SmtpPort">
+      <summary>Возвращает или задает порт, используемый для SMTP-транзакций.</summary>
+      <returns>Порт, используемый для SMTP-транзакций.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebMail.SmtpServer">
+      <summary>Возвращает или задает SMTP-сервер, используемый для передачи сообщения электронной почты.</summary>
+      <returns>SMTP-сервер.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebMail.SmtpUseDefaultCredentials">
+      <summary>Возвращает или задает значение, которое управляет отправкой учетных данных по умолчанию вместе с запросами.</summary>
+      <returns>Если учетные данные отправлены с сообщением электронной почты, значение true, если нет — значение false.</returns>
+    </member>
+    <member name="P:System.Web.Helpers.WebMail.UserName">
+      <summary>Получает или задает имя пользователя.</summary>
+      <returns>Имя пользователя.</returns>
+    </member>
+  </members>
+</doc>
