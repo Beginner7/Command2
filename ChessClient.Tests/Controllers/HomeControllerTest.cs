@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using ChestClient.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ChessClient;
-using ChessClient.Controllers;
 
 namespace ChessClient.Tests.Controllers
 {
