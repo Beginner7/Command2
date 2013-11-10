@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,19 +13,34 @@ namespace DevExChessConsole
     {
         public void MakeEcho(string echo_str)
         {
-            const string echo_url = "http://localhost:2964/Echo?in_str=";
-            Console.WriteLine("Santing \"" + echo_str + "\"");
+            #if (DEBUG)
+                const string domain = "http://localhost:2964/";
+            #else
+                const string domain = "http://command2.apphb.com/";
+            #endif
+            
+            const string echo_url = domain + "/Echo?in_str=";
+            string echo_received;
             WebClient client = new WebClient();
-            string echo_received = client.DownloadString(echo_url + echo_str);
+
+            Console.WriteLine("Santing \"" + echo_str + "\" to \"" + domain + '\"');
             Console.Write("Received ");
-            if (echo_received==null)
+            
+            try 
             {
-                Console.WriteLine("nothing.");
+                echo_received = client.DownloadString(echo_url + echo_str);
             }
-            else
+            catch (WebException e)
             {
-                Console.WriteLine(echo_received);
+                echo_received = "error: \"" + e.Message + '\"';
             }
+            
+            if (echo_received == "")
+            {
+                echo_received = "nothing.";
+            }
+
+            Console.WriteLine(echo_received);
         }
     }
 }
