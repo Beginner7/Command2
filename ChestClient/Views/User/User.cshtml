@@ -1,0 +1,22 @@
+﻿@model ChestClient.Models.UserModels
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>ViewPage1</title>
+</head>
+<body>
+    <div>
+        <fieldset>
+            <legend>Имя игрока</legend>
+            @Html.LabelFor(m => m.UserName)
+            <input type="submit" />
+        </fieldset>
+    </div>
+</body>
+</html>
