@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Linq;
+using System.Web;
 using ChestClient.Models;
 
 namespace ChestClient.Controllers
@@ -7,13 +9,15 @@ namespace ChestClient.Controllers
     public class UserController : Controller
 
     {
-        private static Dictionary<string, UserModels> Users = new Dictionary<string, UserModels>();
+        private UserContext _db = new UserContext();
         //
         // GET: /User /
 
         public ActionResult List()
         {
-            return Json (Users, JsonRequestBehavior.AllowGet);
+            var allUserModels = _db.UserModels.ToList<UserModel>();
+            ViewBag.UserModels = allUserModels;
+            return Json (ViewBag.UserModels, JsonRequestBehavior.AllowGet);
         }
 
     }

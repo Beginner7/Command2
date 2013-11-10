@@ -2,7 +2,7 @@
 
 namespace ChestClient.Models
 {
-    public class UserModels
+    public class UserModel
     {
         [Required]
         [Display(Name = "Имя пользователя")]
