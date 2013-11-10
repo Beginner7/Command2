@@ -7,7 +7,7 @@ namespace ChestClient.Controllers
     public class UserController : Controller
 
     {
-        private static readonly Dictionary<string, UserModels> Users = new Dictionary<string, UserModels>();
+        private static Dictionary<string, UserModels> Users = new Dictionary<string, UserModels>();
         //
         // GET: /User /
 
