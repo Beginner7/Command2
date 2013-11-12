@@ -8,14 +8,57 @@ namespace DevExChessConsole
 {
     class CommandPromt
     {
-        protected string cut_word(string in_string)
+        protected string get_word(string in_str)
         {
-            return in_string;
+            in_str = in_str.Trim(' ');
+
+            if (in_str.IndexOf(' ') < 0)
+            {
+                return in_str;
+            }
+
+            in_str = in_str.Substring(0, in_str.IndexOf(' '));
+
+            return in_str.Trim();
         }
 
-        public void CommandProcess(string in_command)
+        protected string delete_word(string in_str)
         {
-            string command = cut_word(in_command);
+            in_str = in_str.Trim(' ');
+
+            if (in_str.IndexOf(' ') < 0)
+            {
+                return null;
+            }
+
+            in_str = in_str.Substring(in_str.IndexOf(' '));
+
+            return in_str.Trim();
+        }
+
+        public bool CommandProcess(string in_command)
+        {
+            bool is_continue = true;
+            switch (get_word(in_command))
+            {
+                case "":
+                    break;
+
+                case "echo":
+                    EchoProvider echoProvider = new EchoProvider();
+                    echoProvider.MakeEcho(delete_word(in_command));
+                    break;
+
+                case "exit":
+                    is_continue = false;
+                    break;
+
+                default:
+                    Console.WriteLine("Unknown command: \"" + get_word(in_command) + '\"');
+                    break;
+            }
+
+            return is_continue;
         }
     }
 }
