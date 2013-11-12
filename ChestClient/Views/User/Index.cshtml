@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ChestClient.Models.UserModel>
+@using ChestClient.Controllers;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <h1>
+            Список пользователей Online
+        </h1>
+        <ul>
+        @foreach(var elm in Model) {
+            <li>@elm.UserName</li>
+        }
+        </ul>
+    </div>
+</body>
+</html>
