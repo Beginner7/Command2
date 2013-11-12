@@ -103,6 +103,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ChessboardModel.cs" />
+    <Compile Include="Models\GameModel.cs" />
     <Compile Include="Models\UserContext.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
