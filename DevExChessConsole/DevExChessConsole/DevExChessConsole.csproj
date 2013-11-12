@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddUserProvider.cs" />
     <Compile Include="CommandPromt.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="EchoProvider.cs" />
