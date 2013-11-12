@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace DevExChessConsole
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
+            var addUserProvider = new AddUserProvider();
+            addUserProvider.Add("foo");
+
+
             EchoProvider echoProvider = new EchoProvider();
             string saysmthng; //Just for test
             Console.WriteLine("What u wanna say?");
