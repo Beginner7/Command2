@@ -10,7 +10,7 @@ namespace ChestClient.Controllers
 
     {
 
-        private static readonly Dictionary<string, UserModel> Users = new Dictionary<string, UserModel>();
+        public static readonly Dictionary<string, UserModel> Users = new Dictionary<string, UserModel>();
         public ActionResult List()
         {
             /*var allUserModels = _db.UserModels.ToList<UserModel>();
@@ -28,9 +28,16 @@ namespace ChestClient.Controllers
         public ActionResult Login(UserModel model)
         {
             Users[model.UserName] = model;
-            return RedirectToAction("List");
+            return RedirectToAction("Index");
         }
+        
+        public ActionResult Index()
+        {
 
+            return View("Index", Users.Values);
+                
+            
+        }
 
     }
 }

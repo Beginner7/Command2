@@ -7,6 +7,5 @@ namespace ChestClient.Models
         [Required]
         [Display(Name = "Имя пользователя")]
         public string UserName { get; set; }
-
     }
 }
