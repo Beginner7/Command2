@@ -10,16 +10,14 @@ namespace DevExChessConsole
     {
         static void Main(string[] args)
         {
-            var addUserProvider = new AddUserProvider();
-            addUserProvider.Add("foo");
-
-
-            EchoProvider echoProvider = new EchoProvider();
-            string saysmthng; //Just for test
-            Console.WriteLine("What u wanna say?");
-            saysmthng=Console.ReadLine();
-            echoProvider.MakeEcho(saysmthng);
-            Console.ReadKey();
+            string command;
+            CommandPromt CPromt = new CommandPromt();
+            Console.WriteLine("Welcome to Command's 2 Chess Console!");
+            command = Console.ReadLine();
+            while (CPromt.CommandProcess(command)) 
+            {
+                command = Console.ReadLine();
+            }
         }
     }
 }
