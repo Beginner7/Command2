@@ -11,12 +11,14 @@
     <title>ViewPage1</title>
 </head>
 <body>
+    @using (Html.BeginForm()) {
     <div>
         <fieldset>
             <legend>Имя игрока</legend>
-            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName)
             <input type="submit" />
         </fieldset>
     </div>
+    }
 </body>
 </html>

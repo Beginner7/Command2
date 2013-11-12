@@ -11,6 +11,7 @@ namespace ChestClient.Controllers
         //
         // GET: /Account/LogOn
 
+        [HttpGet]
         public ActionResult LogOn()
         {
             return View();

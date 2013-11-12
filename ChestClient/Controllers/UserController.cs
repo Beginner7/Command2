@@ -19,5 +19,18 @@ namespace ChestClient.Controllers
             return Json (Users.Values, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Login()
+        {
+            return View("User", new UserModel());
+        }
+
+        [HttpPost]
+        public ActionResult Login(UserModel model)
+        {
+            Users[model.UserName] = model;
+            return RedirectToAction("List");
+        }
+
+
     }
 }
