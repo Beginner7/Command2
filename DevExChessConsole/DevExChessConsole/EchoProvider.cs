@@ -17,7 +17,7 @@ namespace DevExChessConsole
             string echo_received;
             WebClient client = new WebClient();
 
-            Console.WriteLine("Santing \"" + echo_str + "\" to \"" + domain + '\"');
+            Console.WriteLine("Santing \"" + echo_str + "\" to \"" + Consts.domain + '\"');
             Console.Write("Received ");
             
             try 
