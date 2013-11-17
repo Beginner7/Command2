@@ -3,6 +3,9 @@ using System.Web.Mvc;
 using System.Linq;
 using System.Web;
 using ChestClient.Models;
+using System.Net;
+using System.IO;
+using System.Text;
 
 namespace ChestClient.Controllers
 {
@@ -29,6 +32,7 @@ namespace ChestClient.Controllers
         {
             Users[model.UserName] = model;
             return RedirectToAction("Index");
+
         }
         
         public ActionResult Index()
