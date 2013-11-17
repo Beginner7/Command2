@@ -49,6 +49,19 @@ namespace DevExChessConsole
                     echoProvider.MakeEcho(delete_word(in_command));
                     break;
 
+                case "adduser":
+                    AddUserProvider addUserProvider = new AddUserProvider();
+                    addUserProvider.Add(get_word(delete_word(in_command)));
+                    break;
+
+                case "userlist":
+                    UserListProvider userListProvider = new UserListProvider();
+                    foreach (string element in userListProvider.GetList())
+                    {
+                        Console.WriteLine(element);
+                    }
+                    break;
+
                 case "exit":
                     is_continue = false;
                     break;

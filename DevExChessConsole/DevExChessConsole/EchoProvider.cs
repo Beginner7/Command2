@@ -11,9 +11,7 @@ namespace DevExChessConsole
     {
         public void MakeEcho(string echo_str)
         {
-           
-            
-            const string echo_url = Consts.domain + "/Echo?in_str=";
+            const string echo_url = Consts.domain + "Echo?in_str=";
             string echo_received;
             WebClient client = new WebClient();
 

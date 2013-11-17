@@ -12,10 +12,11 @@ namespace DevExChessConsole
         {
             string command;
             CommandPromt CPromt = new CommandPromt();
-            Console.WriteLine("Welcome to Command's 2 Chess Console!");
+            Console.Write("Welcome to Command's 2 Chess Console!\n> ");
             command = Console.ReadLine();
             while (CPromt.CommandProcess(command)) 
             {
+                Console.Write("> ");
                 command = Console.ReadLine();
             }
         }
