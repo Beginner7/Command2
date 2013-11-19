@@ -14,7 +14,11 @@ namespace ChessConsole.Transport
     {
         public static Response MakeRequest(Request r)
         {
-            string url = Path.Combine(Consts.domain, "/Server.ashx");
+            return MakeRequest<Response>(r);
+        }
+        public static T MakeRequest<T>(Request r)
+        {
+            string url = Consts.domain + "Server.ashx";
             var encoding = Encoding.UTF8;
             string postData = JsonConvert.SerializeObject(r);
             var data = encoding.GetBytes(postData);
@@ -31,7 +35,7 @@ namespace ChessConsole.Transport
             HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
 
             string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            return JsonConvert.DeserializeObject<Response>(responseString);
+            return JsonConvert.DeserializeObject<T>(responseString);
         }
     }
 }

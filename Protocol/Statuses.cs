@@ -7,6 +7,7 @@ namespace Protocol
 {
     public enum Statuses
     {
+        Unknown,
         OK,
         DuplicateUser
     }

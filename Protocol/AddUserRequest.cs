@@ -8,6 +8,10 @@ namespace Protocol
 {
     public class AddUserRequest : Request
     {
+        public AddUserRequest()
+        {
+            Command = "adduser";
+        }
         public string UserName;
     }
 }

@@ -16,7 +16,6 @@ namespace ChessServer
         {
             var req = JsonConvert.DeserializeObject<Request>(request);
             var resp = new Response();
-
             switch (req.Command)
             {
                 case "adduser":
@@ -39,10 +38,13 @@ namespace ChessServer
                         var userlistrequest = JsonConvert.DeserializeObject<UserListRequest>(request);
                         var userlistresponse = new UserListResponse();
                         userlistresponse.Users = Users.Keys.ToArray();
+                        userlistresponse.Status = Statuses.OK;
                         resp = userlistresponse;
                     }
                     break;
             }
+
+            resp.RequestCommand = req.Command;
 
             return JsonConvert.SerializeObject(resp);
         }

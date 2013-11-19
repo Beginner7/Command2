@@ -14,7 +14,7 @@ namespace ChessConsole
         public IReadOnlyCollection<string> GetList()
         {
             var request = new UserListRequest();
-            var response = (UserListResponse) ServerProvider.MakeRequest(request);
+            var response = ServerProvider.MakeRequest<UserListResponse>(request);
             return response.Users;
         }
     }
