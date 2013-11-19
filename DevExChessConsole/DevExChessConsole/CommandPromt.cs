@@ -4,54 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevExChessConsole
+namespace ChessConsole
 {
+
     class CommandPromt
     {
-        protected string get_word(string in_str)
-        {
-            in_str = in_str.Trim(' ');
-
-            if (in_str.IndexOf(' ') < 0)
-            {
-                return in_str;
-            }
-
-            in_str = in_str.Substring(0, in_str.IndexOf(' '));
-
-            return in_str.Trim();
-        }
-
-        protected string delete_word(string in_str)
-        {
-            in_str = in_str.Trim(' ');
-
-            if (in_str.IndexOf(' ') < 0)
-            {
-                return null;
-            }
-
-            in_str = in_str.Substring(in_str.IndexOf(' '));
-
-            return in_str.Trim();
-        }
-
         public bool CommandProcess(string in_command)
         {
             bool is_continue = true;
-            switch (get_word(in_command))
+            var command = in_command.Split(' ');
+            switch (command[0])
             {
                 case "":
                     break;
 
                 case "echo":
                     EchoProvider echoProvider = new EchoProvider();
-                    echoProvider.MakeEcho(delete_word(in_command));
+                    echoProvider.MakeEcho(command.Skip(1).StrJoin());
                     break;
 
                 case "adduser":
                     AddUserProvider addUserProvider = new AddUserProvider();
-                    addUserProvider.Add(get_word(delete_word(in_command)));
+                    Console.WriteLine(addUserProvider.Add(command[1]) ? "success" : "error");
                     break;
 
                 case "userlist":
@@ -67,7 +41,7 @@ namespace DevExChessConsole
                     break;
 
                 default:
-                    Console.WriteLine("Unknown command: \"" + get_word(in_command) + '\"');
+                    Console.WriteLine("Unknown command: \"" + command[0] + '\"');
                     break;
             }
 

@@ -5,30 +5,20 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol;
+using ChessConsole.Transport;
 
-namespace DevExChessConsole
+namespace ChessConsole
 {
     public class AddUserProvider
     {
-        public void Add(string name)
+        public bool Add(string name)
         {
-            string url = Consts.domain + "/User/Login";
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            string postData = "username=" + name;
-            byte[] data = encoding.GetBytes(postData);
+            var command = new AddUserRequest();
+            command.UserName = name;
+            var response = ServerProvider.MakeRequest(command);
+            return response.Status == Statuses.OK;
 
-            HttpWebRequest httpWReq =(HttpWebRequest)WebRequest.Create(url);
-            httpWReq.Method = "POST";
-            httpWReq.ContentType = "application/x-www-form-urlencoded";
-            httpWReq.ContentLength = data.Length;
-            using (Stream stream = httpWReq.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-
-            HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
-
-            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
         }
 
     }

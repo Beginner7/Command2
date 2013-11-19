@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevExChessConsole
+namespace ChessConsole
 {
     public static class Consts
     { 

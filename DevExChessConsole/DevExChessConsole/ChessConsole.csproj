@@ -7,7 +7,7 @@
     <ProjectGuid>{9B1A4F2B-1735-463E-89B3-D192878A2280}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DevExChessConsole</RootNamespace>
+    <RootNamespace>ChessConsole</RootNamespace>
     <AssemblyName>DevExChessConsole</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddUserProvider.cs" />
+    <Compile Include="StringUtils.cs" />
+    <Compile Include="Transport\ServerProvider.cs" />
     <Compile Include="UserListProvider.cs" />
     <Compile Include="CommandPromt.cs" />
     <Compile Include="Consts.cs" />
@@ -51,6 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Protocol\Protocol.csproj">
+      <Project>{e947168d-b945-423e-b437-08c1314fc492}</Project>
+      <Name>Protocol</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

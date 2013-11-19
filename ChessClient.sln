@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Web
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChestClient", "ChestClient\ChestClient.csproj", "{8074B3EB-EC09-4A67-B2DA-EE3B9921D8C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{1A78819A-D72B-4F61-95D7-AAFB5F9A28C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevExChessConsole", "DevExChessConsole\DevExChessConsole\DevExChessConsole.csproj", "{9B1A4F2B-1735-463E-89B3-D192878A2280}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessConsole", "DevExChessConsole\DevExChessConsole\ChessConsole.csproj", "{9B1A4F2B-1735-463E-89B3-D192878A2280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessServer", "ChessServer\ChessServer.csproj", "{54BA3B5B-FC49-4806-B93B-B4944C8131AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocol", "Protocol\Protocol.csproj", "{E947168D-B945-423E-B437-08C1314FC492}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,14 @@ Global
 		{9B1A4F2B-1735-463E-89B3-D192878A2280}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B1A4F2B-1735-463E-89B3-D192878A2280}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B1A4F2B-1735-463E-89B3-D192878A2280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54BA3B5B-FC49-4806-B93B-B4944C8131AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54BA3B5B-FC49-4806-B93B-B4944C8131AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54BA3B5B-FC49-4806-B93B-B4944C8131AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54BA3B5B-FC49-4806-B93B-B4944C8131AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E947168D-B945-423E-B437-08C1314FC492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E947168D-B945-423E-B437-08C1314FC492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E947168D-B945-423E-B437-08C1314FC492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E947168D-B945-423E-B437-08C1314FC492}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
