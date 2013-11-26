@@ -18,7 +18,6 @@ namespace ChessConsole
             command.UserName = name;
             var response = ServerProvider.MakeRequest(command);
             return response.Status == Statuses.OK;
-
         }
     }
 }

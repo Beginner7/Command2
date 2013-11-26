@@ -3,17 +3,17 @@ using System.Web.Mvc;
 using System.Linq;
 using System.Web;
 using ChestClient.Models;
-using System.Net;
-using System.IO;
-using System.Text;
+using Protocol;
+using Protocol.Transport;
 
 namespace ChestClient.Controllers
 {
     public class UserController : Controller
-
     {
-
         public static readonly Dictionary<string, UserModel> Users = new Dictionary<string, UserModel>();
+
+        
+
         public ActionResult List()
         {
             /*var allUserModels = _db.UserModels.ToList<UserModel>();
@@ -37,11 +37,9 @@ namespace ChestClient.Controllers
         
         public ActionResult Index()
         {
-
-            return View("Index", Users.Values);
-                
-            
+            var request = new UserListRequest();
+            var response = ServerProvider.MakeRequest<UserListResponse>(request);
+            return View("Index", response.Users);
         }
-
     }
 }
