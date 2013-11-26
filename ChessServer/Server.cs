@@ -12,6 +12,7 @@ namespace ChessServer
     public class Server
     {
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
+        public static ConcurrentDictionary<string, Game> Games = new ConcurrentDictionary<string, Game>();
         public string ProcessRequest(string request)
         {
             var req = JsonConvert.DeserializeObject<Request>(request);
@@ -41,6 +42,25 @@ namespace ChessServer
                         userlistresponse.Status = Statuses.OK;
                         resp = userlistresponse;
                     }
+                    break;
+                case "creategame":
+                    {
+                        var creategamerequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
+                        var creategameresponse = new CreateGameResponse();
+                        Games.TryAdd(creategamerequaest.ID.ToString(), new Game { GameID = Games.Count + 1 });
+                        //Games.TryAdd(creategamerequaest.ID.ToString(), new Game { PlayerOne = User });
+                        Games.TryAdd(creategamerequaest.ID.ToString(), new Game { TimeCreateGame = DateTime.Now });
+                    }
+                    break;
+                case "connecttogame":
+                    {
+                        var connecttogamerequest = JsonConvert.DeserializeObject<ConnectToGameRequest>(request);
+                        var connecttogameresponse = new ConnectToGameResponse();
+                        connecttogameresponse.Games = Games.Keys.ToArray();
+                        connecttogameresponse.Status = Statuses.OK;
+                        resp = connecttogameresponse;
+                    }
+                   
                     break;
                 case "echo":
                     {
