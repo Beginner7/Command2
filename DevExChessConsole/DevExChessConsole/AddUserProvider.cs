@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Protocol;
-using ChessConsole.Transport;
+using Protocol.Transport;
 
 namespace ChessConsole
 {
@@ -20,6 +20,5 @@ namespace ChessConsole
             return response.Status == Statuses.OK;
 
         }
-
     }
 }

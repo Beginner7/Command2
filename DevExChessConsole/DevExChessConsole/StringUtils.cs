@@ -8,13 +8,14 @@ namespace ChessConsole
 {
     public static class StringUtils
     {
-        public static string StrJoin(this IEnumerable<string> strs)
+        public static string StrJoin(this IEnumerable<string> strs, char separator)
         {
             var sb = new StringBuilder();
             foreach (var s in strs) {
                 sb.Append(s);
+                sb.Append(separator);
             }
-            return sb.ToString();
+            return sb.ToString().Substring(0, sb.Length - 1);
         }
     }
 }

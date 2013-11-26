@@ -42,6 +42,15 @@ namespace ChessServer
                         resp = userlistresponse;
                     }
                     break;
+                case "echo":
+                    {
+                        var echorequest = JsonConvert.DeserializeObject<EchoRequest>(request);
+                        var echoresponse = new EchoResponse();
+                        echoresponse.EchoString = echorequest.EchoString;
+                        echoresponse.Status = Statuses.OK;
+                        resp = echoresponse;
+                    }
+                    break;
             }
 
             resp.RequestCommand = req.Command;

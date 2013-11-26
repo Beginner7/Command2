@@ -20,7 +20,7 @@ namespace ChessConsole
 
                 case "echo":
                     EchoProvider echoProvider = new EchoProvider();
-                    echoProvider.MakeEcho(command.Skip(1).StrJoin());
+                    Console.WriteLine(echoProvider.Echo(command.Skip(1).StrJoin(' ')));
                     break;
 
                 case "adduser":

@@ -8,7 +8,7 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 
-namespace ChessConsole.Transport
+namespace Protocol.Transport
 {
     public static class ServerProvider
     {
@@ -23,6 +23,7 @@ namespace ChessConsole.Transport
             string postData = JsonConvert.SerializeObject(r);
             var data = encoding.GetBytes(postData);
 
+            System.Net.ServicePointManager.Expect100Continue = false;
             HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(url);
             httpWReq.Method = "POST";
             httpWReq.ContentType = "text/json";
