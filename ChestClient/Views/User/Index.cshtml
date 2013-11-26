@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ChestClient.Models.UserModel>
+﻿@model IEnumerable<string>
 @using ChestClient.Controllers;
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
         </h1>
         <ul>
         @foreach(var elm in Model) {
-            <li>@elm.UserName</li>
+            <li>@elm</li>
         }
         </ul>
     </div>
