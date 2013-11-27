@@ -12,6 +12,6 @@ namespace Protocol
         {
             Command = "creategame";
         }
-        public int ID;
+        public User playerOne;
     }
 }

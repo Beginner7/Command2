@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public class ConnectToGameResponse: Response
+    public class GameListRequest: Request
     {
+        public GameListRequest()
+        {
+            Command = "gamelist";
+        }
     }
 }

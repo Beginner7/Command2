@@ -12,7 +12,7 @@ namespace ChessServer
     public class Server
     {
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
-        public static ConcurrentDictionary<string, Game> Games = new ConcurrentDictionary<string, Game>();
+        public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
         public string ProcessRequest(string request)
         {
             var req = JsonConvert.DeserializeObject<Request>(request);
@@ -34,6 +34,7 @@ namespace ChessServer
                         resp = adduserresponse;
                     }
                     break;
+
                 case "userlist":
                     {
                         var userlistrequest = JsonConvert.DeserializeObject<UserListRequest>(request);
@@ -43,25 +44,34 @@ namespace ChessServer
                         resp = userlistresponse;
                     }
                     break;
+
                 case "creategame":
-                    {
-                        var creategamerequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
-                        var creategameresponse = new CreateGameResponse();
-                        Games.TryAdd(creategamerequaest.ID.ToString(), new Game { GameID = Games.Count + 1 });
-                        //Games.TryAdd(creategamerequaest.ID.ToString(), new Game { PlayerOne = User });
-                        Games.TryAdd(creategamerequaest.ID.ToString(), new Game { TimeCreateGame = DateTime.Now });
-                    }
+                        var createGameRequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
+                        var createGameResponse = new CreateGameResponse();
+                        var game = new Game(createGameRequaest.playerOne);
+                        createGameResponse.Status = Games.TryAdd(game.GameID, game) ? Statuses.OK : Statuses.ErrorCreateGame;
                     break;
+
+                case "gamelist":
+                        var gameListRequest = JsonConvert.DeserializeObject<GameListRequest>(request);
+                        var gameListResponse = new GameListResponse();
+                        gameListResponse.Games = Games.Keys.ToArray();
+                        gameListResponse.Status = Statuses.OK;
+                        resp = gameListResponse;
+                    break;
+
                 case "connecttogame":
+                    var connectToGameRequest = JsonConvert.DeserializeObject<ConnectToGameRequest>(request);
+                    var connectToGameResponse = new ConnectToGameResponse();
+                    if (Games.Keys.ToArray().Contains(connectToGameRequest.GameID))
                     {
-                        var connecttogamerequest = JsonConvert.DeserializeObject<ConnectToGameRequest>(request);
-                        var connecttogameresponse = new ConnectToGameResponse();
-                        connecttogameresponse.Games = Games.Keys.ToArray();
-                        connecttogameresponse.Status = Statuses.OK;
-                        resp = connecttogameresponse;
+                        Games[connectToGameRequest.GameID].PlayerTwo = connectToGameRequest.PlayerTwo;
+                        connectToGameResponse.Status = Statuses.OK;
                     }
-                   
+                    else
+                        connectToGameResponse.Status = Statuses.GameNotFound;
                     break;
+
                 case "echo":
                     {
                         var echorequest = JsonConvert.DeserializeObject<EchoRequest>(request);

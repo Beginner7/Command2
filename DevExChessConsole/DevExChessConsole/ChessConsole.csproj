@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AddUserProvider.cs" />
     <Compile Include="ConnectToGameProvider.cs" />
+    <Compile Include="GameListProvider.cs" />
     <Compile Include="CreateGameProvider.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="UserListProvider.cs" />

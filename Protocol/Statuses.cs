@@ -9,6 +9,8 @@ namespace Protocol
     {
         Unknown,
         OK,
-        DuplicateUser
+        DuplicateUser,
+        ErrorCreateGame,
+        GameNotFound
     }
 }

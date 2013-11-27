@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Protocol;
-using ChessConsole.Transport;
+using Protocol.Transport;
 
 namespace ChessConsole
 {
@@ -13,7 +13,9 @@ namespace ChessConsole
     {
         public bool Create()
         {
-
+            var command = new CreateGameRequest();
+            var response = ServerProvider.MakeRequest(command);
+            return response.Status == Statuses.OK;
         }
     }
 }

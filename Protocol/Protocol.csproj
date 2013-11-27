@@ -44,9 +44,11 @@
   <ItemGroup>
     <Compile Include="AddUserRequest.cs" />
     <Compile Include="AddUserResponse.cs" />
-    <Compile Include="Transport\Consts.cs" />
     <Compile Include="ConnectToGameRequest.cs" />
     <Compile Include="ConnectToGameResponse.cs" />
+    <Compile Include="Transport\Consts.cs" />
+    <Compile Include="GameListRequest.cs" />
+    <Compile Include="GameListResponse.cs" />
     <Compile Include="CreateGameRequest.cs" />
     <Compile Include="CreateGameResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +56,7 @@
     <Compile Include="Response.cs" />
     <Compile Include="Statuses.cs" />
     <Compile Include="Transport\ServerProvider.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="UserListRequest.cs" />
     <Compile Include="UserListResponse.cs" />
     <Compile Include="EchoRequest.cs" />
