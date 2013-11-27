@@ -36,6 +36,23 @@ namespace ChessConsole
                     }
                     break;
 
+                case "creategame":
+                    CreateGameProvider createGameProvider = new CreateGameProvider();
+                    Console.WriteLine(createGameProvider.Create() ? "success" : "error");
+                    break;
+
+                case "gamelist":
+                    GameListProvider gameListProvider = new GameListProvider();
+                    foreach (int element in gameListProvider.GetList())
+                        Console.WriteLine(element);
+                    break;
+
+                case "connecttogame":                  
+                    ConnectToGameProvider connectToGameProvider = new ConnectToGameProvider();
+                    GameListProvider gameList = new GameListProvider();
+                        Console.WriteLine(connectToGameProvider.Connect(command[1]) ? "success" : "error"); // & gameList.GetList().Contains(command[1])
+                    break;
+
                 case "exit":
                     is_continue = false;
                     break;

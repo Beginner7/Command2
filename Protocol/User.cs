@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public enum Statuses
+    public class User
     {
-        Unknown,
-        OK,
-        DuplicateUser,
-        ErrorCreateGame,
-        GameNotFound
+        public string Name;
     }
 }
