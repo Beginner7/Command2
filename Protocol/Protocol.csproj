@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteUserRequest.cs" />
     <Compile Include="AddUserRequest.cs" />
+    <Compile Include="DeleteUserResponse.cs" />
     <Compile Include="AddUserResponse.cs" />
     <Compile Include="ConnectToGameRequest.cs" />
     <Compile Include="ConnectToGameResponse.cs" />

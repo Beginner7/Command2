@@ -10,6 +10,7 @@ namespace Protocol
         Unknown,
         OK,
         DuplicateUser,
+        NoUser,
         ErrorCreateGame,
         GameNotFound
     }

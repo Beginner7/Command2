@@ -19,17 +19,22 @@ namespace ChessConsole
                     break;
 
                 case "echo":
-                    EchoProvider echoProvider = new EchoProvider();
+                    var echoProvider = new EchoProvider();
                     Console.WriteLine(echoProvider.Echo(command.Skip(1).StrJoin(' ')));
                     break;
 
                 case "adduser":
-                    AddUserProvider addUserProvider = new AddUserProvider();
+                    var addUserProvider = new AddUserProvider();
                     Console.WriteLine(addUserProvider.Add(command[1]) ? "success" : "error");
                     break;
 
+                case "deleteuser":
+                    var deleteUserProvider = new DeleteUserProvider();
+                    Console.WriteLine(deleteUserProvider.Delete(command[1]) ? "success" : "error");
+                    break;
+
                 case "userlist":
-                    UserListProvider userListProvider = new UserListProvider();
+                    var userListProvider = new UserListProvider();
                     foreach (string element in userListProvider.GetList())
                     {
                         Console.WriteLine(element);
@@ -37,19 +42,19 @@ namespace ChessConsole
                     break;
 
                 case "creategame":
-                    CreateGameProvider createGameProvider = new CreateGameProvider();
+                    var createGameProvider = new CreateGameProvider();
                     Console.WriteLine(createGameProvider.Create() ? "success" : "error");
                     break;
 
                 case "gamelist":
-                    GameListProvider gameListProvider = new GameListProvider();
+                    var gameListProvider = new GameListProvider();
                     foreach (int element in gameListProvider.GetList())
                         Console.WriteLine(element);
                     break;
 
                 case "connecttogame":                  
-                    ConnectToGameProvider connectToGameProvider = new ConnectToGameProvider();
-                    GameListProvider gameList = new GameListProvider();
+                    var connectToGameProvider = new ConnectToGameProvider();
+                    var gameList = new GameListProvider();
                         Console.WriteLine(connectToGameProvider.Connect(command[1]) ? "success" : "error"); // & gameList.GetList().Contains(command[1])
                     break;
 

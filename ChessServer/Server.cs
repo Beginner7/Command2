@@ -35,6 +35,23 @@ namespace ChessServer
                     }
                     break;
 
+                case "deleteuser":
+                    {
+                        var deleteuserrequest = JsonConvert.DeserializeObject<DeleteUserRequest>(request);
+                        var deleteuserresponse = new DeleteUserResponse();
+                        var removed = new User();
+                        if (Users.TryRemove(deleteuserrequest.UserName, out removed))
+                        {
+                            deleteuserresponse.Status = Statuses.OK;
+                        }
+                        else
+                        {
+                            deleteuserresponse.Status = Statuses.DuplicateUser;
+                        }
+                        resp = deleteuserresponse;
+                    }
+                    break;
+
                 case "userlist":
                     {
                         var userlistrequest = JsonConvert.DeserializeObject<UserListRequest>(request);
