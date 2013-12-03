@@ -64,9 +64,16 @@ namespace ChessServer
 
                 case "creategame":
                         var createGameRequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
-                        var createGameResponse = new CreateGameResponse();
                         var game = new Game(createGameRequaest.playerOne);
-                        createGameResponse.Status = Games.TryAdd(game.GameID, game) ? Statuses.OK : Statuses.ErrorCreateGame;
+                        var createGameResponse = new CreateGameResponse();
+                        if (Games.TryAdd(game.ID, game))
+                        {
+                            createGameResponse.ID = game.ID;
+                            createGameResponse.Status = Statuses.OK;
+                        }
+                        else
+                            createGameResponse.Status = Statuses.ErrorCreateGame;
+                        resp = createGameResponse;
                     break;
 
                 case "gamelist":

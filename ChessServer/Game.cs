@@ -9,7 +9,7 @@ namespace ChessServer
 {
     public class Game
     {
-        public readonly int GameID;
+        public readonly int ID;
         public User PlayerOne;
         public User PlayerTwo;
         public DateTime TimeCreateGame; //время создания игры
@@ -17,7 +17,7 @@ namespace ChessServer
         public static int GameIDSeq = 0;
         public Game(User user)
         {
-            GameID = ++GameIDSeq;
+            ID = ++GameIDSeq;
             PlayerOne = user;
         }
         public List<Move> Moves = new List<Move>();
