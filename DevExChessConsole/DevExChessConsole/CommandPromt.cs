@@ -86,6 +86,10 @@ namespace ChessConsole
                         Console.WriteLine(connectToGameProvider.Connect(command[1]) ? "success" : "error"); // & gameList.GetList().Contains(command[1])
                     break;
 
+                case "move":
+                    var moveProvider = new MoveProvider();
+                    break;
+
                 case "exit":
                     is_continue = false;
                     break;

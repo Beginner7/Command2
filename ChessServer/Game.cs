@@ -20,5 +20,7 @@ namespace ChessServer
             GameID = ++GameIDSeq;
             PlayerOne = user;
         }
-    }
+        public List<Move> Moves = new List<Move>();
+    }  
+
 }

@@ -50,6 +50,7 @@
     <Compile Include="ConnectToGameProvider.cs" />
     <Compile Include="GameListProvider.cs" />
     <Compile Include="CreateGameProvider.cs" />
+    <Compile Include="MoveProvider.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="UserListProvider.cs" />
     <Compile Include="CommandPromt.cs" />
