@@ -9,5 +9,6 @@ namespace ChessConsole
     public static class CurrentUser
     {
         public static string Name;
+        public static int? CurrentGame;
     }
 }
