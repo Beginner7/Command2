@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using ChestClient.Models;
+using Protocol;
+using Protocol.Transport;
 
 namespace ChestClient.Controllers
 {
@@ -27,15 +29,25 @@ namespace ChestClient.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(model.UserName))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    var command = new AddUserRequest();
+                    command.UserName = model.UserName;
+                    if (ServerProvider.MakeRequest(command).Status != Statuses.OK)
                     {
-                        return Redirect(returnUrl);
+                        ModelState.AddModelError("", "Пользователь " + model.UserName + " уже в сети.");
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+
+                        FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                        if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
                 else
@@ -53,12 +65,15 @@ namespace ChestClient.Controllers
 
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
+            var command = new DeleteUserRequest();
+            command.UserName = HttpContext.User.Identity.Name;
+            var response = ServerProvider.MakeRequest(command);
 
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
-
+        
         #region Status Codes
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
