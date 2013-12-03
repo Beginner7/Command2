@@ -50,8 +50,7 @@
     <Compile Include="ConnectToGameProvider.cs" />
     <Compile Include="GameListProvider.cs" />
     <Compile Include="CreateGameProvider.cs" />
-    <Compile Include="game_objects\Board.cs" />
-    <Compile Include="game_objects\Cell.cs" />
+    <Compile Include="MoveProvider.cs" />    <Compile Include="game_objects\Cell.cs" />
     <Compile Include="game_objects\FigureBishop.cs" />
     <Compile Include="game_objects\FigureKnight.cs" />
     <Compile Include="game_objects\FigureQueen.cs" />

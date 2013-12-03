@@ -125,7 +125,31 @@ namespace ChessConsole
                         Console.WriteLine(message);
                     }
                     break;
-
+                    
+                case "move":
+                    var moveProvider = new MoveProvider();
+                    if (CurrentUser.Name == null)
+                    {
+                        Console.WriteLine("You are not logged in");
+                        break;
+                    }
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("Dude! First connect to game.");
+                        break;
+                    }
+                    if (command.Length < 3 || string.IsNullOrWhiteSpace(command[1]) || string.IsNullOrWhiteSpace(command[2]))
+                    {
+                        Console.WriteLine("Incorrect syntax. Example(move e2 e4)");
+                        break;
+                    }
+                    if (moveProvider.Move(command[1], command[2], CurrentUser.Name, CurrentUser.CurrentGame.Value))
+                    {
+                        Console.WriteLine("success");
+                    }
+                    else Console.WriteLine("Error");
+                    
+                    break;
                 case "help":
                     Console.WriteLine("echo <echo_string> - Эхо запрос на сервер");
                     Console.WriteLine("login <user_name>  - Вход на сервер под ником user_name");
@@ -135,7 +159,6 @@ namespace ChessConsole
                     Console.WriteLine("gamelist           - Добавьте описание!");
                     Console.WriteLine("connecttogame      - Добавьте описание!");
                     break;
-
                 case "exit":
                     is_continue = false;
                     break;

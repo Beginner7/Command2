@@ -48,6 +48,8 @@
     <Compile Include="AddUserResponse.cs" />
     <Compile Include="ConnectToGameRequest.cs" />
     <Compile Include="ConnectToGameResponse.cs" />
+    <Compile Include="MoveRequest.cs" />
+    <Compile Include="MoveResponse.cs" />
     <Compile Include="Transport\Consts.cs" />
     <Compile Include="GameListRequest.cs" />
     <Compile Include="GameListResponse.cs" />

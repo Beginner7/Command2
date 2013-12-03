@@ -105,6 +105,20 @@ namespace ChessServer
                         resp = echoresponse;
                     }
                     break;
+
+                case "move":
+                    var moveRequest = JsonConvert.DeserializeObject<MoveRequest>(request);
+                    var moveResponse = new MoveResponse();
+                    if (Games.ContainsKey(moveRequest.GameID))
+                    {
+                        Games[moveRequest.GameID].Moves.Add(new Move {From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
+                        moveResponse.Status = Statuses.OK;
+                    }
+                    else
+                        moveResponse.Status = Statuses.GameNotFound;
+                    resp = moveResponse;
+                    break;
+
             }
 
             resp.RequestCommand = req.Command;
