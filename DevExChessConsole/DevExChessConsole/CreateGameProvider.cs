@@ -11,11 +11,12 @@ namespace ChessConsole
 {
     public class CreateGameProvider
     {
-        public bool Create()
+        public int? Create(string userName)
         {
             var command = new CreateGameRequest();
-            var response = ServerProvider.MakeRequest(command);
-            return response.Status == Statuses.OK;
+            command.playerOne = new User { Name = userName };
+            var response = ServerProvider.MakeRequest<CreateGameResponse>(command);
+            return response.Status == Statuses.OK ? (int?)response.ID : null;
         }
     }
 }

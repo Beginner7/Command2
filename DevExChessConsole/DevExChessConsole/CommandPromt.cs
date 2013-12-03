@@ -32,7 +32,7 @@ namespace ChessConsole
                         break;
                     }
 
-                    if (string.IsNullOrWhiteSpace(command[1]))
+                    if (command.Length < 2 || string.IsNullOrWhiteSpace(command[1]))
                     {
                         Console.WriteLine("Empty user name");
                         break;
@@ -71,7 +71,26 @@ namespace ChessConsole
 
                 case "creategame":
                     var createGameProvider = new CreateGameProvider();
-                    Console.WriteLine(createGameProvider.Create() ? "success" : "error");
+                    if (CurrentUser.Name == null)
+                    {
+                        Console.WriteLine("You are not logged in");
+                        break;
+                    }
+                    if (CurrentUser.CurrentGame != null)
+                    {
+                        Console.WriteLine("You are in the game already");
+                        break;
+                    }
+                    var gameID = createGameProvider.Create(CurrentUser.Name);
+                    if (!gameID.HasValue)
+                    {
+                        Console.WriteLine("Can't create game");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Successfully created game with id " + gameID);
+                        CurrentUser.CurrentGame = gameID;
+                    }
                     break;
 
                 case "gamelist":
@@ -82,8 +101,29 @@ namespace ChessConsole
 
                 case "connecttogame":                  
                     var connectToGameProvider = new ConnectToGameProvider();
-                    var gameList = new GameListProvider();
-                        Console.WriteLine(connectToGameProvider.Connect(command[1]) ? "success" : "error"); // & gameList.GetList().Contains(command[1])
+                    if (CurrentUser.Name == null)
+                    {
+                        Console.WriteLine("You are not logged in");
+                        break;
+                    }
+                    if (command.Length < 2 || string.IsNullOrWhiteSpace(command[1]))
+                    {
+                        Console.WriteLine("Empty game id");
+                        break;
+                    }
+                    if (CurrentUser.CurrentGame != null)
+                    {
+                        Console.WriteLine("You are in the game already");
+                        break;
+                    }
+                    string message;
+                    if (connectToGameProvider.Connect(command[1], CurrentUser.Name, out message)) {
+                        CurrentUser.CurrentGame = int.Parse(command[1]);
+                        Console.WriteLine("success");
+                    }
+                    else {
+                        Console.WriteLine(message);
+                    }
                     break;
 
                 case "exit":
