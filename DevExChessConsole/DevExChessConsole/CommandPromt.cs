@@ -126,6 +126,16 @@ namespace ChessConsole
                     }
                     break;
 
+                case "help":
+                    Console.WriteLine("echo <echo_string> - Эхо запрос на сервер");
+                    Console.WriteLine("login <user_name>  - Вход на сервер под ником user_name");
+                    Console.WriteLine("logout             - Выход из аккаунта");
+                    Console.WriteLine("userlist           - Список вошедших пользователей");
+                    Console.WriteLine("creategame         - Добавьте описание!");
+                    Console.WriteLine("gamelist           - Добавьте описание!");
+                    Console.WriteLine("connecttogame      - Добавьте описание!");
+                    break;
+
                 case "exit":
                     is_continue = false;
                     break;

@@ -50,6 +50,16 @@
     <Compile Include="ConnectToGameProvider.cs" />
     <Compile Include="GameListProvider.cs" />
     <Compile Include="CreateGameProvider.cs" />
+    <Compile Include="game_objects\Board.cs" />
+    <Compile Include="game_objects\Cell.cs" />
+    <Compile Include="game_objects\FigureBishop.cs" />
+    <Compile Include="game_objects\FigureKnight.cs" />
+    <Compile Include="game_objects\FigureQueen.cs" />
+    <Compile Include="game_objects\FigureKing.cs" />
+    <Compile Include="game_objects\FigurePawn.cs" />
+    <Compile Include="game_objects\FigureRook.cs" />
+    <Compile Include="game_objects\defines.cs" />
+    <Compile Include="game_objects\Figure.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="UserListProvider.cs" />
     <Compile Include="CommandPromt.cs" />
