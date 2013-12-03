@@ -23,14 +23,42 @@ namespace ChessConsole
                     Console.WriteLine(echoProvider.Echo(command.Skip(1).StrJoin(' ')));
                     break;
 
-                case "adduser":
+                case "login":
                     var addUserProvider = new AddUserProvider();
-                    Console.WriteLine(addUserProvider.Add(command[1]) ? "success" : "error");
+
+                    if (CurrentUser.Name != null)
+                    {
+                        Console.WriteLine("logout first!");
+                        break;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(command[1]))
+                    {
+                        Console.WriteLine("Empty user name");
+                        break;
+                    }
+                    if (addUserProvider.Add(command[1]))
+                    {
+                        CurrentUser.Name = command[1];
+                        Console.WriteLine("Hello, " + CurrentUser.Name);
+                    }
+                    else
+                    {
+                        Console.WriteLine("User " + CurrentUser.Name + " already logged in");
+                    }
                     break;
 
-                case "deleteuser":
+                case "logout":
                     var deleteUserProvider = new DeleteUserProvider();
-                    Console.WriteLine(deleteUserProvider.Delete(command[1]) ? "success" : "error");
+                    if (CurrentUser.Name != null)
+                    {
+                        Console.WriteLine(deleteUserProvider.Delete(CurrentUser.Name) ? "success" : "error");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You are not logged in");
+                    }
+                    CurrentUser.Name = null;
                     break;
 
                 case "userlist":
