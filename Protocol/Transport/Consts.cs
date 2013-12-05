@@ -14,4 +14,6 @@ namespace Protocol.Transport
           public const string domain = "http://command2.apphb.com/";
             #endif
     }
+    
+    public enum Side { NONE, BLACK, WHITE, SPECTATOR }
 }

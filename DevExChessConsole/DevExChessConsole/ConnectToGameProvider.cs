@@ -11,20 +11,13 @@ namespace ChessConsole
 {
     class ConnectToGameProvider
     {
-        public bool Connect(string game, string userName, out string message)
+        public bool Connect(int gameid, string userName)
         {
             var command = new ConnectToGameRequest();
-            Regex rxNums = new Regex(@"^\d+$");
-            if (rxNums.IsMatch(game))
-                command.GameID = int.Parse(game);
-            else
-            {
-                message = "GameID must be a number";
-                return false;
-            }
+            command.GameID = gameid;
             command.PlayerTwo = new User { Name = userName };
             var response = ServerProvider.MakeRequest(command);
-            message = "success";
+            Console.WriteLine(response.Status.ToString());
             return response.Status == Statuses.OK;
         }
     }

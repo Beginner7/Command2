@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Protocol;
+using Protocol.Transport;
 using System.Collections.Concurrent;
 
 namespace ChessServer
@@ -13,6 +14,27 @@ namespace ChessServer
     {
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
+        
+        private Side UserSide(string username, int gameid)
+        {
+            if ((username == Games[gameid].PlayerWhite.Name))
+            {
+                return Side.WHITE;
+            }
+
+            if ((username == Games[gameid].PlayerBlack.Name))
+            {
+                return Side.BLACK;
+            }
+
+            if ((username != Games[gameid].PlayerWhite.Name) && (username != Games[gameid].PlayerBlack.Name))
+            {
+                return Side.SPECTATOR;
+            }
+
+            return Side.NONE;
+        }
+        
         public string ProcessRequest(string request)
         {
             var req = JsonConvert.DeserializeObject<Request>(request);
@@ -89,11 +111,14 @@ namespace ChessServer
                     var connectToGameResponse = new ConnectToGameResponse();
                     if (Games.Keys.ToArray().Contains(connectToGameRequest.GameID))
                     {
-                        Games[connectToGameRequest.GameID].PlayerTwo = connectToGameRequest.PlayerTwo;
+                        Games[connectToGameRequest.GameID].PlayerBlack = connectToGameRequest.PlayerTwo;
                         connectToGameResponse.Status = Statuses.OK;
                     }
                     else
+                    {
                         connectToGameResponse.Status = Statuses.GameNotFound;
+                    }
+                    resp = connectToGameResponse;
                     break;
 
                 case "echo":
@@ -106,16 +131,49 @@ namespace ChessServer
                     }
                     break;
 
+                case "gamestat":
+                    {
+                        var gamestatrequest = JsonConvert.DeserializeObject<GameStatRequest>(request);
+                        var gamestatresponse = new GameStatResponse();
+                        gamestatresponse.ID = gamestatrequest.gameID;
+                        gamestatresponse.PlayerBlack = Games[gamestatrequest.gameID].PlayerBlack.Name;
+                        gamestatresponse.PlayerWhite = Games[gamestatrequest.gameID].PlayerWhite.Name;
+                        gamestatresponse.Turn = Games[gamestatrequest.gameID].Turn;
+                        gamestatresponse.Status = Statuses.OK;
+                        resp = gamestatresponse;
+                    }
+                    break;
+
                 case "move":
                     var moveRequest = JsonConvert.DeserializeObject<MoveRequest>(request);
                     var moveResponse = new MoveResponse();
                     if (Games.ContainsKey(moveRequest.GameID))
                     {
-                        Games[moveRequest.GameID].Moves.Add(new Move {From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
+                        if (UserSide(moveRequest.Player.Name, moveRequest.GameID) != Games[moveRequest.GameID].Turn)
+                        {
+                            moveResponse.Status = Statuses.OpponentTurn;
+                            resp = moveResponse;
+                            break;
+                        }
+
+                        Games[moveRequest.GameID].Moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
+                        if (Games[moveRequest.GameID].Turn == Side.WHITE)
+                        {
+                            Games[moveRequest.GameID].Turn = Side.BLACK;
+                        }
+                        else
+                        {
+                            if (Games[moveRequest.GameID].Turn == Side.BLACK)
+                            {
+                                Games[moveRequest.GameID].Turn = Side.WHITE;
+                            }
+                        }
                         moveResponse.Status = Statuses.OK;
                     }
                     else
+                    {
                         moveResponse.Status = Statuses.GameNotFound;
+                    }
                     resp = moveResponse;
                     break;
 

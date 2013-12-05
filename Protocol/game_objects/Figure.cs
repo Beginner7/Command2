@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol.Transport;
 
-namespace ChessConsole.game_objects
+namespace Protocol.game_objects
 {
     class Figure
     {
@@ -12,7 +13,7 @@ namespace ChessConsole.game_objects
         {
             this.side = side;
         }
-        private Side side = Side.BLACK;
-        private char symbol = 'X';
+        public Side side = Side.BLACK;
+        public char symbol = 'X';
     }
 }

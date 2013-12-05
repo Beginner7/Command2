@@ -13,5 +13,4 @@ namespace ChessServer
         public string To;
         public User Player;
     }
-  
 }

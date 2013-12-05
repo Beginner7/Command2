@@ -18,6 +18,34 @@ namespace ChessConsole
                 case "":
                     break;
 
+                case "me":
+                    if (CurrentUser.Name != null)
+                    {
+                        Console.WriteLine("You are logged as: " + CurrentUser.Name);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You are not logged in.");
+                    }
+                    if (CurrentUser.CurrentGame != null)
+                    {
+                        Console.WriteLine("You are in game. ID: " + CurrentUser.CurrentGame);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You are not in game.");
+                    }
+                    break;
+
+                case "gamestat":
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("Dude! First connect to game.");
+                        break;
+                    }
+                    var gameStatProvider = new GameStatProvider(CurrentUser.CurrentGame.Value);
+                    break;
+
                 case "echo":
                     var echoProvider = new EchoProvider();
                     Console.WriteLine(echoProvider.Echo(command.Skip(1).StrJoin(' ')));
@@ -28,13 +56,13 @@ namespace ChessConsole
 
                     if (CurrentUser.Name != null)
                     {
-                        Console.WriteLine("logout first!");
+                        Console.WriteLine("logout first.");
                         break;
                     }
 
                     if (command.Length < 2 || string.IsNullOrWhiteSpace(command[1]))
                     {
-                        Console.WriteLine("Empty user name");
+                        Console.WriteLine("Empty user name.");
                         break;
                     }
                     if (addUserProvider.Add(command[1]))
@@ -44,7 +72,7 @@ namespace ChessConsole
                     }
                     else
                     {
-                        Console.WriteLine("User " + CurrentUser.Name + " already logged in");
+                        Console.WriteLine("User " + command[1] + " already logged in.");
                     }
                     break;
 
@@ -52,17 +80,25 @@ namespace ChessConsole
                     var deleteUserProvider = new DeleteUserProvider();
                     if (CurrentUser.Name != null)
                     {
-                        Console.WriteLine(deleteUserProvider.Delete(CurrentUser.Name) ? "success" : "error");
+                        if (deleteUserProvider.Delete(CurrentUser.Name))
+                        {
+                            Console.WriteLine("You succesfully logged out.");
+                            CurrentUser.Name = null;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unknown error.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("You are not logged in");
+                        Console.WriteLine("You are not logged in.");
                     }
-                    CurrentUser.Name = null;
                     break;
 
                 case "userlist":
                     var userListProvider = new UserListProvider();
+                    Console.WriteLine("Users online:");
                     foreach (string element in userListProvider.GetList())
                     {
                         Console.WriteLine(element);
@@ -73,12 +109,12 @@ namespace ChessConsole
                     var createGameProvider = new CreateGameProvider();
                     if (CurrentUser.Name == null)
                     {
-                        Console.WriteLine("You are not logged in");
+                        Console.WriteLine("You are not logged in.");
                         break;
                     }
                     if (CurrentUser.CurrentGame != null)
                     {
-                        Console.WriteLine("You are in the game already");
+                        Console.WriteLine("You are in the game already.");
                         break;
                     }
                     var gameID = createGameProvider.Create(CurrentUser.Name);
@@ -88,41 +124,50 @@ namespace ChessConsole
                     }
                     else
                     {
-                        Console.WriteLine("Successfully created game with id " + gameID);
+                        Console.WriteLine("Successfully created game with id " + gameID + '.');
                         CurrentUser.CurrentGame = gameID;
                     }
                     break;
 
                 case "gamelist":
                     var gameListProvider = new GameListProvider();
+                    Console.WriteLine("Active games:");
                     foreach (int element in gameListProvider.GetList())
+                    {
                         Console.WriteLine(element);
+                    }
                     break;
 
                 case "connecttogame":                  
                     var connectToGameProvider = new ConnectToGameProvider();
                     if (CurrentUser.Name == null)
                     {
-                        Console.WriteLine("You are not logged in");
+                        Console.WriteLine("You are not logged in.");
                         break;
                     }
                     if (command.Length < 2 || string.IsNullOrWhiteSpace(command[1]))
                     {
-                        Console.WriteLine("Empty game id");
+                        Console.WriteLine("Empty game id.");
                         break;
                     }
                     if (CurrentUser.CurrentGame != null)
                     {
-                        Console.WriteLine("You are in the game already");
+                        Console.WriteLine("You are in the game already.");
                         break;
                     }
-                    string message;
-                    if (connectToGameProvider.Connect(command[1], CurrentUser.Name, out message)) {
-                        CurrentUser.CurrentGame = int.Parse(command[1]);
-                        Console.WriteLine("success");
+                    int gameid;
+                    try
+                    {
+                        gameid = Convert.ToInt32(command[1]);
                     }
-                    else {
-                        Console.WriteLine(message);
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Game id should be integer number.");
+                        break;
+                    }
+                    if (connectToGameProvider.Connect(gameid, CurrentUser.Name)) {
+                        CurrentUser.CurrentGame = gameid;
+                        Console.WriteLine("You joined game " + gameid);
                     }
                     break;
                     
@@ -143,13 +188,9 @@ namespace ChessConsole
                         Console.WriteLine("Incorrect syntax. Example(move e2 e4)");
                         break;
                     }
-                    if (moveProvider.Move(command[1], command[2], CurrentUser.Name, CurrentUser.CurrentGame.Value))
-                    {
-                        Console.WriteLine("success");
-                    }
-                    else Console.WriteLine("Error");
-                    
+                    moveProvider.Move(command[1], command[2], CurrentUser.Name, CurrentUser.CurrentGame.Value);
                     break;
+
                 case "help":
                     Console.WriteLine("echo <echo_string> - Эхо запрос на сервер");
                     Console.WriteLine("login <user_name>  - Вход на сервер под ником user_name");

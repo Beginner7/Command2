@@ -12,6 +12,7 @@ namespace Protocol
         DuplicateUser,
         NoUser,
         ErrorCreateGame,
-        GameNotFound
+        GameNotFound,
+        OpponentTurn
     }
 }
