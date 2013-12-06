@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol.Transport;
 
-/*namespace ChessConsole.game_objects
+namespace Protocol
 {
     class FigureQueen : Figure
     {
-        private char symbol = 'Q';
+        public FigureQueen(Side side) : base(side)
+        {
+            symbol = 'Q';
+        }
     }
 }
-*/

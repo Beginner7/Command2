@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol.Transport;
 
-/*namespace ChessConsole.game_objects
+namespace Protocol
 {
     class FigurePawn : Figure
     {
-        private char symbol = 'p';
+        public FigurePawn(Side side) : base(side)
+        {
+            symbol = 'p';
+        }
     }
 }
-*/

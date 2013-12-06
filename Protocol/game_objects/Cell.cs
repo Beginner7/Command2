@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Protocol.game_objects
+namespace Protocol
 {
-    class Cell
+    public class Cell
     {
-        public Figure figure = null;
+        public Figure figure;
+
+        public Cell()
+        {
+            this.figure = null;
+        }
 
         public Cell(Figure figure)
         {

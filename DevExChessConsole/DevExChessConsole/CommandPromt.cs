@@ -9,6 +9,8 @@ namespace ChessConsole
 
     class CommandPromt
     {
+        Protocol.Board gameboard = new Protocol.Board();
+
         public bool CommandProcess(string in_command)
         {
             bool is_continue = true;
@@ -35,6 +37,10 @@ namespace ChessConsole
                     {
                         Console.WriteLine("You are not in game.");
                     }
+                    break;
+
+                case "sb":
+                    gameboard.ShowBoard();
                     break;
 
                 case "gamestat":
@@ -200,6 +206,7 @@ namespace ChessConsole
                     Console.WriteLine("gamelist           - Добавьте описание!");
                     Console.WriteLine("connecttogame      - Добавьте описание!");
                     break;
+                
                 case "exit":
                     is_continue = false;
                     break;

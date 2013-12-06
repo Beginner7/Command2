@@ -85,6 +85,7 @@ namespace ChessServer
                     break;
 
                 case "creategame":
+                    {
                         var createGameRequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
                         var game = new Game(createGameRequaest.playerOne);
                         var createGameResponse = new CreateGameResponse();
@@ -96,29 +97,34 @@ namespace ChessServer
                         else
                             createGameResponse.Status = Statuses.ErrorCreateGame;
                         resp = createGameResponse;
+                    }
                     break;
 
                 case "gamelist":
+                    {
                         var gameListRequest = JsonConvert.DeserializeObject<GameListRequest>(request);
                         var gameListResponse = new GameListResponse();
                         gameListResponse.Games = Games.Keys.ToArray();
                         gameListResponse.Status = Statuses.OK;
                         resp = gameListResponse;
+                    }
                     break;
 
                 case "connecttogame":
-                    var connectToGameRequest = JsonConvert.DeserializeObject<ConnectToGameRequest>(request);
-                    var connectToGameResponse = new ConnectToGameResponse();
-                    if (Games.Keys.ToArray().Contains(connectToGameRequest.GameID))
                     {
-                        Games[connectToGameRequest.GameID].PlayerBlack = connectToGameRequest.PlayerTwo;
-                        connectToGameResponse.Status = Statuses.OK;
+                        var connectToGameRequest = JsonConvert.DeserializeObject<ConnectToGameRequest>(request);
+                        var connectToGameResponse = new ConnectToGameResponse();
+                        if (Games.Keys.ToArray().Contains(connectToGameRequest.GameID))
+                        {
+                            Games[connectToGameRequest.GameID].PlayerBlack = connectToGameRequest.PlayerTwo;
+                            connectToGameResponse.Status = Statuses.OK;
+                        }
+                        else
+                        {
+                            connectToGameResponse.Status = Statuses.GameNotFound;
+                        }
+                        resp = connectToGameResponse;
                     }
-                    else
-                    {
-                        connectToGameResponse.Status = Statuses.GameNotFound;
-                    }
-                    resp = connectToGameResponse;
                     break;
 
                 case "echo":
@@ -145,38 +151,39 @@ namespace ChessServer
                     break;
 
                 case "move":
-                    var moveRequest = JsonConvert.DeserializeObject<MoveRequest>(request);
-                    var moveResponse = new MoveResponse();
-                    if (Games.ContainsKey(moveRequest.GameID))
                     {
-                        if (UserSide(moveRequest.Player.Name, moveRequest.GameID) != Games[moveRequest.GameID].Turn)
+                        var moveRequest = JsonConvert.DeserializeObject<MoveRequest>(request);
+                        var moveResponse = new MoveResponse();
+                        if (Games.ContainsKey(moveRequest.GameID))
                         {
-                            moveResponse.Status = Statuses.OpponentTurn;
-                            resp = moveResponse;
-                            break;
-                        }
+                            if (UserSide(moveRequest.Player.Name, moveRequest.GameID) != Games[moveRequest.GameID].Turn)
+                            {
+                                moveResponse.Status = Statuses.OpponentTurn;
+                                resp = moveResponse;
+                                break;
+                            }
 
-                        Games[moveRequest.GameID].Moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
-                        if (Games[moveRequest.GameID].Turn == Side.WHITE)
-                        {
-                            Games[moveRequest.GameID].Turn = Side.BLACK;
+                            Games[moveRequest.GameID].Moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
+                            if (Games[moveRequest.GameID].Turn == Side.WHITE)
+                            {
+                                Games[moveRequest.GameID].Turn = Side.BLACK;
+                            }
+                            else
+                            {
+                                if (Games[moveRequest.GameID].Turn == Side.BLACK)
+                                {
+                                    Games[moveRequest.GameID].Turn = Side.WHITE;
+                                }
+                            }
+                            moveResponse.Status = Statuses.OK;
                         }
                         else
                         {
-                            if (Games[moveRequest.GameID].Turn == Side.BLACK)
-                            {
-                                Games[moveRequest.GameID].Turn = Side.WHITE;
-                            }
+                            moveResponse.Status = Statuses.GameNotFound;
                         }
-                        moveResponse.Status = Statuses.OK;
+                        resp = moveResponse;
                     }
-                    else
-                    {
-                        moveResponse.Status = Statuses.GameNotFound;
-                    }
-                    resp = moveResponse;
                     break;
-
             }
 
             resp.RequestCommand = req.Command;

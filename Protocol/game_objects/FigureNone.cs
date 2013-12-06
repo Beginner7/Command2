@@ -7,11 +7,11 @@ using Protocol.Transport;
 
 namespace Protocol
 {
-    class FigureKing : Figure
+    class FigureNone : Figure
     {
-        public FigureKing(Side side) : base(side)
+        public FigureNone(Side side) : base(side)
         {
-            symbol = 'K';
+            symbol = 'X';
         }
     }
 }

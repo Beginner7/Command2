@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol.Transport;
 
-/*namespace ChessConsole.game_objects
+namespace Protocol
 {
     class FigureRook : Figure
     {
-        FigureRook(Side side)
+        public FigureRook(Side side) : base(side)
         {
-       
+            symbol = 'R';
         }
-        private char symbol = 'R';
     }
 }
-*/
