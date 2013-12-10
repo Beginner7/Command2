@@ -116,6 +116,20 @@ namespace ChessConsole
                     }
                     break;
 
+                case "movelist":
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("Dude! First connect to game.");
+                        break;
+                    }
+                    var moveListProvider = new MoveListProvider();
+                    Console.WriteLine("Moves from game \"" + CurrentUser.CurrentGame + "\":");
+                    foreach (string element in moveListProvider.GetList())
+                    {
+                        Console.WriteLine(element);
+                    }
+                    break;
+
                 case "creategame":
                     var createGameProvider = new CreateGameProvider();
                     if (CurrentUser.Name == null)

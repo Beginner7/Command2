@@ -60,7 +60,7 @@ namespace Protocol
         {
             Console.Clear();
             Console.Write("\n    A  B  C  D  E  F  G  H");
-            Console.Write("\n\n\n 1\n\n\n 2\n\n\n 3\n\n\n 4\n\n\n 5\n\n\n 6\n\n\n 7\n\n\n 8");
+            Console.Write("\n\n\n 8\n\n\n 7\n\n\n 6\n\n\n 5\n\n\n 4\n\n\n 3\n\n\n 2\n\n\n 1");
             ConsoleColor cellcolor;
             for (int y = 0; y < BoardSize; y++)
             {
@@ -72,7 +72,7 @@ namespace Protocol
                     }
                     else
                     {
-                        cellcolor = ConsoleColor.White;
+                        cellcolor = ConsoleColor.Gray;
                     }
                     Console.ForegroundColor = cellcolor;
                     Console.SetCursorPosition((x + 1) * 3, (y + 1) * 3);
