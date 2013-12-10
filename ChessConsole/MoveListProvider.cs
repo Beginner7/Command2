@@ -10,7 +10,7 @@ namespace ChessConsole
 {
     public class MoveListProvider
     {
-        public IReadOnlyCollection<string> GetList()
+        public List<string> GetList()
         {
             var request = new MoveListRequest();
             request.Game = CurrentUser.CurrentGame.Value;

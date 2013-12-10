@@ -8,7 +8,7 @@ namespace Protocol
 {
     public class MoveListResponse : Response
     {
-        public List<string> Moves;
+        public List<string> Moves = new List<string>();
     }
     
 }
