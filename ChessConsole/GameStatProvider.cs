@@ -18,7 +18,7 @@ namespace ChessConsole
             Console.WriteLine("Game \"" + response.ID + "\" stats:");
             Console.WriteLine("White player: " + response.PlayerWhite);
             Console.WriteLine("Black player: " + response.PlayerBlack);
-            Console.WriteLine("Now " + ((response.Turn == Side.BLACK) ? "black's" : "white's") + " tern");
+            Console.WriteLine("Now " + ((response.Turn == Side.BLACK) ? "black's" : "white's") + " turn");
         }
     }
 }

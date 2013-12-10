@@ -84,6 +84,19 @@ namespace ChessServer
                     }
                     break;
 
+                case "movelist":
+                    {
+                        var movelistrequest = JsonConvert.DeserializeObject<MoveListRequest>(request);
+                        var movelistresponse = new MoveListResponse();
+                        foreach (Move e in Games[movelistrequest.Game].Moves)
+                        {
+                            movelistresponse.Moves.Add(e.Player.Name + ": " + e.From + "-" + e.To);
+                        }
+                        movelistresponse.Status = Statuses.OK;
+                        resp = movelistresponse;
+                    }
+                    break;
+
                 case "creategame":
                     {
                         var createGameRequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);

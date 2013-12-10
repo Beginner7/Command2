@@ -78,6 +78,8 @@
     <Compile Include="UserListResponse.cs" />
     <Compile Include="EchoRequest.cs" />
     <Compile Include="EchoResponse.cs" />
+    <Compile Include="MoveListRequest.cs" />
+    <Compile Include="MoveListResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
