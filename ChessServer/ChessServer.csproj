@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="GameLogic\AttackMap.cs" />
-    <Compile Include="Move.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

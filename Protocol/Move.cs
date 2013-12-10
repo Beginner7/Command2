@@ -5,7 +5,7 @@ using System.Text;
 using Protocol;
 using System.Threading.Tasks;
 
-namespace ChessServer
+namespace Protocol
 {
     public class Move
     {

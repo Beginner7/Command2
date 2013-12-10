@@ -138,5 +138,12 @@ namespace Protocol
                 return false;
         }
         
+        public void ApplyMoves(List<Move> moveList)
+        {
+            foreach (Move element in moveList)
+            {
+                DoMove(element.From, element.To);
+            }
+        }
     }
 }

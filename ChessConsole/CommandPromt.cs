@@ -3,19 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol;
 
 namespace ChessConsole
 {
 
     class CommandPromt
     {
-        Protocol.Board gameboard = new Protocol.Board();
-        public CommandPromt()
-        {
-            gameboard.InitialPosition();
-        }
-        
-
         public bool CommandProcess(string in_command)
         {
             bool is_continue = true;
@@ -45,6 +39,15 @@ namespace ChessConsole
                     break;
 
                 case "sb":
+                    Board gameboard = new Board();
+                    gameboard.InitialPosition();
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("Dude! First connect to game.");
+                        break;
+                    }
+                    var moveListProvider = new MoveListProvider();
+                    gameboard.ApplyMoves(moveListProvider.GetList());
                     gameboard.ShowBoard();
                     break;
 
@@ -122,11 +125,11 @@ namespace ChessConsole
                         Console.WriteLine("Dude! First connect to game.");
                         break;
                     }
-                    var moveListProvider = new MoveListProvider();
+                    moveListProvider = new MoveListProvider();
                     Console.WriteLine("Moves from game \"" + CurrentUser.CurrentGame + "\":");
-                    foreach (string element in moveListProvider.GetList())
+                    foreach (Move element in moveListProvider.GetList())
                     {
-                        Console.WriteLine(element);
+                        Console.WriteLine(String.Format("{0}: {1}-{2}", element.Player.Name, element.From, element.To));
                     }
                     break;
 
