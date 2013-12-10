@@ -13,7 +13,7 @@ namespace ChessServer.GameLogic
         {
             Board board = new Board();
             board.InitialPosition();
-            
+            board.ApplyMoves(moves);
         }
     }
 }

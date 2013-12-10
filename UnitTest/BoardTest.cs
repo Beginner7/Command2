@@ -14,9 +14,22 @@ namespace UnitTest
             Board board = new Board();
             board.InitialPosition();
             //a - act
-            board.DoMove("e2","e4");
+            board.DoMove("e2", "e4");
             //a - assert
-            Assert.AreEqual(typeof(FigureNone),board["e2"].GetType());
+            Assert.AreEqual(typeof(FigureNone), board["e2"].GetType());
+            Assert.AreEqual(typeof(FigurePawn), board["e4"].GetType());
+        }
+
+        [TestMethod]
+        public void OutputAbroadTest()
+        {
+            //a - arange
+            Board board = new Board();
+            board.InitialPosition();
+            //a - act
+            board.DoMove("e8", "e10");
+            //a - assert
+            Assert.AreEqual(typeof(FigureNone), board["e2"].GetType());
             Assert.AreEqual(typeof(FigurePawn), board["e4"].GetType());
         }
     }

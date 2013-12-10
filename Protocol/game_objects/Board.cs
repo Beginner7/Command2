@@ -117,8 +117,11 @@ namespace Protocol
 
         public void DoMove(string from, string to)
         {
+            if (!(OutputAbroad(GetCoords(from)) && OutputAbroad(GetCoords(to))))
+            {
             Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
             Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Protocol.Transport.Side.NONE);
+            }
         }
 
         private static Tuple<int,int> GetCoords(string cell)
@@ -127,6 +130,13 @@ namespace Protocol
             return new Tuple<int, int>(cell[0] - 'a', int.Parse(cell[1].ToString()) - 1);
         }
 
+        private bool OutputAbroad(Tuple<int, int> cell)
+        {
+            if (cell.Item1 > BoardSize - 1 || cell.Item2 > BoardSize - 1 || cell.Item1 < 0 || cell.Item2 < 0)
+                return true;
+            else
+                return false;
+        }
         
     }
 }
