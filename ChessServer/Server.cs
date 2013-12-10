@@ -88,10 +88,7 @@ namespace ChessServer
                     {
                         var movelistrequest = JsonConvert.DeserializeObject<MoveListRequest>(request);
                         var movelistresponse = new MoveListResponse();
-                        foreach (Move e in Games[movelistrequest.Game].Moves)
-                        {
-                            movelistresponse.Moves.Add(e.Player.Name + ": " + e.From + "-" + e.To);
-                        }
+                        movelistresponse.Moves = Games[movelistrequest.Game].Moves;
                         movelistresponse.Status = Statuses.OK;
                         resp = movelistresponse;
                     }

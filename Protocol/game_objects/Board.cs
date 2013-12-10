@@ -127,6 +127,12 @@ namespace Protocol
             return new Tuple<int, int>(cell[0] - 'a', int.Parse(cell[1].ToString()) - 1);
         }
 
-        
+        public void ApplyMoves(List<Move> moveList)
+        {
+            foreach (Move element in moveList)
+            {
+                DoMove(element.From, element.To);
+            }
+        }
     }
 }

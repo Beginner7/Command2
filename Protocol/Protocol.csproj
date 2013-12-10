@@ -60,6 +60,7 @@
     <Compile Include="game_objects\FigurePawn.cs" />
     <Compile Include="game_objects\FigureQueen.cs" />
     <Compile Include="game_objects\FigureRook.cs" />
+    <Compile Include="Move.cs" />
     <Compile Include="MoveRequest.cs" />
     <Compile Include="MoveResponse.cs" />
     <Compile Include="Transport\Consts.cs" />
