@@ -53,13 +53,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="GameLogicTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BoardTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChestClient\ChestClient.csproj">
       <Project>{8074b3eb-ec09-4a67-b2da-ee3b9921d8c9}</Project>
       <Name>ChestClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protocol\Protocol.csproj">
+      <Project>{e947168d-b945-423e-b437-08c1314fc492}</Project>
+      <Name>Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

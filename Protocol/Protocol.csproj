@@ -51,7 +51,6 @@
     <Compile Include="GameStatRequest.cs" />
     <Compile Include="GameStatResponse.cs" />
     <Compile Include="game_objects\Board.cs" />
-    <Compile Include="game_objects\Cell.cs" />
     <Compile Include="game_objects\Figure.cs" />
     <Compile Include="game_objects\FigureBishop.cs" />
     <Compile Include="game_objects\FigureKing.cs" />

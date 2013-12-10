@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTest {
     [TestClass]
-    public class UnitTest1 {
+    public class GameLogicTest {
         [TestMethod]
         public void TestMethod1() {
         }

@@ -10,6 +10,11 @@ namespace ChessConsole
     class CommandPromt
     {
         Protocol.Board gameboard = new Protocol.Board();
+        public CommandPromt()
+        {
+            gameboard.InitialPosition();
+        }
+        
 
         public bool CommandProcess(string in_command)
         {
