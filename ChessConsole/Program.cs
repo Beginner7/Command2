@@ -10,7 +10,7 @@ namespace ChessConsole
     {
         static void Main(string[] args)
         {
-                AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
             AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_ProcessExit);
 
             string command;

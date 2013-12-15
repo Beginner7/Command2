@@ -82,6 +82,7 @@ namespace ChessConsole
                     if (addUserProvider.Add(command[1]))
                     {
                         CurrentUser.Name = command[1];
+                        CurrentUser.StartPulse();
                         Console.WriteLine("Hello, " + CurrentUser.Name);
                     }
                     else
@@ -96,8 +97,9 @@ namespace ChessConsole
                     {
                         if (deleteUserProvider.Delete(CurrentUser.Name))
                         {
-                            Console.WriteLine("You succesfully logged out.");
                             CurrentUser.Name = null;
+                            CurrentUser.StopPulse();
+                            Console.WriteLine("You succesfully logged out.");
                         }
                         else
                         {
@@ -106,14 +108,14 @@ namespace ChessConsole
                     }
                     else
                     {
-                        Console.WriteLine("You are not logged in.");
+                        Console.WriteLine("You are not logged out.");
                     }
                     break;
 
                 case "userlist":
                     var userListProvider = new UserListProvider();
                     Console.WriteLine("Users online:");
-                    foreach (string element in userListProvider.GetList())
+                    foreach (var element in userListProvider.GetList())
                     {
                         Console.WriteLine(element);
                     }

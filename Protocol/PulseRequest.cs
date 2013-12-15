@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public class User
+    public class PulseRequest : Request
     {
-        public string Name;
-        public int lostbeats = 0;
+        public PulseRequest()
+        {
+            Command = "pulse";
+        }
+
+        public string From;
     }
 }

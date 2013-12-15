@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Protocol;
 using Protocol.Transport;
 using System.Collections.Concurrent;
+using System.Timers;
 
 namespace ChessServer
 {
@@ -14,7 +15,31 @@ namespace ChessServer
     {
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
-        
+
+        public Server()
+        {
+            Timer timer = new Timer();
+            timer.Elapsed += new ElapsedEventHandler(PulseChecker);
+            timer.Start();
+            timer.Interval = 5000;
+        }
+
+        private void PulseChecker(object source, ElapsedEventArgs e)
+        {
+            foreach (var element in Users)
+            {
+                if (element.Value.lostbeats > 10)
+                {
+                    var removed = new User();
+                    Users.TryRemove(element.Value.Name, out removed);
+                }
+                else
+                {
+                    element.Value.lostbeats++;
+                }
+            }
+        }
+
         private Side UserSide(string username, int gameid)
         {
             if ((username == Games[gameid].PlayerWhite.Name))
@@ -71,6 +96,20 @@ namespace ChessServer
                             deleteuserresponse.Status = Statuses.DuplicateUser;
                         }
                         resp = deleteuserresponse;
+                    }
+                    break;
+
+                case "pulse":
+                    {
+                        var pulserequest = JsonConvert.DeserializeObject<PulseRequest>(request);
+                        var pulseresponse = new PulseResponse();
+                        var geted = new User();
+                        if (Users.TryGetValue(pulserequest.From, out geted))
+                        {
+                            geted.lostbeats = 0;
+                            pulseresponse.Status = Statuses.OK;
+                            resp = pulseresponse;
+                        }
                     }
                     break;
 
