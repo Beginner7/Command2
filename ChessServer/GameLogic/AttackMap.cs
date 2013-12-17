@@ -98,14 +98,15 @@ namespace ChessServer.GameLogic
                                 }
                                 if (i + 1 <= 'h')
                                 {
-                                    int l = i + 1;
+                                    char l = (char)(i + 1);
                                     Figure f2 = board[l.ToString() + k];
 
-                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
+                                    if (f2.side != f.side) 
+                                        Attackers[l - 'a', k].Add(f2);
                                 }
                                 if (i - 1 >= 'a')
                                 {
-                                    int l = i - 1;
+                                    char l = (char)(i - 1);
                                     Figure f2 = board[l.ToString() + k];
 
                                     if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
@@ -144,42 +145,42 @@ namespace ChessServer.GameLogic
 
                     if (f.GetType()==typeof(FigureKnight))
                     {
-                        Figure[] f1 = new Figure[] { board[(i + 2).ToString() + (j + 1)],
-                                                    board[(i + 2).ToString() + (j - 1)],
-                                                    board[(i + 1).ToString() + (j + 2)],
-                                                    board[(i + 1).ToString() + (j - 2)],
-                                                    board[(i - 2).ToString() + (j + 1)],
-                                                    board[(i - 1).ToString() + (j + 2)],
-                                                    board[(i - 2).ToString() + (j - 1)],
-                                                    board[(i - 1).ToString() + (j - 2)]};
+                    //    Figure[] f1 = new Figure[] { board[(i + 2).ToString() + (j + 1)],
+                    //                                board[(i + 2).ToString() + (j - 1)],
+                    //                                board[(i + 1).ToString() + (j + 2)],
+                    //                                board[(i + 1).ToString() + (j - 2)],
+                    //                                board[(i - 2).ToString() + (j + 1)],
+                    //                                board[(i - 1).ToString() + (j + 2)],
+                    //                                board[(i - 2).ToString() + (j - 1)],
+                    //                                board[(i - 1).ToString() + (j - 2)]};
 
-                        if (i + 2 <= 'h')
+                        if ((char)(i + 2) <= 'h')
                         {
-                            if (j + 1 < Board.BoardSize)
-                                Attackers[(i + 2) - 'a', j + 1].Add(f1[0]);
-                            if (j - 1 > 0)
-                                Attackers[(i + 2) - 'a', j - 1].Add(f1[1]);
+                            if (j + 1 <= Board.BoardSize)
+                                Attackers[(char)(i + 2) - 'a', j + 1].Add(board[((char)(i + 2)).ToString() + (j + 1)]);
+                            if (j - 1 >= 1)
+                                Attackers[(char)(i + 2) - 'a', j - 1].Add(board[((char)(i + 2)).ToString() + (j - 1)]);
                         }
-                        if (i + 1 <= 'h')
+                        if ((char)(i + 1) <= 'h')
                         {
                             if (j + 2 < Board.BoardSize)
-                                Attackers[(i + 1) - 'a', j + 1].Add(f1[2]);
+                                Attackers[(char)(i + 1) - 'a', j + 2].Add(board[((char)(i + 1)).ToString() + (j + 2)]);
                             if (j - 2 > 0)
-                                Attackers[(i + 1) - 'a', j - 1].Add(f1[3]);
+                                Attackers[(char)(i + 1) - 'a', j - 2].Add(board[((char)(i + 1)).ToString() + (j - 2)]);
                         }
-                        if (i - 2 >= 'a')
+                        if ((char)(i - 2) >= 'a')
                         {
                             if (j + 1 < Board.BoardSize)
-                                Attackers[(i - 2) - 'a', j + 1].Add(f1[4]);
+                                Attackers[(char)(i - 2) - 'a', j + 1].Add(board[((char)(i - 2)).ToString() + (j + 1)]);
                             if (j - 1 > 0)
-                                Attackers[(i - 2) - 'a', j - 1].Add(f1[5]);
+                                Attackers[(char)(i - 2) - 'a', j - 1].Add(board[((char)(i - 2)).ToString() + (j - 1)]);
                         }
-                        if (i - 1 >= 'a')
+                        if ((char)(i - 1) >= 'a')
                         {
                             if (j + 2 < Board.BoardSize)
-                                Attackers[(i - 1) - 'a', j + 1].Add(f1[6]);
+                                Attackers[(char)(i - 1) - 'a', j + 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
                             if (j - 2 > 0)
-                                Attackers[(i - 1) -'a', j - 1].Add(f1[7]);
+                                Attackers[(char)(i - 1) - 'a', j - 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
                         }
                     }
                 }
