@@ -15,7 +15,7 @@ namespace ChessConsole
         {
             var command = new ConnectToGameRequest();
             command.GameID = gameid;
-            command.PlayerTwo = new User { Name = userName };
+            command.NewPlayer = new User { Name = userName };
             var response = ServerProvider.MakeRequest(command);
             Console.WriteLine(response.Status.ToString());
             return response.Status == Statuses.OK;

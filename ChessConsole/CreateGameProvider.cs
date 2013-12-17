@@ -14,7 +14,7 @@ namespace ChessConsole
         public int? Create(string userName)
         {
             var command = new CreateGameRequest();
-            command.playerOne = new User { Name = userName };
+            command.NewPlayer = new User { Name = userName };
             var response = ServerProvider.MakeRequest<CreateGameResponse>(command);
             return response.Status == Statuses.OK ? (int?)response.ID : null;
         }

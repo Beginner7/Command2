@@ -144,9 +144,43 @@ namespace ChessServer.GameLogic
 
                     if (f.GetType()==typeof(FigureKnight))
                     {
-                        Figure f1 = board[(i + 2).ToString() + (j + 1)];
-                        if (f1.side != f.side)
-                            Attackers[i - 'a', j + 1].Add(f1);
+                        Figure[] f1 = new Figure[] { board[(i + 2).ToString() + (j + 1)],
+                                                    board[(i + 2).ToString() + (j - 1)],
+                                                    board[(i + 1).ToString() + (j + 2)],
+                                                    board[(i + 1).ToString() + (j - 2)],
+                                                    board[(i - 2).ToString() + (j + 1)],
+                                                    board[(i - 1).ToString() + (j + 2)],
+                                                    board[(i - 2).ToString() + (j - 1)],
+                                                    board[(i - 1).ToString() + (j - 2)]};
+
+                        if (i + 2 <= 'h')
+                        {
+                            if (j + 1 < Board.BoardSize)
+                                Attackers[(i + 2) - 'a', j + 1].Add(f1[0]);
+                            if (j - 1 > 0)
+                                Attackers[(i + 2) - 'a', j - 1].Add(f1[1]);
+                        }
+                        if (i + 1 <= 'h')
+                        {
+                            if (j + 2 < Board.BoardSize)
+                                Attackers[(i + 1) - 'a', j + 1].Add(f1[2]);
+                            if (j - 2 > 0)
+                                Attackers[(i + 1) - 'a', j - 1].Add(f1[3]);
+                        }
+                        if (i - 2 >= 'a')
+                        {
+                            if (j + 1 < Board.BoardSize)
+                                Attackers[(i - 2) - 'a', j + 1].Add(f1[4]);
+                            if (j - 1 > 0)
+                                Attackers[(i - 2) - 'a', j - 1].Add(f1[5]);
+                        }
+                        if (i - 1 >= 'a')
+                        {
+                            if (j + 2 < Board.BoardSize)
+                                Attackers[(i - 1) - 'a', j + 1].Add(f1[6]);
+                            if (j - 2 > 0)
+                                Attackers[(i - 1) -'a', j - 1].Add(f1[7]);
+                        }
                     }
                 }
             }
