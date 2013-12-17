@@ -29,11 +29,9 @@ namespace UnitTest
             Board board = new Board();
             var rook = new FigureRook(Side.WHITE);
             board["e4"] = rook;
-            
             //a - act
             AttackMap map= new AttackMap(new List<Move>(),board);
             //a - assert
-            
             for (int j = 1; j <= Board.BoardSize; j++)
             { 
                 if(j!=4)
@@ -46,5 +44,33 @@ namespace UnitTest
                 Assert.IsTrue(map[i.ToString() +4].Contains(rook));
             }
         }
+        
+        /// <summary>
+        /// Одна ладья в центре поля и чужие фигуры вокруг
+        /// </summary>
+        [TestMethod]
+        public void BlackRookTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var rook = new FigureRook(Side.WHITE);
+            var knight = new FigureKnight(Side.BLACK);
+            var bishop = new FigureBishop(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            board["e4"] = rook;
+            board["e3"] = knight;
+            board["e5"] = bishop;
+            board["d4"] = pawn;
+            board["f4"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map["e3"].Contains(rook));
+            Assert.IsTrue(map["e5"].Contains(rook));
+            Assert.IsTrue(map["d4"].Contains(rook));
+            Assert.IsTrue(map["f4"].Contains(rook));
+            }
+        }
     }
-}
