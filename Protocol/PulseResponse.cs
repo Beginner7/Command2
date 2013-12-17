@@ -8,5 +8,6 @@ namespace Protocol
 {
     public class PulseResponse : Response
     {
+        public int BeatsCount;
     }
 }

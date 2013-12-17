@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Protocol;
 using Protocol.Transport;
+using System.Threading;
 
 namespace ChessConsole
 {
@@ -13,7 +14,7 @@ namespace ChessConsole
     {
         public static string Name;
         public static int? CurrentGame;
-        public static Timer PulseTimer = new Timer();
+        public static System.Timers.Timer PulseTimer = new System.Timers.Timer();
 
         public static void StartPulse()
         {
@@ -32,6 +33,7 @@ namespace ChessConsole
             var command = new PulseRequest();
             command.From = Name;
             var response = ServerProvider.MakeRequest<PulseResponse>(command);
+            Console.WriteLine(response.BeatsCount + " " + Thread.CurrentThread.ManagedThreadId + " " + Name);
             if (response.Status != Statuses.OK)
             {
                 Console.WriteLine("Connoction lost!");

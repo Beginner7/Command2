@@ -16,7 +16,7 @@ namespace ChessServer
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
 
-        public Server()
+        static Server()
         {
             Timer timer = new Timer();
             timer.Elapsed += new ElapsedEventHandler(PulseChecker);
@@ -24,7 +24,7 @@ namespace ChessServer
             timer.Interval = 5000;
         }
 
-        private void PulseChecker(object source, ElapsedEventArgs e)
+        private static void PulseChecker(object source, ElapsedEventArgs e)
         {
             foreach (var element in Users)
             {
@@ -86,7 +86,7 @@ namespace ChessServer
                     {
                         var deleteuserrequest = JsonConvert.DeserializeObject<DeleteUserRequest>(request);
                         var deleteuserresponse = new DeleteUserResponse();
-                        var removed = new User();
+                        User removed;
                         if (Users.TryRemove(deleteuserrequest.UserName, out removed))
                         {
                             deleteuserresponse.Status = Statuses.OK;
@@ -103,13 +103,18 @@ namespace ChessServer
                     {
                         var pulserequest = JsonConvert.DeserializeObject<PulseRequest>(request);
                         var pulseresponse = new PulseResponse();
-                        var geted = new User();
+                        User geted;
                         if (Users.TryGetValue(pulserequest.From, out geted))
                         {
-                            geted.lostbeats = 0;
                             pulseresponse.Status = Statuses.OK;
-                            resp = pulseresponse;
+                            pulseresponse.BeatsCount = geted.lostbeats;
+                            geted.lostbeats = 0;
                         }
+                        else
+                        {
+                            pulseresponse.Status = Statuses.NoUser;
+                        }
+                        resp = pulseresponse;
                     }
                     break;
 
