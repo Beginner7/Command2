@@ -51,7 +51,7 @@ namespace UnitTest
         /// Одна ладья в центре поля и свои вокруг
         /// </summary>
         [TestMethod]
-        public void SimpleRookTest()
+        public void WhiteRookTest()
         {
             //a - arange
             Board board = new Board();
