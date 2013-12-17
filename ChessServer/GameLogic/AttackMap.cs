@@ -4,18 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Protocol;
+using Protocol.Transport;
 
 namespace ChessServer.GameLogic
 {
-    class AttackMap
+    public class AttackMap
     {
         private List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
-        
-        public AttackMap(List<Move> moves)
+        public List<Figure> this[string cell]
         {
-            Board board = new Board();
-            board.InitialPosition();
-            board.ApplyMoves(moves);
+            set
+            {
+                Attackers[Board.GetCoords(cell).Item1, Board.GetCoords(cell).Item2] = value;
+            }
+            get
+            {
+                return Attackers[Board.GetCoords(cell).Item1, Board.GetCoords(cell).Item2];
+            }
+        }
+        public AttackMap(List<Move> moves, Board forceBoard= null)
+        {
+            Board board;
+            if (forceBoard == null)
+            {
+                board = new Board();
+                board.InitialPosition();
+                board.ApplyMoves(moves);
+            }
+            else
+                board=forceBoard;
             for (int i = 0; i <  Board.BoardSize ; i++)
             {
                 for (int j = 0; j < Board.BoardSize; j++)
@@ -25,7 +42,7 @@ namespace ChessServer.GameLogic
             }
             for (char i = 'a'; i <= 'h' ; i++)
             {
-                for (int j = 0; j < Board.BoardSize; j++)
+                for (int j = 1; j <= Board.BoardSize; j++)
                 {
                     Figure f = board[i.ToString() + j];
                     if (f.GetType() == typeof(FigureNone))
@@ -34,35 +51,67 @@ namespace ChessServer.GameLogic
                     }
                     if (f.GetType() == typeof(FigurePawn))
                     {
-                        if (j + 1 < Board.BoardSize)
+                        
+                        if (j + 1 < Board.BoardSize && j-1>=0)
                         {
-                            int k = j + 1;
-                            Figure f1 = board[i.ToString() + k];
-                            if (f1.GetType() == typeof(FigureNone))
+                            int k;
+                            if (f.side == Side.WHITE)
                             {
-                                Attackers[i - 'a', k].Add(f1);
-                            }
-                            if (i + 1 <= 'h')
-                            {
-                                int l = i + 1;
-                                Figure f2 = board[l.ToString() + k];
-
-                                if (f2.side != f.side)
+                                k = j + 1;
+                                Figure f1 = board[i.ToString() + k];
+                                if (f1.GetType() == typeof(FigureNone))
                                 {
-                                    Attackers[l - 'a', k].Add(f2);
+                                    Attackers[i - 'a', k].Add(f1);
+                                    if (j == 1) // первый или нет
+                                    {
+                                        Figure f2 = board[i.ToString() + (k + 1)];
+                                        if (f2.GetType() == typeof(FigureNone)) Attackers[i - 'a', k + 1].Add(f2);
+                                    }
+                                }
+                                if (i + 1 <= 'h')
+                                {
+                                    int l = i + 1;
+                                    Figure f2 = board[l.ToString() + k];
+
+                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
+                                }
+                                if (i - 1 >= 'a')
+                                {
+                                    int l = i - 1;
+                                    Figure f2 = board[l.ToString() + k];
+
+                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
                                 }
                             }
-                            if (i - 1 >= 'a')
+                            if (f.side == Side.BLACK)
                             {
-                                int l = i - 1;
-                                Figure f2 = board[l.ToString() + k];
-
-                                if (f2.side != f.side)
+                                k = j - 1;
+                                Figure f1 = board[i.ToString() + k];
+                                if (f1.GetType() == typeof(FigureNone))
                                 {
-                                    Attackers[l - 'a', k].Add(f2);
+                                    Attackers[i - 'a', k].Add(f1);
+                                    if (j == Board.BoardSize - 2) // первый или нет
+                                    {
+                                        Figure f2 = board[i.ToString() + (k + 1)];
+                                        if (f2.GetType() == typeof(FigureNone)) Attackers[i - 'a', k - 1].Add(f2);
+                                    }
+                                }
+                                if (i + 1 <= 'h')
+                                {
+                                    int l = i + 1;
+                                    Figure f2 = board[l.ToString() + k];
+
+                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
+                                }
+                                if (i - 1 >= 'a')
+                                {
+                                    int l = i - 1;
+                                    Figure f2 = board[l.ToString() + k];
+
+                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
                                 }
                             }
-
+                            
                         }
                     }
                     if (f.GetType() == typeof(FigureRook))

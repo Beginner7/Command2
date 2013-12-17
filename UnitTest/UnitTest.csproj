@@ -54,11 +54,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AttackMapTest.cs" />
     <Compile Include="GameLogicTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoardTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChessServer\ChessServer.csproj">
+      <Project>{54ba3b5b-fc49-4806-b93b-b4944c8131af}</Project>
+      <Name>ChessServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChestClient\ChestClient.csproj">
       <Project>{8074b3eb-ec09-4a67-b2da-ee3b9921d8c9}</Project>
       <Name>ChestClient</Name>

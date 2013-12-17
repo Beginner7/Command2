@@ -109,6 +109,10 @@ namespace Protocol
 
         public Figure this[string cell]
         {
+            set
+            {
+                Cells[GetCoords(cell).Item1, GetCoords(cell).Item2]=value;
+            }
             get
             {
                 return Cells[GetCoords(cell).Item1, GetCoords(cell).Item2];
@@ -124,7 +128,7 @@ namespace Protocol
             }
         }
 
-        private static Tuple<int,int> GetCoords(string cell)
+        public static Tuple<int,int> GetCoords(string cell)
         {
             cell = cell.ToLowerInvariant();
             return new Tuple<int, int>(cell[0] - 'a', int.Parse(cell[1].ToString()) - 1);
