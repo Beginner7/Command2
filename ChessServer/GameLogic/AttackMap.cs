@@ -308,17 +308,17 @@ namespace ChessServer.GameLogic
 
         private void West(Board board, char i, int j, Figure f)
         {
-            for (char k = i; k > 'a'; k--)
+            for (char k = (char)(i-1); k >= 'a'; k--)
             {
                 Figure f1 = board[k.ToString() + j];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', j].Add(f);
+                    Attackers[k - 'a', j-1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[k - 'a', j].Add(f);
+                    Attackers[k - 'a', j-1].Add(f);
                     break;
                 }
                 else
@@ -330,17 +330,17 @@ namespace ChessServer.GameLogic
 
         private void East(Board board, char i, int j, Figure f)
         {
-            for (char k = i; k < 'h'; k++)
+            for (char k = (char)(i+1); k <= 'h'; k++)
             {
                 Figure f1 = board[k.ToString() + j];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', j].Add(f);
+                    Attackers[k - 'a', j-1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[k - 'a', j].Add(f);
+                    Attackers[k - 'a', j-1].Add(f);
                     break;
                 }
                 else
@@ -352,17 +352,17 @@ namespace ChessServer.GameLogic
 
         private void South(Board board, char i, int j, Figure f)
         {
-            for (int k = j - 1; k > 0; k--)
+            for (int k = j - 1; k >= 1; k--)
             {
                 Figure f1 = board[i.ToString() + k];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[i - 'a', k].Add(f);
+                    Attackers[i - 'a', k-1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[i - 'a', k].Add(f);
+                    Attackers[i - 'a', k-1].Add(f);
                     break;
                 }
                 else
@@ -374,17 +374,17 @@ namespace ChessServer.GameLogic
 
         private void North(Board board, char i, int j, Figure f)
         {
-            for (int k = j + 1; k < Board.BoardSize; k++)
+            for (int k = j + 1; k <= Board.BoardSize; k++)
             {
                 Figure f1 = board[i.ToString() + k];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[i - 'a', k].Add(f);
+                    Attackers[i - 'a', k-1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[i - 'a', k].Add(f);
+                    Attackers[i - 'a', k-1].Add(f);
                     break;
                 }
                 else

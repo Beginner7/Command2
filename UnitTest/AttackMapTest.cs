@@ -33,12 +33,16 @@ namespace UnitTest
             //a - act
             AttackMap map= new AttackMap(new List<Move>(),board);
             //a - assert
-            for (int j = 0; j < Board.BoardSize; j++)
-            {
-                Assert.IsTrue(map["e"+(j+1)].Contains(rook));
+            
+            for (int j = 1; j <= Board.BoardSize; j++)
+            { 
+                if(j!=4)
+                Assert.IsTrue(map["e"+j].Contains(rook));
+
             }
             for (char i = 'a'; i <= 'h'; i++)
             {
+                if(i!='e')
                 Assert.IsTrue(map[i.ToString() +4].Contains(rook));
             }
         }
