@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Protocol;
 using Protocol.Transport;
 using System.Collections.Concurrent;
+using System.Timers;
 
 namespace ChessServer
 {
@@ -14,7 +15,31 @@ namespace ChessServer
     {
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
-        
+
+        static Server()
+        {
+            Timer timer = new Timer();
+            timer.Elapsed += new ElapsedEventHandler(PulseChecker);
+            timer.Start();
+            timer.Interval = 5000;
+        }
+
+        private static void PulseChecker(object source, ElapsedEventArgs e)
+        {
+            foreach (var element in Users)
+            {
+                if (element.Value.lostbeats > 10)
+                {
+                    User removed;
+                    Users.TryRemove(element.Value.Name, out removed);
+                }
+                else
+                {
+                    element.Value.lostbeats++;
+                }
+            }
+        }
+
         private Side UserSide(string username, int gameid)
         {
             if ((username == Games[gameid].PlayerWhite.Name))
@@ -61,7 +86,7 @@ namespace ChessServer
                     {
                         var deleteuserrequest = JsonConvert.DeserializeObject<DeleteUserRequest>(request);
                         var deleteuserresponse = new DeleteUserResponse();
-                        var removed = new User();
+                        User removed;
                         if (Users.TryRemove(deleteuserrequest.UserName, out removed))
                         {
                             deleteuserresponse.Status = Statuses.OK;
@@ -71,6 +96,24 @@ namespace ChessServer
                             deleteuserresponse.Status = Statuses.DuplicateUser;
                         }
                         resp = deleteuserresponse;
+                    }
+                    break;
+
+                case "pulse":
+                    {
+                        var pulserequest = JsonConvert.DeserializeObject<PulseRequest>(request);
+                        var pulseresponse = new PulseResponse();
+                        User geted;
+                        if (Users.TryGetValue(pulserequest.From, out geted))
+                        {
+                            pulseresponse.Status = Statuses.OK;
+                            geted.lostbeats = 0;
+                        }
+                        else
+                        {
+                            pulseresponse.Status = Statuses.NoUser;
+                        }
+                        resp = pulseresponse;
                     }
                     break;
 
@@ -167,8 +210,14 @@ namespace ChessServer
                         var gamestatrequest = JsonConvert.DeserializeObject<GameStatRequest>(request);
                         var gamestatresponse = new GameStatResponse();
                         gamestatresponse.ID = gamestatrequest.gameID;
-                        gamestatresponse.PlayerBlack = Games[gamestatrequest.gameID].PlayerBlack.Name;
-                        gamestatresponse.PlayerWhite = Games[gamestatrequest.gameID].PlayerWhite.Name;
+                        if (Games[gamestatrequest.gameID].PlayerBlack != null)
+                        {
+                            gamestatresponse.PlayerBlack = Games[gamestatrequest.gameID].PlayerBlack.Name;
+                        }
+                        if (Games[gamestatrequest.gameID].PlayerWhite != null)
+                        {
+                            gamestatresponse.PlayerWhite = Games[gamestatrequest.gameID].PlayerWhite.Name;
+                        }
                         gamestatresponse.Turn = Games[gamestatrequest.gameID].Turn;
                         gamestatresponse.Status = Statuses.OK;
                         resp = gamestatresponse;

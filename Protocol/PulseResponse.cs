@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public class User
+    public class PulseResponse : Response
     {
-        public string Name;
-        public int lostbeats = 0;
     }
 }

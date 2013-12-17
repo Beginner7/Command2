@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
+using System.Collections.Concurrent;
 
 namespace ChessConsole
 {
