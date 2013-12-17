@@ -97,7 +97,7 @@ namespace ChessServer
                 case "creategame":
                     {
                         var createGameRequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
-                        var game = new Game(createGameRequaest.playerOne);
+                        var game = new Game(createGameRequaest.NewPlayer);
                         var createGameResponse = new CreateGameResponse();
                         if (Games.TryAdd(game.ID, game))
                         {
@@ -126,8 +126,23 @@ namespace ChessServer
                         var connectToGameResponse = new ConnectToGameResponse();
                         if (Games.Keys.ToArray().Contains(connectToGameRequest.GameID))
                         {
-                            Games[connectToGameRequest.GameID].PlayerBlack = connectToGameRequest.PlayerTwo;
-                            connectToGameResponse.Status = Statuses.OK;
+                            if (Games[connectToGameRequest.GameID].PlayerBlack == null)
+                            {
+                                Games[connectToGameRequest.GameID].PlayerBlack = connectToGameRequest.NewPlayer;
+                                connectToGameResponse.Status = Statuses.OK;
+                            }
+                            else
+                            {
+                                if (Games[connectToGameRequest.GameID].PlayerWhite == null)
+                                {
+                                    Games[connectToGameRequest.GameID].PlayerWhite = connectToGameRequest.NewPlayer;
+                                    connectToGameResponse.Status = Statuses.OK;
+                                }
+                                else
+                                {
+                                    connectToGameResponse.Status = Statuses.GameIsRunning;
+                                }
+                            }
                         }
                         else
                         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,15 @@ namespace ChessServer
         public Game(User user)
         {
             ID = ++GameIDSeq;
-            PlayerWhite = user;
+            Random rnd = new Random();
+            if (rnd.Next(0, 2) == 0)
+            {
+                PlayerWhite = user;
+            }
+            else
+            {
+                PlayerBlack = user;
+            }
         }
         public List<Move> Moves = new List<Move>();
     }

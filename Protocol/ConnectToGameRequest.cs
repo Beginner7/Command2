@@ -13,6 +13,6 @@ namespace Protocol
             Command = "connecttogame";
         }
         public int GameID;
-        public User PlayerTwo;
+        public User NewPlayer;
     }
 }

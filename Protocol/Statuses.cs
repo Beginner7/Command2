@@ -13,6 +13,7 @@ namespace Protocol
         NoUser,
         ErrorCreateGame,
         GameNotFound,
-        OpponentTurn
+        OpponentTurn,
+        GameIsRunning
     }
 }
