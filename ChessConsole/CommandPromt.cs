@@ -14,7 +14,7 @@ namespace ChessConsole
         {
             bool is_continue = true;
             var command = in_command.Split(' ');
-            switch (command[0])
+            switch (command[0].ToLower())
             {
                 case "":
                     break;
@@ -38,6 +38,7 @@ namespace ChessConsole
                     }
                     break;
 
+                case "showboard":
                 case "sb":
                     Board gameboard = new Board();
                     gameboard.InitialPosition();
@@ -52,6 +53,7 @@ namespace ChessConsole
                     break;
 
                 case "gamestat":
+                case "gs":
                     if (CurrentUser.CurrentGame == null)
                     {
                         Console.WriteLine("Dude! First connect to game.");
@@ -113,6 +115,7 @@ namespace ChessConsole
                     break;
 
                 case "userlist":
+                case "ul":
                     var userListProvider = new UserListProvider();
                     Console.WriteLine("Users online:");
                     foreach (var element in userListProvider.GetList())
@@ -122,6 +125,7 @@ namespace ChessConsole
                     break;
 
                 case "movelist":
+                case "ml":
                     if (CurrentUser.CurrentGame == null)
                     {
                         Console.WriteLine("Dude! First connect to game.");
@@ -136,6 +140,7 @@ namespace ChessConsole
                     break;
 
                 case "creategame":
+                case "cg":
                     var createGameProvider = new CreateGameProvider();
                     if (CurrentUser.Name == null)
                     {
@@ -160,6 +165,7 @@ namespace ChessConsole
                     break;
 
                 case "gamelist":
+                case "gl":
                     var gameListProvider = new GameListProvider();
                     Console.WriteLine("Active games:");
                     foreach (int element in gameListProvider.GetList())
@@ -168,7 +174,8 @@ namespace ChessConsole
                     }
                     break;
 
-                case "connecttogame":                  
+                case "joingame":     
+                case "jg":
                     var connectToGameProvider = new ConnectToGameProvider();
                     if (CurrentUser.Name == null)
                     {
@@ -228,7 +235,7 @@ namespace ChessConsole
                     Console.WriteLine("userlist           - Список вошедших пользователей");
                     Console.WriteLine("creategame         - Добавьте описание!");
                     Console.WriteLine("gamelist           - Добавьте описание!");
-                    Console.WriteLine("connecttogame      - Добавьте описание!");
+                    Console.WriteLine("joingame           - Добавьте описание!");
                     break;
                 
                 case "exit":

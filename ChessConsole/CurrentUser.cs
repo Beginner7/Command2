@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using Protocol;
 using Protocol.Transport;
-using System.Threading;
 
 namespace ChessConsole
 {
@@ -33,10 +32,9 @@ namespace ChessConsole
             var command = new PulseRequest();
             command.From = Name;
             var response = ServerProvider.MakeRequest<PulseResponse>(command);
-            Console.WriteLine(response.BeatsCount + " " + Thread.CurrentThread.ManagedThreadId + " " + Name);
             if (response.Status != Statuses.OK)
             {
-                Console.WriteLine("Connoction lost!");
+                Console.WriteLine("Connection lost!");
                 StopPulse();
             }
         }

@@ -30,7 +30,7 @@ namespace ChessServer
             {
                 if (element.Value.lostbeats > 10)
                 {
-                    var removed = new User();
+                    User removed;
                     Users.TryRemove(element.Value.Name, out removed);
                 }
                 else
@@ -107,7 +107,6 @@ namespace ChessServer
                         if (Users.TryGetValue(pulserequest.From, out geted))
                         {
                             pulseresponse.Status = Statuses.OK;
-                            pulseresponse.BeatsCount = geted.lostbeats;
                             geted.lostbeats = 0;
                         }
                         else
@@ -211,8 +210,14 @@ namespace ChessServer
                         var gamestatrequest = JsonConvert.DeserializeObject<GameStatRequest>(request);
                         var gamestatresponse = new GameStatResponse();
                         gamestatresponse.ID = gamestatrequest.gameID;
-                        gamestatresponse.PlayerBlack = Games[gamestatrequest.gameID].PlayerBlack.Name;
-                        gamestatresponse.PlayerWhite = Games[gamestatrequest.gameID].PlayerWhite.Name;
+                        if (Games[gamestatrequest.gameID].PlayerBlack != null)
+                        {
+                            gamestatresponse.PlayerBlack = Games[gamestatrequest.gameID].PlayerBlack.Name;
+                        }
+                        if (Games[gamestatrequest.gameID].PlayerWhite != null)
+                        {
+                            gamestatresponse.PlayerWhite = Games[gamestatrequest.gameID].PlayerWhite.Name;
+                        }
                         gamestatresponse.Turn = Games[gamestatrequest.gameID].Turn;
                         gamestatresponse.Status = Statuses.OK;
                         resp = gamestatresponse;
