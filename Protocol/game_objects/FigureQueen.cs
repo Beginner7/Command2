@@ -7,7 +7,7 @@ using Protocol.Transport;
 
 namespace Protocol
 {
-    class FigureQueen : Figure
+    public class FigureQueen : Figure
     {
         public FigureQueen(Side side) : base(side)
         {
