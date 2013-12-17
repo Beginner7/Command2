@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol;
+using Protocol.Transport;
 
 namespace Protocol
 {
@@ -13,8 +15,7 @@ namespace Protocol
 
         public Board()
         {
-
-            InitialPosition();
+            FillEmptyCells(0, BoardSize, 0, BoardSize);
         }
 
         public void InitialPosition()
@@ -33,13 +34,7 @@ namespace Protocol
                 Cells[i, 1] = new FigurePawn(Protocol.Transport.Side.WHITE);
             }
 
-            for (int i = 0; i < BoardSize; i++)
-            {
-                for (int k = 2; k < BoardSize - 2; k++)
-                {
-                    Cells[i, k] = new FigureNone(Protocol.Transport.Side.NONE);
-                }
-            }
+            //FillEmptyCells(0, BoardSize, 2, BoardSize - 2);
 
             for (int i = 0; i < BoardSize; i++)
             {
@@ -54,6 +49,17 @@ namespace Protocol
             Cells[5, 7] = new FigureBishop(Protocol.Transport.Side.BLACK);
             Cells[6, 7] = new FigureKnight(Protocol.Transport.Side.BLACK);
             Cells[7, 7] = new FigureRook(Protocol.Transport.Side.BLACK);
+        }
+
+        private static void FillEmptyCells(int startX, int endX, int startY, int endY)
+        {
+            for (int i = startX; i < endX; i++)
+            {
+                for (int j = startY; j < endY; j++)
+                {
+                    Cells[i, j] = new FigureNone(Side.NONE);
+                }
+            }
         }
 
         public void ShowBoard()
