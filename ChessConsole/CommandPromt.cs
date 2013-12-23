@@ -67,6 +67,16 @@ namespace ChessConsole
                     Console.WriteLine(echoProvider.Echo(command.Skip(1).StrJoin(' ')));
                     break;
 
+                case "say":
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("Dude! First connect to game.");
+                        break;
+                    }
+                    var chatProvider = new ChatProvider();
+                    chatProvider.Say(command.Skip(1).StrJoin(' '));
+                    break;
+
                 case "login":
                     var addUserProvider = new AddUserProvider();
 

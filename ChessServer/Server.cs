@@ -107,6 +107,8 @@ namespace ChessServer
                         if (Users.TryGetValue(pulserequest.From, out geted))
                         {
                             pulseresponse.Status = Statuses.OK;
+                            pulseresponse.Messages = geted.Messages;
+                            geted.Messages.Clear();
                             geted.lostbeats = 0;
                         }
                         else
@@ -114,6 +116,38 @@ namespace ChessServer
                             pulseresponse.Status = Statuses.NoUser;
                         }
                         resp = pulseresponse;
+                    }
+                    break;
+
+                case "chat":
+                    {
+                        var chatrequest = JsonConvert.DeserializeObject<ChatRequest>(request);
+                        var chatresponse = new ChatResponse();
+                        if (Games[chatrequest.GameID.Value].PlayerWhite.Name == chatrequest.From)
+                        {
+                            if ((Games[chatrequest.GameID.Value].PlayerBlack != null))
+                            {
+                                Games[chatrequest.GameID.Value].PlayerBlack.Messages.Add(new MessageChat(chatrequest.From + " says: " + chatrequest.ChatString));
+                                chatresponse.Status = Statuses.OK;
+                            }
+                            else 
+                            {
+                                chatresponse.Status = Statuses.NoUser;
+                            }
+                        }
+                        if (Games[chatrequest.GameID.Value].PlayerBlack.Name == chatrequest.From)
+                        {
+                            if ((Games[chatrequest.GameID.Value].PlayerWhite != null))
+                            {
+                                Games[chatrequest.GameID.Value].PlayerWhite.Messages.Add(new MessageChat(chatrequest.ChatString));
+                                chatresponse.Status = Statuses.OK;
+                            }
+                            else
+                            {
+                                chatresponse.Status = Statuses.NoUser;
+                            }
+                        }
+                        resp = chatresponse;
                     }
                     break;
 

@@ -49,6 +49,8 @@
     <Compile Include="AddUserResponse.cs" />
     <Compile Include="ConnectToGameRequest.cs" />
     <Compile Include="ConnectToGameResponse.cs" />
+    <Compile Include="ChatRequest.cs" />
+    <Compile Include="ChatResponse.cs" />
     <Compile Include="PulseRequest.cs" />
     <Compile Include="PulseResponse.cs" />
     <Compile Include="GameStatRequest.cs" />
