@@ -226,17 +226,29 @@ namespace UnitTest
         [TestMethod]
         public void SimpleBishopTest()
         {
+            //a - arange
             Board board = new Board();
             var bishop = new FigureBishop(Side.WHITE);
             board["e4"] = bishop;
+
+            //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
+
+            //a - assert
             for (int j = 1; j <= Board.BoardSize; j++)
-            for (char i = 'a'; i <= 'h'; i++)
-                if ('e' - i == Board.BoardSize - j && Board.BoardSize - j != 0)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
                 {
-                    Assert.IsTrue(map[i.ToString() + j].Contains(bishop));
+                    if (Math.Abs('e' - i) == Math.Abs(4 - j) && j != 4)
+                    {
+                        Assert.IsTrue(map[i.ToString() + j].Contains(bishop));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[i.ToString() + j].Contains(bishop));
+                    }
                 }
-              
+            }             
             
         }
 
@@ -282,6 +294,49 @@ namespace UnitTest
         public void SimpleKnightTest()
         {
             //a - arange
+            [TestMethod]
+         public void WhiteBishopTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.WHITE);
+            var knight = new FigureKnight(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+            board["e4"] = bishop;
+            board["c6"] = knight;
+            board["c2"] = rook;
+            board["g6"] = pawn;
+            board["g2"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+
+            //a - assert
+            List<string> validCells = new List<string>
+            {
+                "f5","g6",
+                "d3","c2",
+                "d5","c6",
+                "f3","g2"
+            };
+                for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell)) {
+                        Assert.IsTrue(map[cell].Contains(bishop));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(bishop));
+                    }
+                   
+                }
+            }
+        }
             Board board = new Board();
             var knight = new FigureKnight(Side.WHITE);
             board["e4"] = knight;
