@@ -232,5 +232,22 @@ namespace UnitTest
                 }
             }
         }
+                [TestMethod]
+        public void SimpleBishopTest()
+        {
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.WHITE);
+            board["e4"] = bishop;
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            for (int j = 1; j <= Board.BoardSize; j++)
+            for (char i = 'a'; i <= 'h'; i++)
+                if ('e' - i == Board.BoardSize - j && Board.BoardSize - j != 0)
+                {
+                    Assert.IsTrue(map[i.ToString() + j].Contains(bishop));
+                }
+              
+            
+        }
     }
+    
 }
