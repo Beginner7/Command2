@@ -287,7 +287,7 @@ namespace ChessServer.GameLogic
         private void NorthWest(Board board, char i, int j, Figure f)
         {
             int l = j + 1;
-            char k = (char)(i + 1);
+            char k = (char)(i - 1);
             for (; k >= 'a' && l <= Board.BoardSize; )
             {
                 Figure f1 = board[k.ToString() + l];
