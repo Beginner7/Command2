@@ -2,9 +2,10 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Protocol;
+using Protocol.GameObjects;
 using Protocol.Transport;
 using ChessServer.GameLogic;
+
 namespace UnitTest
 {
     /// <summary>

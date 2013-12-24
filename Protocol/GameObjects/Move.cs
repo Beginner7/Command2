@@ -5,7 +5,7 @@ using System.Text;
 using Protocol;
 using System.Threading.Tasks;
 
-namespace Protocol
+namespace Protocol.GameObjects
 {
     public class Move
     {

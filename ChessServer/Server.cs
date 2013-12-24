@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Protocol;
+using Protocol.GameObjects;
 using Protocol.Transport;
 using System.Collections.Concurrent;
 using System.Timers;
