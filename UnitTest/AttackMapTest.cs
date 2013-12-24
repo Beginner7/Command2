@@ -70,38 +70,24 @@ namespace UnitTest
 
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
-            //a - assert
-            //for (int j = 1; j <= Board.BoardSize; j++)
-            //{
-            //    if (j == 5 || j == 3)
-            //        Assert.IsTrue(map["e" + j].Contains(rook));
-            //    else
-            //        Assert.IsTrue(!map["e" + j].Contains(rook));
-            //}
-            //for (char i = 'a'; i <= 'h'; i++)
-            //{
-            //    if (i == 'c' || i == 'd')
-            //        Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
-            //    else
-            //        Assert.IsTrue(!map[i.ToString() + 4].Contains(rook));
-            //}
-
             for (char i = 'a'; i <= 'h'; i++)
             {
                 for (int j = 1; j <= Board.BoardSize; j++)
                 {
-                    if (j == 3 || j == 5)
+                    if (j == 4)
+                    {
+                        if (i == 'f' || i == 'd')
+                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                        if (i == 'e')
+                            Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
+                    }
+                    else if (j == 3 || j == 5)
                     {
                         if (i == 'e')
                             Assert.IsTrue(map[i.ToString() + j].Contains(rook));
                     }
-                    else if (j == 4)
-                    {
-                        if (i == 'f' || i == 'd')
-                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
-                    }
-                    else if (i.ToString() + 4 != "e4")
-                        Assert.IsTrue(!map[i.ToString() + 4].Contains(rook));
+                    else
+                        Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
                 }
             }
         }
