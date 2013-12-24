@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Protocol;
+using Protocol.GameObjects;
 using Protocol.Transport;
 
 namespace ChessServer.GameLogic
 {
     public class AttackMap
     {
+        public Board board {get; private set;}
         private List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         public List<Figure> this[string cell]
         {
@@ -24,7 +26,6 @@ namespace ChessServer.GameLogic
         }
         public AttackMap(List<Move> moves, Board forceBoard= null)
         {
-            Board board;
             if (forceBoard == null)
             {
                 board = new Board();
@@ -85,7 +86,7 @@ namespace ChessServer.GameLogic
                             KingKnightStep(board, f, i, y);
 
                         y = j - 1;
-                        if (y <= 1)
+                        if (y >= 1)
                             KingKnightStep(board, f, i, y);
 
                         continue;
@@ -238,7 +239,8 @@ namespace ChessServer.GameLogic
                             y = j + 2;
                             if (y <= Board.BoardSize)
                                 KingKnightStep(board, f, x, y);
-                            if (j - 2 >= 1)
+                            y = j - 2;
+                            if (y >= 1)
                                 KingKnightStep(board, f, x, y);
                         }
                         continue;
@@ -256,122 +258,113 @@ namespace ChessServer.GameLogic
 
         private void SouthWest(Board board, char i, int j, Figure f)
         {
-            for (char k = i; k > 'a'; k--)
+            int l = j - 1;
+            char k = (char)(i - 1);
+            for (; k >= 'a' && l >= 1; )
             {
-                int l = j;
                 Figure f1 = board[k.ToString() + l];
-                if (l < Board.BoardSize)
+
+                if (f1.GetType() == typeof(FigureNone))
                 {
-                    if (f1.GetType() == typeof(FigureNone))
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        l--;
-                        continue;
-                    }
-                    else if (f1.side != f.side)
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        break;
-                    }
-                    else
-                    {
-                        l--;
-                        break;
-                    }
+                    Attackers[k - 'a', l - 1].Add(f);
+                    k--;
+                    l--;
+                    continue;
+                }
+                else if (f1.side != f.side)
+                {
+                    Attackers[k - 'a', l - 1].Add(f);
+                    break;
                 }
                 else
+                {
                     break;
-            }
+                }
+            }            
+
         }
 
         private void NorthWest(Board board, char i, int j, Figure f)
         {
-            for (char k = i; k > 'a'; k--)
+            int l = j + 1;
+            char k = (char)(i + 1);
+            for (; k >= 'a' && l <= Board.BoardSize; )
             {
-                int l = j;
                 Figure f1 = board[k.ToString() + l];
-                if (l < Board.BoardSize)
+
+                if (f1.GetType() == typeof(FigureNone))
                 {
-                    if (f1.GetType() == typeof(FigureNone))
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        l++;
-                        continue;
-                    }
-                    else if (f1.side != f.side)
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        break;
-                    }
-                    else
-                    {
-                        l++;
-                        break;
-                    }
+                    Attackers[k - 'a', l - 1].Add(f);
+                    k--;
+                    l++;
+                    continue;
+                }
+                else if (f1.side != f.side)
+                {
+                    Attackers[k - 'a', l - 1].Add(f);
+                    break;
                 }
                 else
+                {
                     break;
-            }
+                }
+            }            
+
         }
 
         private void SouthEast(Board board, char i, int j, Figure f)
         {
-            for (char k = i; k < 'h'; k++)
+            int l = j - 1;
+            char k = (char)(i + 1);
+            for (; k <= 'h' && l >= 1; )
             {
-                int l = j - 1;
                 Figure f1 = board[k.ToString() + l];
-                if (l < Board.BoardSize)
+
+                if (f1.GetType() == typeof(FigureNone))
                 {
-                    if (f1.GetType() == typeof(FigureNone))
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        l--;
-                        continue;
-                    }
-                    else if (f1.side != f.side)
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        break;
-                    }
-                    else
-                    {
-                        l--;
-                        break;
-                    }
+                    Attackers[k - 'a', l - 1].Add(f);
+                    k++;
+                    l--;
+                    continue;
+                }
+                else if (f1.side != f.side)
+                {
+                    Attackers[k - 'a', l - 1].Add(f);
+                    break;
                 }
                 else
+                {
                     break;
-            }
+                }
+            }            
         }
 
         private void NorthEast(Board board, char i, int j, Figure f)
         {
-            for (char k = i; k < 'h'; k++)
+            int l = j + 1;
+            char k = (char)(i + 1);
+            for (; k <= 'h' && l <= Board.BoardSize; )
             {
-                int l = j + 1;
                 Figure f1 = board[k.ToString() + l];
-                if (l < Board.BoardSize)
+
+                if (f1.GetType() == typeof(FigureNone))
                 {
-                    if (f1.GetType() == typeof(FigureNone))
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        l++;
-                        continue;
-                    }
-                    else if (f1.side != f.side)
-                    {
-                        Attackers[k - 'a', l].Add(f);
-                        break;
-                    }
-                    else
-                    {
-                        l++;
-                        break;
-                    }
+                    Attackers[k - 'a', l - 1].Add(f);
+                    k++;
+                    l++;
+                    continue;
+                }
+                else if (f1.side != f.side)
+                {
+                    Attackers[k - 'a', l - 1].Add(f);
+                    break;
                 }
                 else
+                {
                     break;
-            }
+                }
+            }            
+
         }
 
         private void West(Board board, char i, int j, Figure f)

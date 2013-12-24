@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol.Transport;
 
-namespace Protocol
+namespace Protocol.GameObjects
 {
     public class FigureQueen : Figure
     {

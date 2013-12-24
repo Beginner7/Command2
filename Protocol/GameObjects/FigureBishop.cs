@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol.Transport;
 
-namespace Protocol
+namespace Protocol.GameObjects
 {
-    public class FigureRook : Figure
+    public class FigureBishop : Figure
     {
-        public FigureRook(Side side) : base(side)
+        public FigureBishop(Side side) : base(side)
         {
-            symbol = 'R';
+            symbol = 'B';
         }
     }
 }

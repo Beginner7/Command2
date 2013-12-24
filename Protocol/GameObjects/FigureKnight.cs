@@ -5,15 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol.Transport;
 
-namespace Protocol
+namespace Protocol.GameObjects
 {
-    public class Figure
+    public class FigureKnight : Figure
     {
-        public Figure(Side side)
+        public FigureKnight(Side side) : base(side)
         {
-            this.side = side;
+            symbol = 'N';
         }
-        public Side side;
-        public char symbol;
     }
 }

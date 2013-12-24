@@ -14,6 +14,7 @@ namespace Protocol
         ErrorCreateGame,
         GameNotFound,
         OpponentTurn,
-        GameIsRunning
+        GameIsRunning,
+        WrongMove
     }
 }

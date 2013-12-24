@@ -37,6 +37,13 @@ namespace ChessConsole
                 Console.WriteLine("Connection lost!");
                 StopPulse();
             }
+            if (response.Messages.Count != 0)
+            {
+                foreach (var element in response.Messages)
+                {
+                    MessageProcessor.Process(element);
+                }
+            }
         }
     }
 }

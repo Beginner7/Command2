@@ -59,10 +59,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageProcessor.cs" />
     <Compile Include="CurrentUser.cs" />
     <Compile Include="DeleteUserProvider.cs" />
     <Compile Include="AddUserProvider.cs" />
     <Compile Include="ConnectToGameProvider.cs" />
+    <Compile Include="ChatProvider.cs" />
     <Compile Include="GameListProvider.cs" />
     <Compile Include="CreateGameProvider.cs" />
     <Compile Include="GameStatProvider.cs" />

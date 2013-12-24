@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Protocol;
+using Protocol.GameObjects;
 
 namespace ChessConsole
 {
@@ -65,6 +66,16 @@ namespace ChessConsole
                 case "echo":
                     var echoProvider = new EchoProvider();
                     Console.WriteLine(echoProvider.Echo(command.Skip(1).StrJoin(' ')));
+                    break;
+
+                case "say":
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("Dude! First connect to game.");
+                        break;
+                    }
+                    var chatProvider = new ChatProvider();
+                    chatProvider.Say(command.Skip(1).StrJoin(' '));
                     break;
 
                 case "login":
