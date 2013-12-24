@@ -252,8 +252,10 @@ namespace ChessServer.GameLogic
         private void KingKnightStep(Board board, Figure f, char x, int y)
         {
             Figure f1 = board[x.ToString() + y];
-            if (f1.GetType() == typeof(FigureNone) || f1.side != f.side)
-                Attackers[x - 'a', y - 1].Add(f1);
+            if (f1.GetType() == typeof(FigureNone))
+                Attackers[x - 'a', y - 1].Add(f);
+            else if (f1.side != f.side)
+                Attackers[x - 'a', y - 1].Add(f);
         }
 
         private void SouthWest(Board board, char i, int j, Figure f)
@@ -287,7 +289,7 @@ namespace ChessServer.GameLogic
         private void NorthWest(Board board, char i, int j, Figure f)
         {
             int l = j + 1;
-            char k = (char)(i + 1);
+            char k = (char)(i - 1);
             for (; k >= 'a' && l <= Board.BoardSize; )
             {
                 Figure f1 = board[k.ToString() + l];
