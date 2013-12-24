@@ -248,6 +248,28 @@ namespace UnitTest
               
             
         }
+            [TestMethod]
+         public void WhiteBishopTest()
+        {
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.WHITE);
+            var knight = new FigureKnight(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+            board["e4"] = bishop;
+            board["b7"] = knight;
+            board["g2"] = bishop;
+            board["g6"] = pawn;
+            board["b1"] = queen;
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            for (int j = 1; j <= Board.BoardSize; j++)
+                for (char i = 'a'; i <= 'h'; i++)
+                    if ('e' - i == Board.BoardSize - j && Board.BoardSize - j != 0 )
+                    {
+                        Assert.IsTrue(map[i.ToString() + j].Contains(bishop));
+                    }
+        }
     }
     
 }
