@@ -10,6 +10,7 @@ namespace ChessServer.GameLogic
 {
     public class AttackMap
     {
+        public Board board {get; private set;}
         private List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         public List<Figure> this[string cell]
         {
@@ -24,7 +25,6 @@ namespace ChessServer.GameLogic
         }
         public AttackMap(List<Move> moves, Board forceBoard= null)
         {
-            Board board;
             if (forceBoard == null)
             {
                 board = new Board();

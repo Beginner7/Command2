@@ -108,14 +108,15 @@ namespace ChessServer
                         {
                             pulseresponse.Status = Statuses.OK;
                             pulseresponse.Messages = geted.Messages;
-                            geted.Messages.Clear();
                             geted.lostbeats = 0;
                         }
                         else
                         {
                             pulseresponse.Status = Statuses.NoUser;
                         }
+                        pulseresponse.Messages.Add(new Protocol.Transport.MessageChat("Hello"));
                         resp = pulseresponse;
+                        geted.Messages.Clear();
                     }
                     break;
 
@@ -270,8 +271,16 @@ namespace ChessServer
                                 resp = moveResponse;
                                 break;
                             }
+                            var moves = Games[moveRequest.GameID].Moves;
+                            var attackMap = new GameLogic.AttackMap(moves);
+                            if (!attackMap[moveRequest.To].Contains(attackMap.board[moveRequest.From]))
+                            {
+                                moveResponse.Status = Statuses.WrongMove;
+                                resp = moveResponse;
+                                break;
+                            }
 
-                            Games[moveRequest.GameID].Moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
+                            moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
                             if (Games[moveRequest.GameID].Turn == Side.WHITE)
                             {
                                 Games[moveRequest.GameID].Turn = Side.BLACK;
