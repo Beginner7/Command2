@@ -2,9 +2,10 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Protocol;
+using Protocol.GameObjects;
 using Protocol.Transport;
 using ChessServer.GameLogic;
+
 namespace UnitTest
 {
     /// <summary>
@@ -13,11 +14,14 @@ namespace UnitTest
     [TestClass]
     public class AttackMapTest
     {
-        public AttackMapTest()
+        /// <summary>
+        /// Тест карты атак для начальной позиции для доски. Не должно быть исключений при постройке этой карты атак.
+        /// </summary>
+        [TestMethod]
+        public void InitialPositionTest()
         {
-            //
-            // TODO: добавьте здесь логику конструктора
-            //
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>());
         }
         /// <summary>
         /// Одна ладья в центре поля

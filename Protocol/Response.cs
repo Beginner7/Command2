@@ -11,5 +11,7 @@ namespace Protocol
         public string RequestCommand;
 
         public Statuses Status;
+
+        public List<Protocol.Transport.Message> Messages;
     }
 }

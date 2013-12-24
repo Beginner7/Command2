@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
+using Protocol.GameObjects;
 
-namespace Protocol
+namespace Protocol.GameObjects
 {
     public class Board
     {
@@ -127,10 +128,18 @@ namespace Protocol
 
         public void DoMove(string from, string to)
         {
-            if (!(OutputAbroad(GetCoords(from)) && OutputAbroad(GetCoords(to))))
+            if (from.Length != 2 || to.Length != 2)
             {
-            Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
-            Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Protocol.Transport.Side.NONE);
+                throw new WrongMoveException(string.Format("Incorrect move notation {0} {1}", from, to));
+            }
+            else if (OutputAbroad(GetCoords(from)) || OutputAbroad(GetCoords(to)))
+            {
+                throw new WrongMoveException(string.Format("Move outside a board {0} {1}", from, to));
+            }
+            else
+            {
+                Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
+                Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Protocol.Transport.Side.NONE);
             }
         }
 

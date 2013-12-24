@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Protocol;
 using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public class Move
+    public class ChatRequest : Request
     {
+        public ChatRequest()
+        {
+            Command = "chat";
+        }
+
+        public string ChatString;
         public string From;
-        public string To;
-        public User Player;
+        public int? GameID;
     }
 }

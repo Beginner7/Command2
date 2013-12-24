@@ -25,6 +25,9 @@ namespace ChessConsole
                 case Statuses.OpponentTurn:
                     Console.WriteLine("Now is opponent turn.");
                     break;
+                case Statuses.WrongMove:
+                    Console.WriteLine("Wrong move.");
+                    break;
                 default:
                     Console.WriteLine("Wrong status.");
                     break;

@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol.Transport;
 
-namespace Protocol
+namespace Protocol.GameObjects
 {
-    public class FigureNone : Figure
+    public class FigureKing : Figure
     {
-        public FigureNone(Side side) : base(side)
+        public FigureKing(Side side) : base(side)
         {
-            symbol = 'X';
+            symbol = 'K';
         }
     }
 }
