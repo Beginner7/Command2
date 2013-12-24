@@ -52,46 +52,43 @@ namespace ChessServer.GameLogic
                     }
                     if (f.GetType() == typeof(FigureKing))
                     {
-                        //char x = (char)(i + 1);
-                        //if (x <= 'h')
-                        //{
-                        //    int y = j + 1;
-                        //    if (y <= Board.BoardSize)
-                        //    {
-                        //        Figure f1 = board[x.ToString() + y];
-                        //        if (f1.side != f.side)
-                        //            Attackers[x - 'a', y].Add(f1);
-                        //    }
-                        //    y = j - 1;
-                        //    if (y >= 1)
-                        //    {
-                        //        Figure f1 = board[x.ToString() + y];
-                        //        if (f1.side != f.side)
-                        //            Attackers[x - 'a', y].Add(f1);
-                        //        //Attackers[x - 'a', y].Add(board[((char)(i + 1)).ToString() + (j - 1)]);
-                        //    }
-                        //}
-                        //if ((char)(i + 1) <= 'h')
-                        //{
-                        //    if (j + 2 < Board.BoardSize)
-                        //        Attackers[(char)(i + 1) - 'a', j + 2].Add(board[((char)(i + 1)).ToString() + (j + 2)]);
-                        //    if (j - 2 > 0)
-                        //        Attackers[(char)(i + 1) - 'a', j - 2].Add(board[((char)(i + 1)).ToString() + (j - 2)]);
-                        //}
-                        //if ((char)(i - 2) >= 'a')
-                        //{
-                        //    if (j + 1 < Board.BoardSize)
-                        //        Attackers[(char)(i - 2) - 'a', j + 1].Add(board[((char)(i - 2)).ToString() + (j + 1)]);
-                        //    if (j - 1 > 0)
-                        //        Attackers[(char)(i - 2) - 'a', j - 1].Add(board[((char)(i - 2)).ToString() + (j - 1)]);
-                        //}
-                        //if ((char)(i - 1) >= 'a')
-                        //{
-                        //    if (j + 2 < Board.BoardSize)
-                        //        Attackers[(char)(i - 1) - 'a', j + 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
-                        //    if (j - 2 > 0)
-                        //        Attackers[(char)(i - 1) - 'a', j - 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
-                        //}
+                        char x = (char)(i + 1);
+                        int y;
+
+                        if (x <= 'h')
+                        {
+                            y = j + 1;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+
+                            y = j - 1;
+                            if (y >= 1)
+                                KingKnightStep(board, f, x, y);
+
+                            KingKnightStep(board, f, x, j);
+                        }
+
+                        x = (char)(i - 1);
+                        if (x >= 'a')
+                        {
+                            y = j + 1;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+                            y = j - 1;
+                            if (y > 0)
+                                KingKnightStep(board, f, x, y);
+
+                            KingKnightStep(board, f, x, j);
+                        }
+
+                        y = j + 1;
+                        if (y <= Board.BoardSize)
+                            KingKnightStep(board, f, i, y);
+
+                        y = j - 1;
+                        if (y >= 1)
+                            KingKnightStep(board, f, i, y);
+
                         continue;
                     }
 
@@ -205,47 +202,58 @@ namespace ChessServer.GameLogic
 
                     if (f.GetType()==typeof(FigureKnight))
                     {
-                    //    Figure[] f1 = new Figure[] { board[(i + 2).ToString() + (j + 1)],
-                    //                                board[(i + 2).ToString() + (j - 1)],
-                    //                                board[(i + 1).ToString() + (j + 2)],
-                    //                                board[(i + 1).ToString() + (j - 2)],
-                    //                                board[(i - 2).ToString() + (j + 1)],
-                    //                                board[(i - 1).ToString() + (j + 2)],
-                    //                                board[(i - 2).ToString() + (j - 1)],
-                    //                                board[(i - 1).ToString() + (j - 2)]};
-
-                        if ((char)(i + 2) <= 'h')
+                        char x = (char)(i + 2);
+                        int y;
+                        if (x <= 'h')
                         {
-                            if (j + 1 <= Board.BoardSize)
-                                Attackers[(char)(i + 2) - 'a', j + 1].Add(board[((char)(i + 2)).ToString() + (j + 1)]);
-                            if (j - 1 >= 1)
-                                Attackers[(char)(i + 2) - 'a', j - 1].Add(board[((char)(i + 2)).ToString() + (j - 1)]);
+                            y = j + 1;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+                            y = j - 1;
+                            if (y >= 1)
+                                KingKnightStep(board, f, x, y);
                         }
-                        if ((char)(i + 1) <= 'h')
+                        x = (char)(i + 1);
+                        if (x <= 'h')
                         {
-                            if (j + 2 < Board.BoardSize)
-                                Attackers[(char)(i + 1) - 'a', j + 2].Add(board[((char)(i + 1)).ToString() + (j + 2)]);
-                            if (j - 2 > 0)
-                                Attackers[(char)(i + 1) - 'a', j - 2].Add(board[((char)(i + 1)).ToString() + (j - 2)]);
+                            y = j + 2;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+                            y = j - 2;
+                            if (y >= 1)
+                                KingKnightStep(board, f, x, y);
                         }
-                        if ((char)(i - 2) >= 'a')
+                        x = (char)(i - 2);
+                        if (x >= 'a')
                         {
-                            if (j + 1 < Board.BoardSize)
-                                Attackers[(char)(i - 2) - 'a', j + 1].Add(board[((char)(i - 2)).ToString() + (j + 1)]);
-                            if (j - 1 > 0)
-                                Attackers[(char)(i - 2) - 'a', j - 1].Add(board[((char)(i - 2)).ToString() + (j - 1)]);
+                            y = j + 1;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+                            y = j - 1;
+                            if (y >= 1)
+                                KingKnightStep(board, f, x, y);
                         }
-                        if ((char)(i - 1) >= 'a')
+                        x = (char)(i - 1);
+                        if (x >= 'a')
                         {
-                            if (j + 2 < Board.BoardSize)
-                                Attackers[(char)(i - 1) - 'a', j + 2].Add(board[((char)(i - 1)).ToString() + (j + 2)]);
-                            if (j - 2 > 0)
-                                Attackers[(char)(i - 1) - 'a', j - 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
+                            y = j + 2;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+                            y = j - 2;
+                            if (y >= 1)
+                                KingKnightStep(board, f, x, y);
                         }
                         continue;
                     }
                 }
             }
+        }
+
+        private void KingKnightStep(Board board, Figure f, char x, int y)
+        {
+            Figure f1 = board[x.ToString() + y];
+            if (f1.GetType() == typeof(FigureNone) || f1.side != f.side)
+                Attackers[x - 'a', y - 1].Add(f1);
         }
 
         private void SouthWest(Board board, char i, int j, Figure f)
