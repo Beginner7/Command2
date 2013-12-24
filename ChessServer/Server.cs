@@ -274,12 +274,19 @@ namespace ChessServer
                             }
                             var moves = Games[moveRequest.GameID].Moves;
                             var attackMap = new GameLogic.AttackMap(moves);
-                            if (!attackMap[moveRequest.To].Contains(attackMap.board[moveRequest.From]))
+                            if (!Board.CheckNotation(moveRequest.From) || !Board.CheckNotation(moveRequest.To))
+                            {
+                                moveResponse.Status = Statuses.WrongMoveNotation;
+                                resp = moveResponse;
+                                break;
+                            }
+                            if (!attackMap[moveRequest.To].Contains(attackMap.board[moveRequest.From]) || attackMap.board[moveRequest.From].side != UserSide(moveRequest.Player.Name, moveRequest.GameID))
                             {
                                 moveResponse.Status = Statuses.WrongMove;
                                 resp = moveResponse;
                                 break;
                             }
+                            
 
                             moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
                             if (Games[moveRequest.GameID].Turn == Side.WHITE)

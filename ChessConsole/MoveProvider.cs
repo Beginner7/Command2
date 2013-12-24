@@ -28,6 +28,9 @@ namespace ChessConsole
                 case Statuses.WrongMove:
                     Console.WriteLine("Wrong move.");
                     break;
+                case Statuses.WrongMoveNotation:
+                    Console.WriteLine("Wrong move notation.");
+                    break;
                 default:
                     Console.WriteLine("Wrong status.");
                     break;

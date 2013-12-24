@@ -11,6 +11,10 @@ namespace Protocol.GameObjects
 {
     public class Board
     {
+        public static bool CheckNotation(string cell)
+        {
+            return (cell.Length == 2) && !OutputAbroad(GetCoords(cell));
+        }
         public static int BoardSize = 8;
         public static Figure[,] Cells = new Figure[BoardSize, BoardSize];
 
@@ -128,18 +132,14 @@ namespace Protocol.GameObjects
 
         public void DoMove(string from, string to)
         {
-            if (from.Length != 2 || to.Length != 2)
-            {
-                throw new WrongMoveException(string.Format("Incorrect move notation {0} {1}", from, to));
-            }
-            else if (OutputAbroad(GetCoords(from)) || OutputAbroad(GetCoords(to)))
-            {
-                throw new WrongMoveException(string.Format("Move outside a board {0} {1}", from, to));
-            }
-            else
+            if (CheckNotation(from) && CheckNotation(to))
             {
                 Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
                 Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Protocol.Transport.Side.NONE);
+            }
+            else
+            {
+                throw new WrongMoveException(string.Format("Incorrect move notation {0} {1}", from, to));
             }
         }
 
@@ -149,7 +149,7 @@ namespace Protocol.GameObjects
             return new Tuple<int, int>(cell[0] - 'a', int.Parse(cell[1].ToString()) - 1);
         }
 
-        private bool OutputAbroad(Tuple<int, int> cell)
+        private static bool OutputAbroad(Tuple<int, int> cell)
         {
             if (cell.Item1 > BoardSize - 1 || cell.Item2 > BoardSize - 1 || cell.Item1 < 0 || cell.Item2 < 0)
                 return true;

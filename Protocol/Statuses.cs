@@ -15,6 +15,7 @@ namespace Protocol
         GameNotFound,
         OpponentTurn,
         GameIsRunning,
-        WrongMove
+        WrongMove,
+        WrongMoveNotation
     }
 }
