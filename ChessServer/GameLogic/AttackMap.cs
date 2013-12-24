@@ -49,51 +49,105 @@ namespace ChessServer.GameLogic
                     {
                         continue;
                     }
+                    if (f.GetType() == typeof(FigureKing))
+                    {
+                        //char x = (char)(i + 1);
+                        //if (x <= 'h')
+                        //{
+                        //    int y = j + 1;
+                        //    if (y <= Board.BoardSize)
+                        //    {
+                        //        Figure f1 = board[x.ToString() + y];
+                        //        if (f1.side != f.side)
+                        //            Attackers[x - 'a', y].Add(f1);
+                        //    }
+                        //    y = j - 1;
+                        //    if (y >= 1)
+                        //    {
+                        //        Figure f1 = board[x.ToString() + y];
+                        //        if (f1.side != f.side)
+                        //            Attackers[x - 'a', y].Add(f1);
+                        //        //Attackers[x - 'a', y].Add(board[((char)(i + 1)).ToString() + (j - 1)]);
+                        //    }
+                        //}
+                        //if ((char)(i + 1) <= 'h')
+                        //{
+                        //    if (j + 2 < Board.BoardSize)
+                        //        Attackers[(char)(i + 1) - 'a', j + 2].Add(board[((char)(i + 1)).ToString() + (j + 2)]);
+                        //    if (j - 2 > 0)
+                        //        Attackers[(char)(i + 1) - 'a', j - 2].Add(board[((char)(i + 1)).ToString() + (j - 2)]);
+                        //}
+                        //if ((char)(i - 2) >= 'a')
+                        //{
+                        //    if (j + 1 < Board.BoardSize)
+                        //        Attackers[(char)(i - 2) - 'a', j + 1].Add(board[((char)(i - 2)).ToString() + (j + 1)]);
+                        //    if (j - 1 > 0)
+                        //        Attackers[(char)(i - 2) - 'a', j - 1].Add(board[((char)(i - 2)).ToString() + (j - 1)]);
+                        //}
+                        //if ((char)(i - 1) >= 'a')
+                        //{
+                        //    if (j + 2 < Board.BoardSize)
+                        //        Attackers[(char)(i - 1) - 'a', j + 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
+                        //    if (j - 2 > 0)
+                        //        Attackers[(char)(i - 1) - 'a', j - 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
+                        //}
+                        continue;
+                    }
+
                     if (f.GetType() == typeof(FigurePawn))
                     {
-                        
-                        if (j + 1 < Board.BoardSize && j-1>=0)
+                        if (j + 1 <= Board.BoardSize && j - 1 >= 1 )
                         {
                             int k;
                             if (f.side == Side.WHITE)
                             {
                                 k = j + 1;
                                 Figure f1 = board[i.ToString() + k];
+                                if (f1.GetType() != f.GetType())
+                                    Attackers[i - 'a', k - 1].Add(f);
                                 if (f1.GetType() == typeof(FigureNone))
                                 {
-                                    Attackers[i - 'a', k].Add(f1);
-                                    if (j == 1) // первый или нет
+                                    if (j == 2) // первый или нет
                                     {
                                         Figure f2 = board[i.ToString() + (k + 1)];
-                                        if (f2.GetType() == typeof(FigureNone)) Attackers[i - 'a', k + 1].Add(f2);
+                                        if (f2.GetType() == typeof(FigureNone)) 
+                                            Attackers[i - 'a', k].Add(f);
                                     }
                                 }
                                 if (i + 1 <= 'h')
                                 {
-                                    int l = i + 1;
+                                    char l = (char)(i + 1);
                                     Figure f2 = board[l.ToString() + k];
-
-                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
+                                    if (f2.GetType() != typeof(FigureNone))
+                                    {
+                                        if (f2.side != f.side)
+                                            Attackers[l - 'a', k - 1].Add(f);
+                                    }
                                 }
                                 if (i - 1 >= 'a')
                                 {
-                                    int l = i - 1;
+                                    char l = (char)(i - 1);
                                     Figure f2 = board[l.ToString() + k];
-
-                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
+                                    if (f2.GetType() != typeof(FigureNone))
+                                    {
+                                        if (f2.side != f.side)
+                                            Attackers[l - 'a', k - 1].Add(f);
+                                    }
                                 }
                             }
                             if (f.side == Side.BLACK)
                             {
                                 k = j - 1;
                                 Figure f1 = board[i.ToString() + k];
+                                if (f1.GetType() != f.GetType())
+                                    Attackers[i - 'a', k - 1].Add(f);
                                 if (f1.GetType() == typeof(FigureNone))
                                 {
-                                    Attackers[i - 'a', k].Add(f1);
-                                    if (j == Board.BoardSize - 2) // первый или нет
+                                    if (j == Board.BoardSize - 1) // первый или нет
                                     {
-                                        Figure f2 = board[i.ToString() + (k + 1)];
-                                        if (f2.GetType() == typeof(FigureNone)) Attackers[i - 'a', k - 1].Add(f2);
+                                        Figure f2 = board[i.ToString() + (k - 1)];
+                                        if (f2.GetType() == typeof(FigureNone)) 
+                                            Attackers[i - 'a', k].Add(f);
                                     }
                                 }
                                 if (i + 1 <= 'h')
@@ -102,18 +156,20 @@ namespace ChessServer.GameLogic
                                     Figure f2 = board[l.ToString() + k];
 
                                     if (f2.side != f.side) 
-                                        Attackers[l - 'a', k].Add(f2);
+                                        Attackers[l - 'a', k - 1].Add(f);
                                 }
                                 if (i - 1 >= 'a')
                                 {
                                     char l = (char)(i - 1);
                                     Figure f2 = board[l.ToString() + k];
 
-                                    if (f2.side != f.side) Attackers[l - 'a', k].Add(f2);
+                                    if (f2.side != f.side) 
+                                        Attackers[l - 'a', k - 1].Add(f);
                                 }
                             }
                             
                         }
+                        continue;
                     }
                     if (f.GetType() == typeof(FigureRook))
                     {
@@ -121,6 +177,7 @@ namespace ChessServer.GameLogic
                         South(board, i, j, f);
                         East(board, i, j, f);
                         West(board, i, j, f);
+                        continue;
                     }
 
                     if (f.GetType() == typeof(FigureQueen))
@@ -133,6 +190,7 @@ namespace ChessServer.GameLogic
                         SouthEast(board, i, j, f);
                         NorthWest(board, i, j, f);
                         SouthWest(board, i, j, f);
+                        continue;
                     }
 
                     if (f.GetType() == typeof(FigureBishop))
@@ -141,6 +199,7 @@ namespace ChessServer.GameLogic
                         SouthEast(board, i, j, f);
                         NorthWest(board, i, j, f);
                         SouthWest(board, i, j, f);
+                        continue;
                     }
 
                     if (f.GetType()==typeof(FigureKnight))
@@ -182,6 +241,7 @@ namespace ChessServer.GameLogic
                             if (j - 2 > 0)
                                 Attackers[(char)(i - 1) - 'a', j - 2].Add(board[((char)(i - 1)).ToString() + (j - 2)]);
                         }
+                        continue;
                     }
                 }
             }

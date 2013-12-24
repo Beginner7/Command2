@@ -45,7 +45,8 @@ namespace UnitTest
             }
         }
         /// <summary>
-        /// Одна ладья в центре поля и чужие фигуры вокруг
+        /// ДОДЕЛАТЬ!!!
+        /// TODO: Одна ладья в центре поля и чужие фигуры вокруг
         /// </summary>
         [TestMethod]
         public void BlackRookTest()
@@ -66,10 +67,39 @@ namespace UnitTest
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
             //a - assert
-            Assert.IsTrue(map["e3"].Contains(rook));
-            Assert.IsTrue(map["e5"].Contains(rook));
-            Assert.IsTrue(map["d4"].Contains(rook));
-            Assert.IsTrue(map["f4"].Contains(rook));
+            //for (int j = 1; j <= Board.BoardSize; j++)
+            //{
+            //    if (j == 5 || j == 3)
+            //        Assert.IsTrue(map["e" + j].Contains(rook));
+            //    else
+            //        Assert.IsTrue(!map["e" + j].Contains(rook));
+            //}
+            //for (char i = 'a'; i <= 'h'; i++)
+            //{
+            //    if (i == 'c' || i == 'd')
+            //        Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
+            //    else
+            //        Assert.IsTrue(!map[i.ToString() + 4].Contains(rook));
+            //}
+
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= Board.BoardSize; j++)
+                {
+                    if (j == 3 || j == 5)
+                    {
+                        if (i == 'e')
+                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                    }
+                    else if (j == 4)
+                    {
+                        if (i == 'f' || i == 'd')
+                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                    }
+                    else if (i.ToString() + 4 != "e4")
+                        Assert.IsTrue(!map[i.ToString() + 4].Contains(rook));
+                }
+            }
         }
 
         /// <summary>
@@ -106,6 +136,100 @@ namespace UnitTest
             {
                 if (i != 'e' && i < 'f' && i > 'b')
                     Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
+            }
+        }
+
+        /// <summary>
+        /// одна белая пешка
+        /// </summary>
+        [TestMethod]
+        public void OneWhitePawnTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.WHITE);
+            board["e2"] = pawn;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map["e3"].Contains(pawn));
+            Assert.IsTrue(map["e4"].Contains(pawn));
+        }
+        
+        /// <summary>
+        /// белая пешка
+        /// </summary>
+        [TestMethod]
+        public void WhitePawnTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.WHITE);
+            var rook = new FigureRook(Side.BLACK);
+            var knight = new FigureKnight(Side.BLACK);
+            var bishop = new FigureBishop(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            board["e4"] = pawn; 
+            board["e5"] = knight;
+            board["d5"] = bishop;
+            board["f5"] = rook;
+            board["e6"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= Board.BoardSize; j++)
+                {
+                    if (j == 5)
+                    {
+                        if (i == 'e' || i == 'd' || i == 'f')
+                            Assert.IsTrue(map[i.ToString() + j].Contains(pawn));
+                    }
+                    else
+                        Assert.IsTrue(!map[i.ToString() + j].Contains(pawn));
+                }
+            }
+        }
+
+        /// <summary>
+        /// черная пешка
+        /// </summary>
+        [TestMethod]
+        public void BlackPawnTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.BLACK);
+            var rook = new FigureRook(Side.WHITE);
+            var knight = new FigureKnight(Side.WHITE);
+            var bishop = new FigureBishop(Side.WHITE);
+            var queen = new FigureQueen(Side.WHITE);
+            var queen1 = new FigureQueen(Side.WHITE);
+            board["e6"] = pawn;
+            board["e5"] = knight;
+            board["d5"] = bishop;
+            board["f5"] = rook;
+            board["e4"] = queen;
+            board["e7"] = queen1;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= Board.BoardSize; j++)
+                {
+                    if (j == 5)
+                    {
+                        if (i == 'e' || i == 'd' || i == 'f')
+                            Assert.IsTrue(map[i.ToString() + j].Contains(pawn));
+                    }
+                    else
+                        Assert.IsTrue(!map[i.ToString() + j].Contains(pawn));
+                }
             }
         }
     }
