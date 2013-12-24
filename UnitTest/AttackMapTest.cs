@@ -287,13 +287,7 @@ namespace UnitTest
             Assert.IsTrue(!map["h6"].Contains(knight));
         }
 
-        /// <summary>
-        /// один конь на поле 
-        /// </summary>
-        [TestMethod]
-        public void SimpleKnightTest()
-        {
-            //a - arange
+
             [TestMethod]
          public void WhiteBishopTest()
         {
@@ -337,6 +331,13 @@ namespace UnitTest
                 }
             }
         }
+        /// <summary>
+        /// один конь на поле 
+        /// </summary>
+        [TestMethod]
+        public void SimpleKnightTest()
+        {
+            //a - arange
             Board board = new Board();
             var knight = new FigureKnight(Side.WHITE);
             board["e4"] = knight;
@@ -418,6 +419,7 @@ namespace UnitTest
         /// Одна ладья в центре поля
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void SimpleQueenTest()
         {
             //a - arange
