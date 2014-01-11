@@ -12,6 +12,6 @@ namespace Protocol
         public string Name;
         public int lostbeats = 0;
 
-        public List<Protocol.Transport.Message> Messages = new List<Protocol.Transport.Message>();
+        public List<string> Messages = new List<string>();
     }
 }

@@ -59,7 +59,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageProcessor.cs" />
     <Compile Include="CurrentUser.cs" />
     <Compile Include="DeleteUserProvider.cs" />
     <Compile Include="AddUserProvider.cs" />

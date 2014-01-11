@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public class ChatResponse : Response
+    public class ChatResponse: Response
     {
     }
 }

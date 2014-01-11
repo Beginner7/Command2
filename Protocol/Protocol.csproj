@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatResponse.cs" />
     <Compile Include="DeleteUserRequest.cs" />
     <Compile Include="AddUserRequest.cs" />
     <Compile Include="DeleteUserResponse.cs" />
@@ -50,7 +51,6 @@
     <Compile Include="ConnectToGameRequest.cs" />
     <Compile Include="ConnectToGameResponse.cs" />
     <Compile Include="ChatRequest.cs" />
-    <Compile Include="ChatResponse.cs" />
     <Compile Include="GameObjects\WrongMoveException.cs" />
     <Compile Include="PulseRequest.cs" />
     <Compile Include="PulseResponse.cs" />

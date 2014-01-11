@@ -11,5 +11,4 @@ namespace Protocol
     {
         public List<Move> Moves;
     }
-    
 }

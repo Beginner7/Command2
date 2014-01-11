@@ -14,13 +14,13 @@ namespace ChessConsole
         public void Say(string InputString)
         {
             var command = new ChatRequest();
-            command.ChatString = InputString;
+            command.SayString = InputString;
             command.From = CurrentUser.Name;
-            command.GameID = CurrentUser.CurrentGame;
+            command.GameID = CurrentUser.CurrentGame.Value;
             var response = ServerProvider.MakeRequest<ChatResponse>(command);
             if (response.Status != Statuses.OK)
             {
-                Console.WriteLine("Error.");
+                Console.WriteLine("Connection problem.");
             }
         }
     }

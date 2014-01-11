@@ -16,20 +16,4 @@ namespace Protocol.Transport
     }
     
     public enum Side { NONE, BLACK, WHITE, SPECTATOR }
-    
-    public class Message
-    {
-    }
-
-    public class MessageChat : Message
-    {
-        public string ChatString;
-
-        public MessageChat (string InputString)
-        {
-            ChatString = InputString;
-        }
-    }
-
-
 }

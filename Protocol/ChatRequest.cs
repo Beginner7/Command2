@@ -13,8 +13,8 @@ namespace Protocol
             Command = "chat";
         }
 
-        public string ChatString;
+        public string SayString;
         public string From;
-        public int? GameID;
+        public int GameID;
     }
 }

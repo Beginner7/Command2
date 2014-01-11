@@ -9,9 +9,7 @@ namespace Protocol
     public class Response
     {
         public string RequestCommand;
-
         public Statuses Status;
-
-        public List<Protocol.Transport.Message> Messages;
+        public List<string> Messages = new List<string>();
     }
 }

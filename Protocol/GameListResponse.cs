@@ -10,5 +10,4 @@ namespace Protocol
     {
         public int[] Games;
     }
-    
 }

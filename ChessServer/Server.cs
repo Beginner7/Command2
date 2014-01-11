@@ -108,48 +108,21 @@ namespace ChessServer
                         if (Users.TryGetValue(pulserequest.From, out geted))
                         {
                             pulseresponse.Status = Statuses.OK;
-                            pulseresponse.Messages = geted.Messages;
                             geted.lostbeats = 0;
+                            if (geted.Messages.Capacity != 0)
+                            {
+                                foreach (var element in geted.Messages)
+                                {
+                                    pulseresponse.Messages.Add(element);
+                                }
+                                geted.Messages.Clear();
+                            }
                         }
                         else
                         {
                             pulseresponse.Status = Statuses.NoUser;
                         }
-                        pulseresponse.Messages.Add(new Protocol.Transport.MessageChat("Hello"));
                         resp = pulseresponse;
-                        geted.Messages.Clear();
-                    }
-                    break;
-
-                case "chat":
-                    {
-                        var chatrequest = JsonConvert.DeserializeObject<ChatRequest>(request);
-                        var chatresponse = new ChatResponse();
-                        if (Games[chatrequest.GameID.Value].PlayerWhite.Name == chatrequest.From)
-                        {
-                            if ((Games[chatrequest.GameID.Value].PlayerBlack != null))
-                            {
-                                Games[chatrequest.GameID.Value].PlayerBlack.Messages.Add(new MessageChat(chatrequest.From + " says: " + chatrequest.ChatString));
-                                chatresponse.Status = Statuses.OK;
-                            }
-                            else 
-                            {
-                                chatresponse.Status = Statuses.NoUser;
-                            }
-                        }
-                        if (Games[chatrequest.GameID.Value].PlayerBlack.Name == chatrequest.From)
-                        {
-                            if ((Games[chatrequest.GameID.Value].PlayerWhite != null))
-                            {
-                                Games[chatrequest.GameID.Value].PlayerWhite.Messages.Add(new MessageChat(chatrequest.ChatString));
-                                chatresponse.Status = Statuses.OK;
-                            }
-                            else
-                            {
-                                chatresponse.Status = Statuses.NoUser;
-                            }
-                        }
-                        resp = chatresponse;
                     }
                     break;
 
@@ -160,6 +133,41 @@ namespace ChessServer
                         userlistresponse.Users = Users.Keys.ToArray();
                         userlistresponse.Status = Statuses.OK;
                         resp = userlistresponse;
+                    }
+                    break;
+
+                case "chat":
+                    {
+                        var chatRequest = JsonConvert.DeserializeObject<ChatRequest>(request);
+                        var chatResponse = new ChatResponse();
+                        if (Games.ContainsKey(chatRequest.GameID))
+                        {
+                            if (Games[chatRequest.GameID].PlayerWhite.Name == chatRequest.From)
+                            {
+                                User geted;
+                                if (Users.TryGetValue(Games[chatRequest.GameID].PlayerBlack.Name, out geted))
+                                {
+                                    geted.Messages.Add(chatRequest.From + " says: " + chatRequest.SayString);
+                                }
+                            }
+                            else
+                            {
+                                if (Games[chatRequest.GameID].PlayerBlack.Name == chatRequest.From)
+                                {
+                                    User geted;
+                                    if (Users.TryGetValue(Games[chatRequest.GameID].PlayerWhite.Name, out geted))
+                                    {
+                                        geted.Messages.Add(chatRequest.From + " says: " + chatRequest.SayString);
+                                    }
+                                }
+                            }
+                            chatResponse.Status = Statuses.OK;
+                        }
+                        else
+                        {
+                            chatResponse.Status = Statuses.GameNotFound;
+                        }
+                        resp = chatResponse;
                     }
                     break;
 
@@ -286,18 +294,28 @@ namespace ChessServer
                                 resp = moveResponse;
                                 break;
                             }
-                            
 
                             moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
+
                             if (Games[moveRequest.GameID].Turn == Side.WHITE)
                             {
                                 Games[moveRequest.GameID].Turn = Side.BLACK;
+                                User geted;
+                                if (Users.TryGetValue(Games[moveRequest.GameID].PlayerBlack.Name, out geted))
+                                {
+                                    geted.Messages.Add("Opponent move: " + moveRequest.From + '-' + moveRequest.To);
+                                }
                             }
                             else
                             {
                                 if (Games[moveRequest.GameID].Turn == Side.BLACK)
                                 {
                                     Games[moveRequest.GameID].Turn = Side.WHITE;
+                                    User geted;
+                                    if (Users.TryGetValue(Games[moveRequest.GameID].PlayerWhite.Name, out geted))
+                                    {
+                                        geted.Messages.Add("Opponent move: " + moveRequest.From + '-' + moveRequest.To);
+                                    }
                                 }
                             }
                             moveResponse.Status = Statuses.OK;
