@@ -35,6 +35,14 @@ namespace ChessConsole
             if (response.Status != Statuses.OK)
             {
                 Console.WriteLine("Connection lost!");
+                if (CurrentGame != null)
+                {
+                    CurrentGame = null;
+                }
+                if (Name != null)
+                {
+                    Name = null;
+                }
                 StopPulse();
             }
             if (response.Messages.Capacity != 0)
@@ -42,6 +50,14 @@ namespace ChessConsole
                 foreach (var element in response.Messages)
                 {
                     Console.WriteLine(element);
+                    if (element == "Opponent abandoned the game.")
+                    {
+                        CurrentGame = null;
+                    }
+                    if (element == "Opponent lost connection.")
+                    {
+                        CurrentGame = null;
+                    }
                 }
             }
         }

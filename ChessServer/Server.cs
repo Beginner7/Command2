@@ -31,6 +31,27 @@ namespace ChessServer
             {
                 if (element.Value.lostbeats > 10)
                 {
+                    foreach (var elementGame in Games)
+                    {
+                        if ((elementGame.Value.PlayerWhite.Name == element.Key))
+                        {
+                            User geted;
+                            if (Users.TryGetValue(elementGame.Value.PlayerBlack.Name, out geted))
+                            {
+                                geted.Messages.Add("Opponent lost connection.");
+                                elementGame.Value.act = Act.AbandonedByWhite;
+                            }
+                        }
+                        if ((elementGame.Value.PlayerWhite.Name == element.Key))
+                        {
+                            User geted;
+                            if (Users.TryGetValue(elementGame.Value.PlayerWhite.Name, out geted))
+                            {
+                                geted.Messages.Add("Opponent lost connection.");
+                                elementGame.Value.act = Act.AbandonedByBlack;
+                            }
+                        }
+                    }
                     User removed;
                     Users.TryRemove(element.Value.Name, out removed);
                 }
@@ -60,7 +81,7 @@ namespace ChessServer
 
             return Side.NONE;
         }
-        
+
         public string ProcessRequest(string request)
         {
             var req = JsonConvert.DeserializeObject<Request>(request);
@@ -69,70 +90,107 @@ namespace ChessServer
             {
                 case "adduser":
                     {
-                        var adduserrequest = JsonConvert.DeserializeObject<AddUserRequest>(request);
-                        var adduserresponse = new AddUserResponse();
-                        if (Users.TryAdd(adduserrequest.UserName, new User { Name = adduserrequest.UserName }))
+                        var addUserRequest = JsonConvert.DeserializeObject<AddUserRequest>(request);
+                        var addUserResponse = new AddUserResponse();
+                        if (Users.TryAdd(addUserRequest.UserName, new User { Name = addUserRequest.UserName }))
                         {
-                            adduserresponse.Status = Statuses.OK;
+                            addUserResponse.Status = Statuses.OK;
                         }
                         else
                         {
-                            adduserresponse.Status = Statuses.DuplicateUser;
+                            addUserResponse.Status = Statuses.DuplicateUser;
                         }
-                        resp = adduserresponse;
+                        resp = addUserResponse;
                     }
                     break;
 
                 case "deleteuser":
                     {
-                        var deleteuserrequest = JsonConvert.DeserializeObject<DeleteUserRequest>(request);
-                        var deleteuserresponse = new DeleteUserResponse();
+                        var deleteUserRequest = JsonConvert.DeserializeObject<DeleteUserRequest>(request);
+                        var deleteUserResponse = new DeleteUserResponse();
                         User removed;
-                        if (Users.TryRemove(deleteuserrequest.UserName, out removed))
+                        if (Users.TryRemove(deleteUserRequest.UserName, out removed))
                         {
-                            deleteuserresponse.Status = Statuses.OK;
+                            deleteUserResponse.Status = Statuses.OK;
                         }
                         else
                         {
-                            deleteuserresponse.Status = Statuses.DuplicateUser;
+                            deleteUserResponse.Status = Statuses.DuplicateUser;
                         }
-                        resp = deleteuserresponse;
+                        resp = deleteUserResponse;
+                    }
+                    break;
+
+                case "disconnect":
+                    {
+                        var disconnectRequest = JsonConvert.DeserializeObject<DisconnectRequest>(request);
+                        var disconnectResponse = new DisconnectResponse();
+                        if (Games[disconnectRequest.GameID].PlayerWhite == null ||
+                            Games[disconnectRequest.GameID].PlayerBlack == null)
+                        {
+                            Games[disconnectRequest.GameID].act = Act.Cancled;
+                            disconnectResponse.Status = Statuses.OK;
+                        }
+                        else
+                        {
+                            if (disconnectRequest.User == Games[disconnectRequest.GameID].PlayerWhite.Name)
+                            {
+                                Games[disconnectRequest.GameID].act = Act.AbandonedByWhite;
+                                User geted;
+                                if (Users.TryGetValue(Games[disconnectRequest.GameID].PlayerBlack.Name, out geted))
+                                {
+                                    geted.Messages.Add("Opponent abandoned the game.");
+                                }
+                                disconnectResponse.Status = Statuses.OK;
+                            }
+                            if (disconnectRequest.User == Games[disconnectRequest.GameID].PlayerBlack.Name)
+                            {
+                                Games[disconnectRequest.GameID].act = Act.AbandonedByBlack;
+                                User geted;
+                                if (Users.TryGetValue(Games[disconnectRequest.GameID].PlayerWhite.Name, out geted))
+                                {
+                                    geted.Messages.Add("Opponent abandoned the game.");
+                                }
+                                disconnectResponse.Status = Statuses.OK;
+                            }
+                        }
+                        resp = disconnectResponse;
                     }
                     break;
 
                 case "pulse":
                     {
-                        var pulserequest = JsonConvert.DeserializeObject<PulseRequest>(request);
-                        var pulseresponse = new PulseResponse();
+                        var pulseRequest = JsonConvert.DeserializeObject<PulseRequest>(request);
+                        var pulseResponse = new PulseResponse();
                         User geted;
-                        if (Users.TryGetValue(pulserequest.From, out geted))
+                        if (Users.TryGetValue(pulseRequest.From, out geted))
                         {
-                            pulseresponse.Status = Statuses.OK;
+                            pulseResponse.Status = Statuses.OK;
                             geted.lostbeats = 0;
                             if (geted.Messages.Capacity != 0)
                             {
                                 foreach (var element in geted.Messages)
                                 {
-                                    pulseresponse.Messages.Add(element);
+                                    pulseResponse.Messages.Add(element);
                                 }
                                 geted.Messages.Clear();
                             }
                         }
                         else
                         {
-                            pulseresponse.Status = Statuses.NoUser;
+                            pulseResponse.Status = Statuses.NoUser;
                         }
-                        resp = pulseresponse;
+                        resp = pulseResponse;
                     }
                     break;
 
                 case "userlist":
                     {
-                        var userlistrequest = JsonConvert.DeserializeObject<UserListRequest>(request);
-                        var userlistresponse = new UserListResponse();
-                        userlistresponse.Users = Users.Keys.ToArray();
-                        userlistresponse.Status = Statuses.OK;
-                        resp = userlistresponse;
+                        var userListRequest = JsonConvert.DeserializeObject<UserListRequest>(request);
+                        var userListResponse = new UserListResponse();
+                        userListResponse.Users = Users.Keys.ToArray();
+                        userListResponse.Status = Statuses.OK;
+                        resp = userListResponse;
                     }
                     break;
 
@@ -173,11 +231,11 @@ namespace ChessServer
 
                 case "movelist":
                     {
-                        var movelistrequest = JsonConvert.DeserializeObject<MoveListRequest>(request);
-                        var movelistresponse = new MoveListResponse();
-                        movelistresponse.Moves = Games[movelistrequest.Game].Moves;
-                        movelistresponse.Status = Statuses.OK;
-                        resp = movelistresponse;
+                        var moveListRequest = JsonConvert.DeserializeObject<MoveListRequest>(request);
+                        var moveListResponse = new MoveListResponse();
+                        moveListResponse.Moves = Games[moveListRequest.Game].Moves;
+                        moveListResponse.Status = Statuses.OK;
+                        resp = moveListResponse;
                     }
                     break;
 
@@ -185,6 +243,7 @@ namespace ChessServer
                     {
                         var createGameRequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
                         var game = new Game(createGameRequaest.NewPlayer);
+                        game.act = Act.WaitingOpponent;
                         var createGameResponse = new CreateGameResponse();
                         if (Games.TryAdd(game.ID, game))
                         {
@@ -215,14 +274,27 @@ namespace ChessServer
                         {
                             if (Games[connectToGameRequest.GameID].PlayerBlack == null)
                             {
+                                Games[connectToGameRequest.GameID].act = Act.InProgress;
                                 Games[connectToGameRequest.GameID].PlayerBlack = connectToGameRequest.NewPlayer;
+                                Games[connectToGameRequest.GameID].PlayerWhite.Messages.Add("Opponent joined the game");
+                                User geted;
+                                if (Users.TryGetValue(Games[connectToGameRequest.GameID].PlayerWhite.Name, out geted))
+                                {
+                                    geted.Messages.Add("Opponent joined the game");
+                                }
                                 connectToGameResponse.Status = Statuses.OK;
                             }
                             else
                             {
                                 if (Games[connectToGameRequest.GameID].PlayerWhite == null)
                                 {
+                                    Games[connectToGameRequest.GameID].act = Act.InProgress;
                                     Games[connectToGameRequest.GameID].PlayerWhite = connectToGameRequest.NewPlayer;
+                                    User geted;
+                                    if (Users.TryGetValue(Games[connectToGameRequest.GameID].PlayerBlack.Name, out geted))
+                                    {
+                                        geted.Messages.Add("Opponent joined the game");
+                                    }
                                     connectToGameResponse.Status = Statuses.OK;
                                 }
                                 else
@@ -241,30 +313,31 @@ namespace ChessServer
 
                 case "echo":
                     {
-                        var echorequest = JsonConvert.DeserializeObject<EchoRequest>(request);
-                        var echoresponse = new EchoResponse();
-                        echoresponse.EchoString = echorequest.EchoString;
-                        echoresponse.Status = Statuses.OK;
-                        resp = echoresponse;
+                        var echoRequest = JsonConvert.DeserializeObject<EchoRequest>(request);
+                        var echoResponse = new EchoResponse();
+                        echoResponse.EchoString = echoRequest.EchoString;
+                        echoResponse.Status = Statuses.OK;
+                        resp = echoResponse;
                     }
                     break;
 
                 case "gamestat":
                     {
-                        var gamestatrequest = JsonConvert.DeserializeObject<GameStatRequest>(request);
-                        var gamestatresponse = new GameStatResponse();
-                        gamestatresponse.ID = gamestatrequest.gameID;
-                        if (Games[gamestatrequest.gameID].PlayerBlack != null)
+                        var gameStatRequest = JsonConvert.DeserializeObject<GameStatRequest>(request);
+                        var gameStatResponse = new GameStatResponse();
+                        gameStatResponse.ID = gameStatRequest.gameID;
+                        gameStatResponse.Act = Games[gameStatRequest.gameID].act;
+                        if (Games[gameStatRequest.gameID].PlayerBlack != null)
                         {
-                            gamestatresponse.PlayerBlack = Games[gamestatrequest.gameID].PlayerBlack.Name;
+                            gameStatResponse.PlayerBlack = Games[gameStatRequest.gameID].PlayerBlack.Name;
                         }
-                        if (Games[gamestatrequest.gameID].PlayerWhite != null)
+                        if (Games[gameStatRequest.gameID].PlayerWhite != null)
                         {
-                            gamestatresponse.PlayerWhite = Games[gamestatrequest.gameID].PlayerWhite.Name;
+                            gameStatResponse.PlayerWhite = Games[gameStatRequest.gameID].PlayerWhite.Name;
                         }
-                        gamestatresponse.Turn = Games[gamestatrequest.gameID].Turn;
-                        gamestatresponse.Status = Statuses.OK;
-                        resp = gamestatresponse;
+                        gameStatResponse.Turn = Games[gameStatRequest.gameID].Turn;
+                        gameStatResponse.Status = Statuses.OK;
+                        resp = gameStatResponse;
                     }
                     break;
 
@@ -274,51 +347,58 @@ namespace ChessServer
                         var moveResponse = new MoveResponse();
                         if (Games.ContainsKey(moveRequest.GameID))
                         {
-                            if (UserSide(moveRequest.Player.Name, moveRequest.GameID) != Games[moveRequest.GameID].Turn)
+                            if (!(Games[moveRequest.GameID].act == Act.WaitingOpponent))
                             {
-                                moveResponse.Status = Statuses.OpponentTurn;
-                                resp = moveResponse;
-                                break;
-                            }
-                            var moves = Games[moveRequest.GameID].Moves;
-                            var attackMap = new GameLogic.AttackMap(moves);
-                            if (!Board.CheckNotation(moveRequest.From) || !Board.CheckNotation(moveRequest.To))
-                            {
-                                moveResponse.Status = Statuses.WrongMoveNotation;
-                                resp = moveResponse;
-                                break;
-                            }
-                            if (!attackMap[moveRequest.To].Contains(attackMap.board[moveRequest.From]) || attackMap.board[moveRequest.From].side != UserSide(moveRequest.Player.Name, moveRequest.GameID))
-                            {
-                                moveResponse.Status = Statuses.WrongMove;
-                                resp = moveResponse;
-                                break;
-                            }
-
-                            moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
-
-                            if (Games[moveRequest.GameID].Turn == Side.WHITE)
-                            {
-                                Games[moveRequest.GameID].Turn = Side.BLACK;
-                                User geted;
-                                if (Users.TryGetValue(Games[moveRequest.GameID].PlayerBlack.Name, out geted))
+                                if (UserSide(moveRequest.Player.Name, moveRequest.GameID) != Games[moveRequest.GameID].Turn)
                                 {
-                                    geted.Messages.Add("Opponent move: " + moveRequest.From + '-' + moveRequest.To);
+                                    moveResponse.Status = Statuses.OpponentTurn;
+                                    resp = moveResponse;
+                                    break;
                                 }
-                            }
-                            else
-                            {
-                                if (Games[moveRequest.GameID].Turn == Side.BLACK)
+                                var moves = Games[moveRequest.GameID].Moves;
+                                var attackMap = new GameLogic.AttackMap(moves);
+                                if (!Board.CheckNotation(moveRequest.From) || !Board.CheckNotation(moveRequest.To))
                                 {
-                                    Games[moveRequest.GameID].Turn = Side.WHITE;
+                                    moveResponse.Status = Statuses.WrongMoveNotation;
+                                    resp = moveResponse;
+                                    break;
+                                }
+                                if (!attackMap[moveRequest.To].Contains(attackMap.board[moveRequest.From]) || attackMap.board[moveRequest.From].side != UserSide(moveRequest.Player.Name, moveRequest.GameID))
+                                {
+                                    moveResponse.Status = Statuses.WrongMove;
+                                    resp = moveResponse;
+                                    break;
+                                }
+
+                                moves.Add(new Move { From = moveRequest.From, To = moveRequest.To, Player = moveRequest.Player });
+
+                                if (Games[moveRequest.GameID].Turn == Side.WHITE)
+                                {
+                                    Games[moveRequest.GameID].Turn = Side.BLACK;
                                     User geted;
-                                    if (Users.TryGetValue(Games[moveRequest.GameID].PlayerWhite.Name, out geted))
+                                    if (Users.TryGetValue(Games[moveRequest.GameID].PlayerBlack.Name, out geted))
                                     {
                                         geted.Messages.Add("Opponent move: " + moveRequest.From + '-' + moveRequest.To);
                                     }
                                 }
+                                else
+                                {
+                                    if (Games[moveRequest.GameID].Turn == Side.BLACK)
+                                    {
+                                        Games[moveRequest.GameID].Turn = Side.WHITE;
+                                        User geted;
+                                        if (Users.TryGetValue(Games[moveRequest.GameID].PlayerWhite.Name, out geted))
+                                        {
+                                            geted.Messages.Add("Opponent move: " + moveRequest.From + '-' + moveRequest.To);
+                                        }
+                                    }
+                                }
+                                moveResponse.Status = Statuses.OK;
                             }
-                            moveResponse.Status = Statuses.OK;
+                            else
+                            {
+                                moveResponse.Status = Statuses.NoUser;
+                            }
                         }
                         else
                         {

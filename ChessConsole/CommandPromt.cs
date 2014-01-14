@@ -175,6 +175,20 @@ namespace ChessConsole
                     }
                     break;
 
+                case "disconnect":
+                case "sc":
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("You are not in game.");
+                        break;
+                    }
+                    var disconnectProvider = new DisconnectProvider();
+                    if (disconnectProvider.Disconnect())
+                    {
+                        CurrentUser.CurrentGame = null;
+                    }
+                    break;
+
                 case "gamelist":
                 case "gl":
                     var gameListProvider = new GameListProvider();

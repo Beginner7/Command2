@@ -85,6 +85,8 @@
     <Compile Include="EchoResponse.cs" />
     <Compile Include="MoveListRequest.cs" />
     <Compile Include="MoveListResponse.cs" />
+    <Compile Include="DisconnectRequest.cs" />
+    <Compile Include="DisconnectResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
