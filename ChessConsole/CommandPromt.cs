@@ -106,6 +106,11 @@ namespace ChessConsole
 
                 case "logout":
                     var deleteUserProvider = new DeleteUserProvider();
+                    if (CurrentUser.CurrentGame != null)
+                    {
+                        Console.WriteLine("Finish game first.");
+                        break;
+                    }
                     if (CurrentUser.Name != null)
                     {
                         if (deleteUserProvider.Delete(CurrentUser.Name))
@@ -172,6 +177,20 @@ namespace ChessConsole
                     {
                         Console.WriteLine("Successfully created game with id " + gameID + '.');
                         CurrentUser.CurrentGame = gameID;
+                    }
+                    break;
+
+                case "disconnect":
+                case "sc":
+                    if (CurrentUser.CurrentGame == null)
+                    {
+                        Console.WriteLine("You are not in game.");
+                        break;
+                    }
+                    var disconnectProvider = new DisconnectProvider();
+                    if (disconnectProvider.Disconnect())
+                    {
+                        CurrentUser.CurrentGame = null;
                     }
                     break;
 

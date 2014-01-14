@@ -22,6 +22,9 @@ namespace ChessConsole
                 case Statuses.OK:
                     Console.WriteLine("Move done.");
                     break;
+                case Statuses.NoUser:
+                    Console.WriteLine("No opponent yet.");
+                    break;
                 case Statuses.OpponentTurn:
                     Console.WriteLine("Now is opponent turn.");
                     break;

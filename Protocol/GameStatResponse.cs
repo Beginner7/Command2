@@ -14,5 +14,6 @@ namespace Protocol
         public string PlayerWhite;
         public string PlayerBlack;
         public Side Turn;
+        public Act Act;
     }
 }

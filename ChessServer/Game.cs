@@ -12,6 +12,7 @@ namespace ChessServer
 {
     public class Game
     {
+        public Act act;
         public readonly int ID;
         public User PlayerWhite;
         public User PlayerBlack;
