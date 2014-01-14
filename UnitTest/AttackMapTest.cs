@@ -49,11 +49,10 @@ namespace UnitTest
             }
         }
         /// <summary>
-        /// ДОДЕЛАТЬ!!!
-        /// TODO: Одна ладья в центре поля и чужие фигуры вокруг
+        /// Одна ладья в центре поля и чужие фигуры вокруг
         /// </summary>
         [TestMethod]
-        public void BlackRookTest()
+        public void WhiteRookTest()
         {
             //a - arange
             Board board = new Board();
@@ -93,10 +92,90 @@ namespace UnitTest
         }
 
         /// <summary>
+        /// Одна ладья в центре поля и чужие фигуры вокруг
+        /// </summary>
+        [TestMethod]
+        public void BlackRookTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var rook = new FigureRook(Side.BLACK);
+            var knight = new FigureKnight(Side.WHITE);
+            var bishop = new FigureBishop(Side.WHITE);
+            var pawn = new FigurePawn(Side.WHITE);
+            var queen = new FigureQueen(Side.WHITE);
+            board["e4"] = rook;
+            board["e3"] = knight;
+            board["e5"] = bishop;
+            board["d4"] = pawn;
+            board["f4"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= Board.BoardSize; j++)
+                {
+                    if (j == 4)
+                    {
+                        if (i == 'f' || i == 'd')
+                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                        if (i == 'e')
+                            Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
+                    }
+                    else if (j == 3 || j == 5)
+                    {
+                        if (i == 'e')
+                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                    }
+                    else
+                        Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
+                }
+            }
+        }
+
+        /// <summary>
         /// Одна ладья в центре поля и свои вокруг
         /// </summary>
         [TestMethod]
-        public void WhiteRookTest()
+        public void BlackRookVsBlackTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var rook = new FigureRook(Side.BLACK);
+            var knight = new FigureKnight(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            var bishop = new FigureBishop(Side.BLACK);
+            var rook2 = new FigureRook(Side.BLACK);
+            board["e4"] = rook;
+            board["e2"] = rook2;
+            board["e6"] = knight;
+            board["f4"] = queen;
+            board["b4"] = bishop;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                if (j != 4 && j < 6 && j > 2)
+                    Assert.IsTrue(map["e" + j].Contains(rook));
+                if (j >= 6 && j < 2)
+                    Assert.IsTrue(!map["e" + j].Contains(rook));
+            }
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                if (i != 'e' && i < 'f' && i > 'b')
+                    Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
+            }
+        }
+
+        /// <summary>
+        /// Одна ладья в центре поля и свои вокруг
+        /// </summary>
+        [TestMethod]
+        public void WhiteRookVsWhiteTest()
         {
             //a - arange
             Board board = new Board();
@@ -128,6 +207,7 @@ namespace UnitTest
                     Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
             }
         }
+
 
         /// <summary>
         /// одна белая пешка
@@ -222,7 +302,11 @@ namespace UnitTest
                 }
             }
         }
-        
+
+
+        /// <summary>
+        /// Слон 
+        /// </summary>
         [TestMethod]
         public void SimpleBishopTest()
         {
@@ -248,13 +332,201 @@ namespace UnitTest
                         Assert.IsFalse(map[i.ToString() + j].Contains(bishop));
                     }
                 }
-            }             
-            
+            }
+
+        }
+        /// <summary>
+        ///  Белый слон окружен черными фигурами
+        /// </summary>
+        [TestMethod]
+        public void WhiteBishopTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.WHITE);
+            var knight = new FigureKnight(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+            board["e4"] = bishop;
+            board["c6"] = knight;
+            board["c2"] = rook;
+            board["g6"] = pawn;
+            board["g2"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+
+            //a - assert
+            List<string> validCells = new List<string>
+            {
+                "f5","g6",
+                "d3","c2",
+                "d5","c6",
+                "f3","g2"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(bishop));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(bishop));
+                    }
+
+                }
+            }
         }
 
         /// <summary>
-        /// один конь и чужие вокруг 
+        ///  Черный слон окружен белыми фигурами
         /// </summary>
+        [TestMethod]
+        public void BlackBishopTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.BLACK);
+            var knight = new FigureKnight(Side.WHITE);
+            var rook = new FigureRook(Side.WHITE);
+            var queen = new FigureQueen(Side.WHITE);
+            var pawn = new FigurePawn(Side.WHITE);
+            board["e5"] = bishop;
+            board["c3"] = knight;
+            board["c7"] = rook;
+            board["g3"] = pawn;
+            board["g7"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+
+            //a - assert
+            List<string> validCells = new List<string>
+            {
+                "f6","g7",
+                "d4","c3",
+                "d6","c7",
+                "f4","g3"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(bishop));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(bishop));
+                    }
+
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Белый слон окружен белыми фигурами
+        /// </summary>
+        [TestMethod]
+        public void WhiteBishopVsWhiteTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.WHITE);
+            var knight = new FigureKnight(Side.WHITE);
+            var rook = new FigureRook(Side.WHITE);
+            var queen = new FigureQueen(Side.WHITE);
+            var pawn = new FigurePawn(Side.WHITE);
+            board["e4"] = bishop;
+            board["c6"] = knight;
+            board["c2"] = rook;
+            board["g6"] = pawn;
+            board["g2"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+
+            //a - assert
+            List<string> validCells = new List<string>
+            {
+                "f5",
+                "d3",
+                "d5",
+                "f3"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(bishop));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(bishop));
+                    }
+
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Черный слон окружен черными фигурами
+        /// </summary>
+        [TestMethod]
+        public void BlackBishopVsBlackTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.BLACK);
+            var knight = new FigureKnight(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+            board["e5"] = bishop;
+            board["c3"] = knight;
+            board["c7"] = rook;
+            board["g3"] = pawn;
+            board["g7"] = queen;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+
+            //a - assert
+            List<string> validCells = new List<string>
+            {
+                "f6",
+                "d4",
+                "d6",
+                "f4"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(bishop));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(bishop));
+                    }
+
+                }
+            }
+        }
+
         [TestMethod]
         public void WhiteKnightTest()
         {
@@ -288,49 +560,8 @@ namespace UnitTest
         }
 
 
-            [TestMethod]
-         public void WhiteBishopTest()
-        {
-            //a - arange
-            Board board = new Board();
-            var bishop = new FigureBishop(Side.WHITE);
-            var knight = new FigureKnight(Side.BLACK);
-            var rook = new FigureRook(Side.BLACK);
-            var queen = new FigureQueen(Side.BLACK);
-            var pawn = new FigurePawn(Side.BLACK);
-            board["e4"] = bishop;
-            board["c6"] = knight;
-            board["c2"] = rook;
-            board["g6"] = pawn;
-            board["g2"] = queen;
 
-            //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
 
-            //a - assert
-            List<string> validCells = new List<string>
-            {
-                "f5","g6",
-                "d3","c2",
-                "d5","c6",
-                "f3","g2"
-            };
-                for (int j = 1; j <= Board.BoardSize; j++)
-            {
-                for (char i = 'a'; i <= 'h'; i++)
-                {
-                    string cell = i.ToString() + j;
-                    if (validCells.Contains(cell)) {
-                        Assert.IsTrue(map[cell].Contains(bishop));
-                    }
-                    else
-                    {
-                        Assert.IsFalse(map[cell].Contains(bishop));
-                    }
-                   
-                }
-            }
-        }
         /// <summary>
         /// один конь на поле 
         /// </summary>
@@ -419,7 +650,6 @@ namespace UnitTest
         /// Одна ладья в центре поля
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void SimpleQueenTest()
         {
             //a - arange
@@ -429,30 +659,220 @@ namespace UnitTest
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
             //a - assert
+
+
+            List<string> validCells = new List<string>
+            {
+                "e3","f2",
+                "g1","c5",
+                "b6","a7",
+                "c3","b2",
+                "a1","e5",
+                "f6","g7",
+                "h8",
+                "d3","d2","d1",
+                "d5","d6","d7","d8",
+                "e4","f4","g4","h4",
+                "c4","b4","a4"
+            };
             for (int j = 1; j <= Board.BoardSize; j++)
             {
-                if (j != 4)
-                    Assert.IsTrue(map["d" + j].Contains(queen));
-
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(queen));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(queen));
+                    }
+                }
             }
-            for (char i = 'a'; i <= 'h'; i++)
-            {
-                if (i != 'd')
-                    Assert.IsTrue(map[i.ToString() + 4].Contains(queen));
-            }
+        }
 
-            int k = 1;
-            for (char i = 'a'; i <= 'h'; i++, k--)
-            {
-                if (i != 'd')
-                    Assert.IsTrue(map[i.ToString() + k].Contains(queen));
-            }
+        /// <summary>
+        /// Белая Королева окружена  Черными фигурами
+        /// </summary>
+        [TestMethod]
+        public void WhiteQueenVsBlackTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.BLACK);
+            var knight = new FigureKnight(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var queen2 = new FigureQueen(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+            var queen = new FigureQueen(Side.WHITE);
+            board["d1"] = rook;
+            board["d8"] = rook;
+            board["h4"] = knight;
+            board["a4"] = queen2;
 
-            k = Board.BoardSize;
-            for (char i = 'a'; i <= 'h'; i++, k--)
+
+            board["d4"] = queen;
+            board["a1"] = knight;
+            board["a7"] = rook;
+            board["g1"] = pawn;
+            board["h8"] = queen2;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+
+
+            List<string> validCells = new List<string>
             {
-                if (i != 'd')
-                    Assert.IsTrue(map[i.ToString() + k].Contains(queen));
+                "e3","f2",
+                "g1","c5",
+                "b6","a7",
+                "c3","b2",
+                "a1","e5",
+                "f6","g7",
+                "h8",
+                "d3","d2","d1",
+                "d5","d6","d7","d8",
+                "e4","f4","g4","h4",
+                "c4","b4","a4"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(queen));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(queen));
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Черная Королева окружена  Белыми фигурами
+        /// </summary>
+        [TestMethod]
+        public void BlackQueenVsWhiteTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.WHITE);
+            var knight = new FigureKnight(Side.WHITE);
+            var rook = new FigureRook(Side.WHITE);
+            var queen2 = new FigureQueen(Side.WHITE);
+            var pawn = new FigurePawn(Side.WHITE);
+            var queen = new FigureQueen(Side.BLACK);
+            board["d1"] = rook;
+            board["d8"] = rook;
+            board["h4"] = knight;
+            board["a4"] = queen2;
+
+            //Диагональ
+            board["d4"] = queen;
+            board["a1"] = knight;
+            board["a7"] = rook;
+            board["g1"] = pawn;
+            board["h8"] = queen2;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+
+
+            List<string> validCells = new List<string>
+            {
+                "e3","f2",
+                "g1","c5",
+                "b6","a7",
+                "c3","b2",
+                "a1","e5",
+                "f6","g7",
+                "h8",
+                "d3","d2","d1",
+                "d5","d6","d7","d8",
+                "e4","f4","g4","h4",
+                "c4","b4","a4"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(queen));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(queen));
+                    }
+                }
+            }
+        
+        }
+
+        /// <summary>
+        /// Черная Королева окружена Cвоими
+        /// </summary>
+        [TestMethod]
+        public void BlackQueenTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var bishop = new FigureBishop(Side.BLACK);
+            var knight = new FigureKnight(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var queen2 = new FigureQueen(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
+            board["d2"] = rook;
+            board["d7"] = rook;
+            board["g4"] = knight;
+            board["b4"] = queen2;
+
+
+            board["d4"] = queen;
+            board["b2"] = knight;
+            board["b6"] = rook;
+            board["f2"] = pawn;
+            board["g7"] = queen2;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+
+
+            List<string> validCells = new List<string>
+            {
+                "e3",
+                "c5",
+                "c3",
+                "e5",
+                "f6",
+                
+                "d3",
+                "d5","d6",
+                "e4","f4",
+                "c4"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(queen));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(queen));
+                    }
+                }
             }
         }
     
