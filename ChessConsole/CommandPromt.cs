@@ -106,6 +106,11 @@ namespace ChessConsole
 
                 case "logout":
                     var deleteUserProvider = new DeleteUserProvider();
+                    if (CurrentUser.CurrentGame != null)
+                    {
+                        Console.WriteLine("Finish game first.");
+                        break;
+                    }
                     if (CurrentUser.Name != null)
                     {
                         if (deleteUserProvider.Delete(CurrentUser.Name))
