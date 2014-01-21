@@ -15,6 +15,32 @@ namespace UnitTest
     public class AttackMapTest
     {
         /// <summary>
+        /// один король на поле
+        /// </summary>
+        [TestMethod]
+        public void NewWhiteKingTest()
+        {
+            ClassForTest tmpClass = new ClassForTest(new FigureKing(Side.WHITE), "e4");
+            //a - arange
+            tmpClass.board["f5"] = new FigurePawn(Side.WHITE);
+            tmpClass.board["f4"] = new FigurePawn(Side.BLACK);
+            tmpClass.board["f3"] = new FigureBishop(Side.BLACK);
+            tmpClass.board["e3"] = new FigureRook(Side.BLACK);
+            tmpClass.board["d3"] = new FigureQueen(Side.BLACK);
+
+            tmpClass.validCells = new List<string>
+            {
+                "d1", "d2",
+                "f1", "f2",
+                "e2"
+            };
+            //a - act
+            tmpClass.MapUpdate();
+            //a - assert
+            Assert.IsTrue(tmpClass.Check());
+        }
+
+        /// <summary>
         /// Тест карты атак для начальной позиции для доски. Не должно быть исключений при постройке этой карты атак.
         /// </summary>
         [TestMethod]
@@ -303,6 +329,42 @@ namespace UnitTest
             }
         }
 
+        /// <summary>
+        ///  Черная пешка
+        /// </summary>
+        [TestMethod]
+        public void BlackPawnSimpleTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.BLACK);
+            board["e7"] = pawn;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+
+            //a - assert
+            List<string> validCells = new List<string>
+            {
+                "e6","e5"
+            };
+            for (int j = 1; j <= Board.BoardSize; j++)
+            {
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    string cell = i.ToString() + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(pawn));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(pawn));
+                    }
+
+                }
+            }
+        }
 
         /// <summary>
         /// Слон 
@@ -382,6 +444,8 @@ namespace UnitTest
                 }
             }
         }
+
+
 
         /// <summary>
         ///  Черный слон окружен белыми фигурами
@@ -877,5 +941,5 @@ namespace UnitTest
         }
     
     }
-    
+
 }

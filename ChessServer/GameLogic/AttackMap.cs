@@ -145,7 +145,7 @@ namespace ChessServer.GameLogic
                                     {
                                         Figure f2 = board[i.ToString() + (k - 1)];
                                         if (f2.GetType() == typeof(FigureNone)) 
-                                            Attackers[i - 'a', k].Add(f);
+                                            Attackers[i - 'a', k - 2].Add(f);
                                     }
                                 }
                                 if (i + 1 <= 'h')
@@ -153,7 +153,7 @@ namespace ChessServer.GameLogic
                                     char l = (char)(i + 1);
                                     Figure f2 = board[l.ToString() + k];
 
-                                    if (f2.side != f.side) 
+                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone)) 
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                                 if (i - 1 >= 'a')
@@ -161,7 +161,7 @@ namespace ChessServer.GameLogic
                                     char l = (char)(i - 1);
                                     Figure f2 = board[l.ToString() + k];
 
-                                    if (f2.side != f.side) 
+                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone)) 
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                             }
