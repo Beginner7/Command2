@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Protocol.GameObjects;
 using Protocol.Transport;
 using Protocol;
+using System.Threading;
 
 namespace ChessServer
 {
@@ -19,11 +20,17 @@ namespace ChessServer
         public Side Turn = Side.WHITE;
         public DateTime TimeCreateGame = new DateTime(); //время создания игры
         public DateTime TimeStartGame; //время начала игры
+        public List<Move> Moves = new List<Move>();
+
         public static int GameIDSeq = 0;
+
+        private Random rnd = new Random();
+
         public Game(User user)
         {
-            ID = ++GameIDSeq;
-            Random rnd = new Random();
+            Interlocked.Increment(ref GameIDSeq);
+            ID = GameIDSeq;
+
             if (rnd.Next(0, 2) == 0)
             {
                 PlayerWhite = user;
@@ -33,6 +40,5 @@ namespace ChessServer
                 PlayerBlack = user;
             }
         }
-        public List<Move> Moves = new List<Move>();
     }
 }

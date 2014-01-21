@@ -241,8 +241,8 @@ namespace ChessServer
 
                 case "creategame":
                     {
-                        var createGameRequaest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
-                        var game = new Game(createGameRequaest.NewPlayer);
+                        var createGameRequest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
+                        var game = new Game(createGameRequest.NewPlayer);
                         game.act = Act.WaitingOpponent;
                         var createGameResponse = new CreateGameResponse();
                         if (Games.TryAdd(game.ID, game))
