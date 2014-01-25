@@ -12,7 +12,7 @@ namespace ChessConsole
     public static class CurrentUser
     {
         public static string Name;
-        public static int? CurrentGame;
+        public static int? CurrentGame = null;
         public static System.Timers.Timer PulseTimer = new System.Timers.Timer();
 
         public static void StartPulse()
@@ -45,21 +45,8 @@ namespace ChessConsole
                 }
                 StopPulse();
             }
-            if (response.Messages.Capacity != 0)
-            {
-                foreach (var element in response.Messages)
-                {
-                    Console.WriteLine(element);
-                    if (element == "Opponent abandoned the game.")
-                    {
-                        CurrentGame = null;
-                    }
-                    if (element == "Opponent lost connection.")
-                    {
-                        CurrentGame = null;
-                    }
-                }
-            }
+
+            MessageProcessor.Process(response.Messages);
         }
     }
 }

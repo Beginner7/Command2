@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol.Transport.Messages;
 
 namespace Protocol
 {
@@ -12,6 +13,6 @@ namespace Protocol
         public string Name;
         public int lostbeats = 0;
 
-        public List<string> Messages = new List<string>();
+        public List<Message> Messages = new List<Message>();
     }
 }

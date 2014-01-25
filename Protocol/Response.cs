@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol.Transport.Messages;
 
 namespace Protocol
 {
@@ -10,6 +11,6 @@ namespace Protocol
     {
         public string RequestCommand;
         public Statuses Status;
-        public List<string> Messages = new List<string>();
+        public List<Message> Messages = new List<Message>();
     }
 }

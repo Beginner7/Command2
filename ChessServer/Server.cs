@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Protocol;
 using Protocol.GameObjects;
 using Protocol.Transport;
+using Protocol.Transport.Messages;
 using System.Collections.Concurrent;
 using System.Timers;
 
@@ -38,7 +39,7 @@ namespace ChessServer
                             User geted;
                             if (Users.TryGetValue(elementGame.Value.PlayerBlack.Name, out geted))
                             {
-                                geted.Messages.Add("Opponent lost connection.");
+                                geted.Messages.Add(MessageSander.OpponentLostConnection());
                                 elementGame.Value.act = Act.AbandonedByWhite;
                             }
                         }
@@ -47,7 +48,7 @@ namespace ChessServer
                             User geted;
                             if (Users.TryGetValue(elementGame.Value.PlayerWhite.Name, out geted))
                             {
-                                geted.Messages.Add("Opponent lost connection.");
+                                geted.Messages.Add(MessageSander.OpponentLostConnection());
                                 elementGame.Value.act = Act.AbandonedByBlack;
                             }
                         }
@@ -139,7 +140,7 @@ namespace ChessServer
                                 User geted;
                                 if (Users.TryGetValue(Games[disconnectRequest.GameID].PlayerBlack.Name, out geted))
                                 {
-                                    geted.Messages.Add("Opponent abandoned the game.");
+                                    geted.Messages.Add(MessageSander.OpponentAbandonedGame());
                                 }
                                 disconnectResponse.Status = Statuses.OK;
                             }
@@ -149,7 +150,7 @@ namespace ChessServer
                                 User geted;
                                 if (Users.TryGetValue(Games[disconnectRequest.GameID].PlayerWhite.Name, out geted))
                                 {
-                                    geted.Messages.Add("Opponent abandoned the game.");
+                                    geted.Messages.Add(MessageSander.OpponentAbandonedGame());
                                 }
                                 disconnectResponse.Status = Statuses.OK;
                             }
@@ -181,6 +182,10 @@ namespace ChessServer
                             pulseResponse.Status = Statuses.NoUser;
                         }
                         resp = pulseResponse;
+                        if (resp.Messages.Count > 0)
+                        {
+                            int foo;
+                        }
                     }
                     break;
 
@@ -205,7 +210,7 @@ namespace ChessServer
                                 User geted;
                                 if (Users.TryGetValue(Games[chatRequest.GameID].PlayerBlack.Name, out geted))
                                 {
-                                    geted.Messages.Add(chatRequest.From + " says: " + chatRequest.SayString);
+                                    geted.Messages.Add(MessageSander.ChatMessage(chatRequest.From, chatRequest.SayString));
                                 }
                             }
                             else
@@ -215,7 +220,7 @@ namespace ChessServer
                                     User geted;
                                     if (Users.TryGetValue(Games[chatRequest.GameID].PlayerWhite.Name, out geted))
                                     {
-                                        geted.Messages.Add(chatRequest.From + " says: " + chatRequest.SayString);
+                                        geted.Messages.Add(MessageSander.ChatMessage(chatRequest.From, chatRequest.SayString));
                                     }
                                 }
                             }
@@ -276,11 +281,11 @@ namespace ChessServer
                             {
                                 Games[connectToGameRequest.GameID].act = Act.InProgress;
                                 Games[connectToGameRequest.GameID].PlayerBlack = connectToGameRequest.NewPlayer;
-                                Games[connectToGameRequest.GameID].PlayerWhite.Messages.Add("Opponent joined the game");
+                                Games[connectToGameRequest.GameID].PlayerWhite.Messages.Add(MessageSander.OpponentJoinedGame());
                                 User geted;
                                 if (Users.TryGetValue(Games[connectToGameRequest.GameID].PlayerWhite.Name, out geted))
                                 {
-                                    geted.Messages.Add("Opponent joined the game");
+                                    geted.Messages.Add(MessageSander.OpponentJoinedGame());
                                 }
                                 connectToGameResponse.Status = Statuses.OK;
                             }
@@ -293,7 +298,7 @@ namespace ChessServer
                                     User geted;
                                     if (Users.TryGetValue(Games[connectToGameRequest.GameID].PlayerBlack.Name, out geted))
                                     {
-                                        geted.Messages.Add("Opponent joined the game");
+                                        geted.Messages.Add(MessageSander.OpponentJoinedGame());
                                     }
                                     connectToGameResponse.Status = Statuses.OK;
                                 }
@@ -378,7 +383,7 @@ namespace ChessServer
                                     User geted;
                                     if (Users.TryGetValue(Games[moveRequest.GameID].PlayerBlack.Name, out geted))
                                     {
-                                        geted.Messages.Add("Opponent move: " + moveRequest.From + '-' + moveRequest.To);
+                                        geted.Messages.Add(MessageSander.OpponentMove(moveRequest.From, moveRequest.To));
                                     }
                                 }
                                 else
@@ -389,7 +394,7 @@ namespace ChessServer
                                         User geted;
                                         if (Users.TryGetValue(Games[moveRequest.GameID].PlayerWhite.Name, out geted))
                                         {
-                                            geted.Messages.Add("Opponent move: " + moveRequest.From + '-' + moveRequest.To);
+                                            geted.Messages.Add(MessageSander.OpponentMove(moveRequest.From, moveRequest.To));
                                         }
                                     }
                                 }

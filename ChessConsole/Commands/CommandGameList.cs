@@ -6,15 +6,21 @@ using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
-namespace ChessConsole
+namespace ChessConsole.Commands
 {
-    public class GameListProvider
+    public static class CommandGameList
     {
-        public IReadOnlyCollection<int> GetList()
+        public static int ArgsNeed = 0;
+ 
+        public static void Show()
         {
+            Console.WriteLine("Active games:");
             var request = new GameListRequest();
             var response = ServerProvider.MakeRequest<GameListResponse>(request);
-            return response.Games;
+            foreach (int element in response.Games)
+            {
+                Console.WriteLine(element);
+            }
         }
     }
 }

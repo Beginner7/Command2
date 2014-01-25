@@ -8,276 +8,139 @@ using Protocol.GameObjects;
 
 namespace ChessConsole
 {
-
-    class CommandPromt
+    public static class CommandPromt
     {
-        public bool CommandProcess(string in_command)
+        private static bool closing = false;
+
+        public static void CommandProcess()
         {
-            bool is_continue = true;
-            var command = in_command.Split(' ');
-            switch (command[0].ToLower())
+            while (!closing)
             {
-                case "":
-                    break;
-
-                case "me":
-                    if (CurrentUser.Name != null)
-                    {
-                        Console.WriteLine("You are logged as: " + CurrentUser.Name);
-                    }
-                    else
-                    {
-                        Console.WriteLine("You are not logged in.");
-                    }
-                    if (CurrentUser.CurrentGame != null)
-                    {
-                        Console.WriteLine("You are in game. ID: " + CurrentUser.CurrentGame);
-                    }
-                    else
-                    {
-                        Console.WriteLine("You are not in game.");
-                    }
-                    break;
-
-                case "showboard":
-                case "sb":
-                    Board gameboard = new Board();
-                    gameboard.InitialPosition();
-                    if (CurrentUser.CurrentGame == null)
-                    {
-                        Console.WriteLine("Dude! First connect to game.");
+                Console.Write('>');
+                string commandInput = Console.ReadLine();
+                var commandWords = commandInput.Split(' ');
+                switch (commandWords[0].ToLower())
+                {
+                    case "":
                         break;
-                    }
-                    var moveListProvider = new MoveListProvider();
-                    gameboard.ApplyMoves(moveListProvider.GetList());
-                    gameboard.ShowBoard();
-                    break;
 
-                case "gamestat":
-                case "gs":
-                    if (CurrentUser.CurrentGame == null)
-                    {
-                        Console.WriteLine("Dude! First connect to game.");
-                        break;
-                    }
-                    var gameStatProvider = new GameStatProvider(CurrentUser.CurrentGame.Value);
-                    break;
-
-                case "echo":
-                    var echoProvider = new EchoProvider();
-                    Console.WriteLine(echoProvider.Echo(command.Skip(1).StrJoin(' ')));
-                    break;
-
-                case "say":
-                    if (CurrentUser.CurrentGame == null)
-                    {
-                        Console.WriteLine("Dude! First connect to game.");
-                        break;
-                    }
-                    var chatProvider = new ChatProvider();
-                    chatProvider.Say(command.Skip(1).StrJoin(' '));
-                    break;
-
-                case "login":
-                    var addUserProvider = new AddUserProvider();
-
-                    if (CurrentUser.Name != null)
-                    {
-                        Console.WriteLine("logout first.");
-                        break;
-                    }
-
-                    if (command.Length < 2 || string.IsNullOrWhiteSpace(command[1]))
-                    {
-                        Console.WriteLine("Empty user name.");
-                        break;
-                    }
-                    if (addUserProvider.Add(command[1]))
-                    {
-                        CurrentUser.Name = command[1];
-                        CurrentUser.StartPulse();
-                        Console.WriteLine("Hello, " + CurrentUser.Name);
-                    }
-                    else
-                    {
-                        Console.WriteLine("User " + command[1] + " already logged in.");
-                    }
-                    break;
-
-                case "logout":
-                    var deleteUserProvider = new DeleteUserProvider();
-                    if (CurrentUser.CurrentGame != null)
-                    {
-                        Console.WriteLine("Finish game first.");
-                        break;
-                    }
-                    if (CurrentUser.Name != null)
-                    {
-                        if (deleteUserProvider.Delete(CurrentUser.Name))
+                    case "me":
+                        if (Utils.CheckArgs(Commands.CommandMe.ArgsNeed, commandWords.Length - 1))
                         {
-                            CurrentUser.Name = null;
-                            CurrentUser.StopPulse();
-                            Console.WriteLine("You succesfully logged out.");
+                            Commands.CommandMe.Show();
                         }
-                        else
+                        break;
+
+                    case "sb":
+                        if (Utils.CheckArgs(Commands.CommandShowBoard.ArgsNeed, commandWords.Length - 1))
                         {
-                            Console.WriteLine("Unknown error.");
+                            Commands.CommandShowBoard.ShowBoard();
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("You are not logged out.");
-                    }
-                    break;
+                        break;
 
-                case "userlist":
-                case "ul":
-                    var userListProvider = new UserListProvider();
-                    Console.WriteLine("Users online:");
-                    foreach (var element in userListProvider.GetList())
-                    {
-                        Console.WriteLine(element);
-                    }
-                    break;
+                    case "gs":
+                        if (Utils.CheckArgs(Commands.CommandGameStats.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandGameStats.Show();
+                        }
+                        break;
 
-                case "movelist":
-                case "ml":
-                    if (CurrentUser.CurrentGame == null)
-                    {
-                        Console.WriteLine("Dude! First connect to game.");
+                    case "echo":
+                        if (Utils.CheckArgs(Commands.CommandEcho.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandEcho.Echo(commandWords.Skip(1).StrJoin(' '));
+                        }
                         break;
-                    }
-                    moveListProvider = new MoveListProvider();
-                    Console.WriteLine("Moves from game \"" + CurrentUser.CurrentGame + "\":");
-                    foreach (Move element in moveListProvider.GetList())
-                    {
-                        Console.WriteLine(String.Format("{0}: {1}-{2}", element.Player.Name, element.From, element.To));
-                    }
-                    break;
 
-                case "creategame":
-                case "cg":
-                    var createGameProvider = new CreateGameProvider();
-                    if (CurrentUser.Name == null)
-                    {
-                        Console.WriteLine("You are not logged in.");
+                    case "say":
+                        if (Utils.CheckArgs(Commands.CommandSay.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandSay.Say(commandWords.Skip(1).StrJoin(' '));
+                        }
                         break;
-                    }
-                    if (CurrentUser.CurrentGame != null)
-                    {
-                        Console.WriteLine("You are in the game already.");
-                        break;
-                    }
-                    var gameID = createGameProvider.Create(CurrentUser.Name);
-                    if (!gameID.HasValue)
-                    {
-                        Console.WriteLine("Can't create game");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Successfully created game with id " + gameID + '.');
-                        CurrentUser.CurrentGame = gameID;
-                    }
-                    break;
 
-                case "disconnect":
-                case "sc":
-                    if (CurrentUser.CurrentGame == null)
-                    {
-                        Console.WriteLine("You are not in game.");
+                    case "login":
+                        if (Utils.CheckArgs(Commands.CommandLogin.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandLogin.Login(commandWords[1]);
+                        }
                         break;
-                    }
-                    var disconnectProvider = new DisconnectProvider();
-                    if (disconnectProvider.Disconnect())
-                    {
-                        CurrentUser.CurrentGame = null;
-                    }
-                    break;
 
-                case "gamelist":
-                case "gl":
-                    var gameListProvider = new GameListProvider();
-                    Console.WriteLine("Active games:");
-                    foreach (int element in gameListProvider.GetList())
-                    {
-                        Console.WriteLine(element);
-                    }
-                    break;
+                    case "logout":
+                        if (Utils.CheckArgs(Commands.CommandLogout.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandLogout.Logout();
+                        }
+                        break;
 
-                case "joingame":     
-                case "jg":
-                    var connectToGameProvider = new ConnectToGameProvider();
-                    if (CurrentUser.Name == null)
-                    {
-                        Console.WriteLine("You are not logged in.");
+                    case "ul":
+                        if (Utils.CheckArgs(Commands.CommandUserList.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandUserList.Show();
+                        }
                         break;
-                    }
-                    if (command.Length < 2 || string.IsNullOrWhiteSpace(command[1]))
-                    {
-                        Console.WriteLine("Empty game id.");
-                        break;
-                    }
-                    if (CurrentUser.CurrentGame != null)
-                    {
-                        Console.WriteLine("You are in the game already.");
-                        break;
-                    }
-                    int gameid;
-                    try
-                    {
-                        gameid = Convert.ToInt32(command[1]);
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("Game id should be integer number.");
-                        break;
-                    }
-                    if (connectToGameProvider.Connect(gameid, CurrentUser.Name)) {
-                        CurrentUser.CurrentGame = gameid;
-                        Console.WriteLine("You joined game " + gameid);
-                    }
-                    break;
-                    
-                case "move":
-                    var moveProvider = new MoveProvider();
-                    if (CurrentUser.Name == null)
-                    {
-                        Console.WriteLine("You are not logged in");
-                        break;
-                    }
-                    if (CurrentUser.CurrentGame == null)
-                    {
-                        Console.WriteLine("Dude! First connect to game.");
-                        break;
-                    }
-                    if (command.Length < 3 || string.IsNullOrWhiteSpace(command[1]) || string.IsNullOrWhiteSpace(command[2]))
-                    {
-                        Console.WriteLine("Incorrect syntax. Example(move e2 e4)");
-                        break;
-                    }
-                    moveProvider.Move(command[1], command[2], CurrentUser.Name, CurrentUser.CurrentGame.Value);
-                    break;
 
-                case "help":
-                    Console.WriteLine("echo <echo_string> - Эхо запрос на сервер");
-                    Console.WriteLine("login <user_name>  - Вход на сервер под ником user_name");
-                    Console.WriteLine("logout             - Выход из аккаунта");
-                    Console.WriteLine("userlist           - Список вошедших пользователей");
-                    Console.WriteLine("creategame         - Добавьте описание!");
-                    Console.WriteLine("gamelist           - Добавьте описание!");
-                    Console.WriteLine("joingame           - Добавьте описание!");
-                    break;
-                
-                case "exit":
-                    is_continue = false;
-                    break;
+                    case "ml":
+                        if (Utils.CheckArgs(Commands.CommandMoveList.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandMoveList.ShowList();
+                        }
+                        break;
 
-                default:
-                    Console.WriteLine("Unknown command: \"" + command[0] + '\"');
-                    break;
+                    case "cg":
+                        if (Utils.CheckArgs(Commands.CommandCreateGame.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandCreateGame.Create();
+                        }
+                        break;
+
+                    case "disconnect":
+                        if (Utils.CheckArgs(Commands.CommandDisconnect.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandDisconnect.Disconnect();
+                        }
+                        break;
+
+                    case "gl":
+                        if (Utils.CheckArgs(Commands.CommandGameList.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandGameList.Show();
+                        }
+                        break;
+
+                    case "jg":
+                        if (Utils.CheckArgs(Commands.CommandJoinGame.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandJoinGame.Join(commandWords[1]);
+                        }
+                        break;
+
+                    case "move":
+                        if (Utils.CheckArgs(Commands.CommandMove.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandMove.Move(commandWords[1], commandWords[2]);
+                        }
+                        break;
+
+                    case "help":
+                        if (Utils.CheckArgs(Commands.CommandHelp.ArgsNeed, commandWords.Length - 1))
+                        {
+                            Commands.CommandHelp.ShowHelp();
+                        }
+                        break;
+
+                    case "exit":
+                        if (Utils.CheckArgs(Commands.CommandExit.ArgsNeed, commandWords.Length - 1))
+                        {
+                            closing = Commands.CommandExit.Exit();
+                        }
+                        break;
+
+                    default:
+                        Console.WriteLine("Unknown command: '" + commandWords[0] + '\'');
+                        break;
+                }
             }
-
-            return is_continue;
         }
     }
 }

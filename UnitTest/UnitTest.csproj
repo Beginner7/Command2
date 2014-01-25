@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="AttackMapTest.cs" />
     <Compile Include="ClassForTest.cs" />
-    <Compile Include="GameLogicTest.cs" />
     <Compile Include="GameTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoardTest.cs" />

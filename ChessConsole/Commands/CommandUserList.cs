@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
-using System.Collections.Concurrent;
 
-namespace ChessConsole
+namespace ChessConsole.Commands
 {
-    public class UserListProvider
+    public static class CommandUserList
     {
-        public IReadOnlyCollection<string> GetList()
+        public static int ArgsNeed = 0;
+
+        public static void Show()
         {
             var request = new UserListRequest();
             var response = ServerProvider.MakeRequest<UserListResponse>(request);
-            return response.Users;
+            foreach (var element in response.Users)
+            {
+                Console.WriteLine(element);
+            }
         }
     }
 }

@@ -36,6 +36,7 @@ namespace Protocol.Transport
             HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
 
             string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
             return JsonConvert.DeserializeObject<T>(responseString);
         }
     }
