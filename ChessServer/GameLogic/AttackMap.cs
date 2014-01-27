@@ -11,8 +11,10 @@ namespace ChessServer.GameLogic
 {
     public class AttackMap
     {
-        public Board board {get; private set;}
+        public Board board { get; private set; }
         private List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
+        private List<Move> moves;
+
         public List<Figure> this[string cell]
         {
             set
@@ -24,7 +26,8 @@ namespace ChessServer.GameLogic
                 return Attackers[Board.GetCoords(cell).Item1, Board.GetCoords(cell).Item2];
             }
         }
-        public AttackMap(List<Move> moves, Board forceBoard= null)
+
+        public AttackMap(List<Move> moves, Board forceBoard = null)
         {
             if (forceBoard == null)
             {
@@ -33,15 +36,20 @@ namespace ChessServer.GameLogic
                 board.ApplyMoves(moves);
             }
             else
-                board=forceBoard;
-            for (int i = 0; i <  Board.BoardSize ; i++)
+            {
+                board = forceBoard;
+            }
+            this.moves = moves;
+
+            for (int i = 0; i < Board.BoardSize; i++)
             {
                 for (int j = 0; j < Board.BoardSize; j++)
                 {
-                    Attackers[i,j]=new List<Figure>();
+                    Attackers[i, j] = new List<Figure>();
                 }
             }
-            for (char i = 'a'; i <= 'h' ; i++)
+
+            for (char i = 'a'; i <= 'h'; i++)
             {
                 for (int j = 1; j <= Board.BoardSize; j++)
                 {
@@ -89,12 +97,23 @@ namespace ChessServer.GameLogic
                         if (y >= 1)
                             KingKnightStep(board, f, i, y);
 
+                        //if (board["a1"].GetType() == typeof(FigureRook) && board["a1"].side == Side.WHITE)
+                        char kingX = board.ReturnPosition(f).Item1;
+                        int kingY = board.ReturnPosition(f).Item2;
+                        if (kingX == 'e' && (kingY == 1 || kingY == 8))
+                        {
+                            if (board["a" + kingY.ToString()].GetType() == typeof(FigureRook))
+                                Castling(this.moves, board, f, board["a" + kingY.ToString()]);
+                            else if (board["h" + kingY.ToString()].GetType() == typeof(FigureRook))
+                                Castling(this.moves, board, f, board["h" + kingY.ToString()]);
+                        }
+
                         continue;
                     }
 
                     if (f.GetType() == typeof(FigurePawn))
                     {
-                        if (j + 1 <= Board.BoardSize && j - 1 >= 1 )
+                        if (j + 1 <= Board.BoardSize && j - 1 >= 1)
                         {
                             int k;
                             if (f.side == Side.WHITE)
@@ -108,7 +127,7 @@ namespace ChessServer.GameLogic
                                     if (j == 2) // первый или нет
                                     {
                                         Figure f2 = board[i.ToString() + (k + 1)];
-                                        if (f2.GetType() == typeof(FigureNone)) 
+                                        if (f2.GetType() == typeof(FigureNone))
                                             Attackers[i - 'a', k].Add(f);
                                     }
                                 }
@@ -144,7 +163,7 @@ namespace ChessServer.GameLogic
                                     if (j == Board.BoardSize - 1) // первый или нет
                                     {
                                         Figure f2 = board[i.ToString() + (k - 1)];
-                                        if (f2.GetType() == typeof(FigureNone)) 
+                                        if (f2.GetType() == typeof(FigureNone))
                                             Attackers[i - 'a', k - 2].Add(f);
                                     }
                                 }
@@ -153,7 +172,7 @@ namespace ChessServer.GameLogic
                                     char l = (char)(i + 1);
                                     Figure f2 = board[l.ToString() + k];
 
-                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone)) 
+                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone))
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                                 if (i - 1 >= 'a')
@@ -161,11 +180,11 @@ namespace ChessServer.GameLogic
                                     char l = (char)(i - 1);
                                     Figure f2 = board[l.ToString() + k];
 
-                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone)) 
+                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone))
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                             }
-                            
+
                         }
                         continue;
                     }
@@ -200,7 +219,7 @@ namespace ChessServer.GameLogic
                         continue;
                     }
 
-                    if (f.GetType()==typeof(FigureKnight))
+                    if (f.GetType() == typeof(FigureKnight))
                     {
                         char x = (char)(i + 2);
                         int y;
@@ -282,7 +301,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
 
         }
 
@@ -310,7 +329,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
 
         }
 
@@ -338,7 +357,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
         }
 
         private void NorthEast(Board board, char i, int j, Figure f)
@@ -365,23 +384,23 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
 
         }
 
         private void West(Board board, char i, int j, Figure f)
         {
-            for (char k = (char)(i-1); k >= 'a'; k--)
+            for (char k = (char)(i - 1); k >= 'a'; k--)
             {
                 Figure f1 = board[k.ToString() + j];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', j-1].Add(f);
+                    Attackers[k - 'a', j - 1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[k - 'a', j-1].Add(f);
+                    Attackers[k - 'a', j - 1].Add(f);
                     break;
                 }
                 else
@@ -393,17 +412,17 @@ namespace ChessServer.GameLogic
 
         private void East(Board board, char i, int j, Figure f)
         {
-            for (char k = (char)(i+1); k <= 'h'; k++)
+            for (char k = (char)(i + 1); k <= 'h'; k++)
             {
                 Figure f1 = board[k.ToString() + j];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', j-1].Add(f);
+                    Attackers[k - 'a', j - 1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[k - 'a', j-1].Add(f);
+                    Attackers[k - 'a', j - 1].Add(f);
                     break;
                 }
                 else
@@ -420,12 +439,12 @@ namespace ChessServer.GameLogic
                 Figure f1 = board[i.ToString() + k];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[i - 'a', k-1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[i - 'a', k-1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(f);
                     break;
                 }
                 else
@@ -442,12 +461,12 @@ namespace ChessServer.GameLogic
                 Figure f1 = board[i.ToString() + k];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[i - 'a', k-1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(f);
                     continue;
                 }
                 else if (f1.side != f.side)
                 {
-                    Attackers[i - 'a', k-1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(f);
                     break;
                 }
                 else
@@ -456,5 +475,81 @@ namespace ChessServer.GameLogic
                 }
             }
         }
+
+        private void Castling(List<Move> moves, Board board, Figure king, Figure rook)
+        {
+            int rows = 0;
+            if (king.side == Side.WHITE)
+                rows = 1;
+            else if (king.side == Side.BLACK)
+                rows = 8;
+
+            char rookX = board.ReturnPosition(rook).Item1;
+            int rookY = board.ReturnPosition(rook).Item2;
+            char kingX = board.ReturnPosition(king).Item1;
+            int kingY = board.ReturnPosition(king).Item2;
+
+            //List<char> cell = new List<char>();
+            //if (bishopX == 'a')
+            //    cell = new List<char> { 'b', 'c', 'd' };
+            //else if (bishopX == 'h')
+            //    cell = new List<char> { 'f', 'g' };
+
+            var move = new Move { From = "a8" };
+            
+            if (moves.Count != 0)
+                for (int i = 0; i < moves.Count; i++)
+                {
+                    if (!moves[i].From.Contains(rookX.ToString() + rookY.ToString()))
+                    {
+                        for (int j = 0; j < moves.Count; j++)
+                            if (!moves[j].From.Contains(kingX.ToString() + kingY.ToString()))
+                            {
+                                if (rookX == 'a')
+                                {
+                                    if (board["b" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                                           board["c" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                                           board["d" + rows.ToString()].GetType() == typeof(FigureNone))
+                                    {
+                                        Attackers['c' - 'a', rows - 1].Add(king);
+                                        Attackers['d' - 'a', rows - 1].Add(rook);
+                                    }
+                                }
+                                else if (rookX == 'h')
+                                    if (board["f" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                                        board["g" + rows.ToString()].GetType() == typeof(FigureNone))
+                                    {
+                                        Attackers['g' - 'a', rows - 1].Add(king);
+                                        Attackers['f' - 'a', rows - 1].Add(rook);
+                                    }
+                            }
+                            else
+                                return;
+                    }
+                    else
+                        return;
+                }
+            else
+            {
+                if (rookX == 'a')
+                {
+                    if (board["b" + rows.ToString()].GetType() == typeof(FigureNone) && board["c" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                           board["d" + rows.ToString()].GetType() == typeof(FigureNone))
+                    {
+                        Attackers['c' - 'a', rows - 1].Add(king);
+                        Attackers['d' - 'a', rows - 1].Add(rook);
+                    }
+                }
+                else if (rookX == 'h')
+                    if (board["f" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                        board["g" + rows.ToString()].GetType() == typeof(FigureNone))
+                    {
+                        Attackers['g' - 'a', rows - 1].Add(king);
+                        Attackers['f' - 'a', rows - 1].Add(rook);
+                    }
+            }
+
+        }
+
     }
 }

@@ -164,5 +164,18 @@ namespace Protocol.GameObjects
                 DoMove(element.From, element.To);
             }
         }
+
+        public Tuple<char,int> ReturnPosition(Figure figure)
+        {
+            for (char i = 'a'; i <= 'h'; i++)
+            {
+                for (int j = 1; j <= BoardSize; j++)
+                {
+                    if (this[i.ToString() + j.ToString()] == figure)
+                        return new Tuple<char, int>(i, j);
+                }
+            }
+            throw new Exception("Figure not found");
+        }
     }
 }

@@ -15,6 +15,211 @@ namespace UnitTest
     public class AttackMapTest
     {
         /// <summary>
+        ///длинная рокировка (черные): на поле король и ладья, которая уже ходила
+        /// </summary>
+        [TestMethod]
+        public void LongCastlingBlackTest3()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+
+            board["e8"] = king;
+            board["a8"] = rook;
+            //a - act
+            List<Move> moves = new List<Move>{
+                new Move { From = "a8", To = "a4" },
+                new Move{From = "a4", To = "a8"}};
+            AttackMap map = new AttackMap(moves, board);
+            //a - assert
+            Assert.IsFalse(map["c8"].Contains(king));
+        }
+
+        /// <summary>
+        ///длинная рокировка (черные): на поле король, ладья и конь, который уже ходил
+        /// </summary>
+        [TestMethod]
+        public void LongCastlingBlackTest4()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var knight = new FigureKnight(Side.BLACK);
+
+            board["e8"] = king;
+            board["a8"] = rook;
+            board["d6"] = knight;
+            //a - act
+            List<Move> moves = new List<Move>{
+                new Move { From = "c8", To = "d6" }};
+            AttackMap map = new AttackMap(moves, board);
+            //a - assert
+            Assert.IsTrue(map["c8"].Contains(king));
+        }
+
+        /// <summary>
+        ///длинная рокировка (черные): на поле только король и ладья
+        /// </summary>
+        [TestMethod]
+        public void LongCastlingBlackTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+
+            board["e8"] = king;
+            board["a8"] = rook;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map["c8"].Contains(king));
+        }
+
+        /// <summary>
+        ///короткая рокировка (черные): на поле только король и ладья
+        /// </summary>
+        [TestMethod]
+        public void ShortCastlingBlackTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+
+            board["e8"] = king;
+            board["h8"] = rook;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map["g8"].Contains(king));
+        }
+
+        /// <summary>
+        ///длинная рокировка (черные): на поле король, ладья и "мешающая" пешка
+        /// </summary>
+        [TestMethod]
+        public void LongCastlingBlackTest2()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+
+            board["e8"] = king;
+            board["a8"] = rook;
+            board["b8"] = pawn;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsFalse(map["c8"].Contains(king));
+        }
+
+        /// <summary>
+        ///короткая рокировка (черные): на поле король, ладья и "мешающая" пешка
+        /// </summary>
+        [TestMethod]
+        public void ShortCastlingBlackTest2()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook = new FigureRook(Side.BLACK);
+            var pawn = new FigurePawn(Side.BLACK);
+
+            board["e8"] = king;
+            board["h8"] = rook;
+            board["f8"] = pawn;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsFalse(map["g8"].Contains(king));
+        }
+
+        /// <summary>
+        ///длинная рокировка (белые): на поле только король и ладья
+        /// </summary>
+        [TestMethod]
+        public void LongCastlingWhiteTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.WHITE);
+            var rook = new FigureRook(Side.WHITE);
+
+            board["e1"] = king;
+            board["a1"] = rook;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map["c1"].Contains(king));
+        }
+
+        /// <summary>
+        ///короткая рокировка (белые): на поле только король и ладья
+        /// </summary>
+        [TestMethod]
+        public void ShortCastlingWhiteTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.WHITE);
+            var rook = new FigureRook(Side.WHITE);
+
+            board["e1"] = king;
+            board["h1"] = rook;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map["g1"].Contains(king));
+        }
+
+        /// <summary>
+        ///длинная рокировка (белые): на поле король, ладья и "мешающая" пешка
+        /// </summary>
+        [TestMethod]
+        public void LongCastlingWhiteTest2()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.WHITE);
+            var rook = new FigureRook(Side.WHITE);
+            var pawn = new FigurePawn(Side.WHITE);
+
+            board["e1"] = king;
+            board["a1"] = rook;
+            board["b1"] = pawn;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsFalse(map["c1"].Contains(king));
+        }
+
+        /// <summary>
+        ///длинная рокировка (белые): на поле король, ладья и "мешающая" пешка
+        /// </summary>
+        [TestMethod]
+        public void ShortCastlingWhiteTest2()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.WHITE);
+            var rook = new FigureRook(Side.WHITE);
+            var pawn = new FigurePawn(Side.WHITE);
+
+            board["e1"] = king;
+            board["h1"] = rook;
+            board["f1"] = pawn;
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsFalse(map["g1"].Contains(king));
+        }
+
+        /// <summary>
         /// один король на поле
         /// </summary>
         [TestMethod]
