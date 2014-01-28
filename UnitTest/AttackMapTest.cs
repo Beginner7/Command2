@@ -802,15 +802,15 @@ namespace UnitTest
         {
             //a - arange
             Board board = new Board();
-            var knight = new FigureKnight(Side.WHITE); 
-            var pawn = new FigurePawn(Side.WHITE);
+            var knight = new FigureKnight(Side.WHITE);
             var rook = new FigureRook(Side.BLACK);
-            var pawn1 = new FigurePawn(Side.BLACK);
             var bishop = new FigureBishop(Side.BLACK);
             var queen = new FigureQueen(Side.BLACK);
+            var queen1 = new FigureQueen(Side.WHITE);
+            var bishop1 = new FigureBishop(Side.BLACK);
             board["e4"] = knight;
-            board["f6"] = pawn;
-            board["g5"] = pawn1;
+            board["f6"] = queen1;
+            board["g5"] = bishop1;
             board["g3"] = bishop;
             board["f3"] = rook;
             board["d2"] = queen;
@@ -1146,21 +1146,26 @@ namespace UnitTest
             }
         }
 
+        /// <summary>
+        /// проходная пешка
+        /// </summary>
         [TestMethod]
-        public void IsCheckTest()
+        public void WhitePassedPawnTest()
         {
             //a - arange
             Board board = new Board();
-            var king = new FigureKing(Side.BLACK);
-            var rook = new FigureRook(Side.WHITE);
+            var pawnWhite = new FigurePawn(Side.WHITE);
+            var pawnBlack = new FigurePawn(Side.BLACK);
+            board["c4"] = pawnWhite;
+            board["b4"] = pawnBlack;
 
-            board["e4"] = king;
-            board["e1"] = rook;
 
+            List<Move> moves = new List<Move>{
+                new Move { From = "c2", To = "c4" }};
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            AttackMap map = new AttackMap(moves, board);
             //a - assert
-            Assert.IsTrue(map.IsCheck);
+            Assert.IsTrue(map["c3"].Contains(pawnBlack));
         }
     
     }

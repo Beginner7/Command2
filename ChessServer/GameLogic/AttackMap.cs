@@ -29,8 +29,6 @@ namespace ChessServer.GameLogic
             }
         }
 
-        
-
         public AttackMap(List<Move> moves, Board forceBoard = null)
         {
             
@@ -139,6 +137,7 @@ namespace ChessServer.GameLogic
                             }
                             
                         }
+                        PassedPawn(moves, board, f);
                         continue;
                     }
                     if (f.GetType() == typeof(FigureRook))
@@ -498,7 +497,6 @@ namespace ChessServer.GameLogic
             }
         }
 
-
         public bool IsCheck {
             get
             {
@@ -593,48 +591,42 @@ namespace ChessServer.GameLogic
             }
             return true;
         }
-        //private void PassedPawn(List<Move> moves, Board board, Figure pawn, Side side)
-        //{
-        //    int rows = 0;
-        //    if (pawn.side == Side.WHITE)
-        //        rows = 4;
-        //    else if (pawn.side == Side.BLACK)
-        //        rows = 5;
 
-        //    char pawnX = board.ReturnPosition(pawn).Item1;
-        //    int pawnY = board.ReturnPosition(pawn).Item2;
-        //    //char kingX = board.ReturnPosition(king).Item1;
-        //    //int kingY = board.ReturnPosition(king).Item2;
+        private void PassedPawn(List<Move> moves, Board board, Figure pawn)
+        {
+            int rows = 0;
+            if (pawn.side == Side.BLACK)
+                rows = 4;
+            else if (pawn.side == Side.WHITE)
+                rows = 5;
 
-        //    //List<char> cell = new List<char>();
-        //    //if (bishopX == 'a')
-        //    //    cell = new List<char> { 'b', 'c', 'd' };
-        //    //else if (bishopX == 'h')
-        //    //    cell = new List<char> { 'f', 'g' };
+            char pawnX = board.ReturnPosition(pawn).Item1;
+            int pawnY = board.ReturnPosition(pawn).Item2;
 
+            List<string> cell = new List<string>();
+            if (pawnX != 'a')
+                cell.Add(((char)(pawnX - 1)).ToString() + rows);
+            if (pawnX != 'h')
+                cell.Add(((char)(pawnX + 1)).ToString() + rows);
 
-        //    if (moves.Count != 0)
-        //        for (int i = 0; i < moves.Count; i++)
-        //        {
-        //            if (!moves[i].From.Contains(pawnX.ToString() + (pawnY - 2).ToString()))
-        //            {
-        //                for (int j = 0; j < moves.Count; j++)
-        //                    if (!moves[j].From.Contains(kingX.ToString() + kingY.ToString()))
-        //                    {
-        //                        CastlingTest(board, king, rook, side, rows, rookX);
-        //                    }
-        //                    else
-        //                        return;
-        //            }
-        //            else
-        //                return;
-        //        }
-        //    else
-        //    {
-        //        CastlingTest(board, king, rook, side, rows, rookX);
-        //    }
+            for (int i = 0; i < cell.Count; i++)
+            {
+                if (board[cell[i]].GetType() == typeof(FigurePawn) &&
+                    board[cell[i]].side != pawn.side)
+                {
+                    if (moves[moves.Count - 1].To == cell[i])
+                    {
+                        if ((rows == 4 &&
+                          moves[moves.Count - 1].From == cell[i][0].ToString() + (int.Parse(cell[i][1].ToString()) - 2)))
+                            Attackers[cell[i][0] - 'a', (int.Parse(cell[i][1].ToString()) - 1) - 1].Add(pawn);
+                        if (rows == 5 &&
+                                moves[moves.Count - 1].From == cell[i][0].ToString() + (int.Parse(cell[i][1].ToString()) + 2))
+                            Attackers[cell[i][0] - 'a', (int.Parse(cell[i][1].ToString()) + 1) - 1].Add(pawn);
+                    }
 
-        //}
+                }
+            }
+        }
 
     }
 }
