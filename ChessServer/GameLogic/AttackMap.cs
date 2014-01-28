@@ -11,7 +11,9 @@ namespace ChessServer.GameLogic
 {
     public class AttackMap
     {
-        public Board board { get; private set; }
+        private string _whiteKing;
+        private string _blackKing;
+        public Board board {get; private set;}
         public List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         private List<Move> moves;
 
@@ -51,8 +53,7 @@ namespace ChessServer.GameLogic
                     Attackers[i, j] = new List<Figure>();
                 }
             }
-
-            for (char i = 'a'; i <= 'h'; i++)
+            for (char i = 'a'; i <= 'h' ; i++)
             {
                 for (int j = 1; j <= Board.BoardSize; j++)
                 {
@@ -61,10 +62,11 @@ namespace ChessServer.GameLogic
                     {
                         continue;
                     }
+                       
 
                     if (f.GetType() == typeof(FigurePawn))
                     {
-                        if (j + 1 <= Board.BoardSize && j - 1 >= 1)
+                        if (j + 1 <= Board.BoardSize && j - 1 >= 1 )
                         {
                             int k;
                             if (f.side == Side.WHITE)
@@ -78,7 +80,7 @@ namespace ChessServer.GameLogic
                                     if (j == 2) // первый или нет
                                     {
                                         Figure f2 = board[i.ToString() + (k + 1)];
-                                        if (f2.GetType() == typeof(FigureNone))
+                                        if (f2.GetType() == typeof(FigureNone)) 
                                             Attackers[i - 'a', k].Add(f);
                                     }
                                 }
@@ -135,7 +137,7 @@ namespace ChessServer.GameLogic
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                             }
-
+                            
                         }
                         continue;
                     }
@@ -272,6 +274,15 @@ namespace ChessServer.GameLogic
                                 else if (board["h" + kingY.ToString()].GetType() == typeof(FigureRook))
                                     Castling(this.moves, board, f, board["h" + kingY.ToString()], side);
                         }
+                        if (f.side == Side.WHITE)
+                        {
+                            _whiteKing = (i.ToString() + y);
+                        }
+
+                        if (f.side == Side.BLACK)
+                        {
+                            _blackKing = (i.ToString() + y);
+                        }
 
                         continue;
                     }
@@ -312,7 +323,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
 
         }
 
@@ -340,7 +351,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
 
         }
 
@@ -368,7 +379,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
         }
 
         private void NorthEast(Board board, char i, int j, Figure f)
@@ -395,7 +406,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
 
         }
 
@@ -487,6 +498,17 @@ namespace ChessServer.GameLogic
             }
         }
 
+
+        public bool IsCheck {
+            get
+            {
+                if (this[_blackKing].Count > 0 || this[_whiteKing].Count > 0) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         private void Castling(List<Move> moves, Board board, Figure king, Figure rook, Side side)
         {
             int rows = 0;
@@ -571,7 +593,6 @@ namespace ChessServer.GameLogic
             }
             return true;
         }
-
         //private void PassedPawn(List<Move> moves, Board board, Figure pawn, Side side)
         //{
         //    int rows = 0;
