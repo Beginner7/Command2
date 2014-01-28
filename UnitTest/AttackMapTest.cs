@@ -1144,6 +1144,23 @@ namespace UnitTest
                 }
             }
         }
+
+        [TestMethod]
+        public void IsCheckTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook = new FigureRook(Side.WHITE);
+
+            board["e4"] = king;
+            board["e1"] = rook;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map.IsCheck);
+        }
     
     }
 
