@@ -7,17 +7,19 @@ using Protocol.GameObjects;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandShowBoard
+    public class CommandShowBoard : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("sb", "Отобразить доску"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static void ShowBoard()
+        public void ShowBoard()
         {
             if (Utils.IsInGame())
             {
                 var gameboard = new Board();
                 gameboard.InitialPosition();
-                gameboard.ApplyMoves(CommandMoveList.GetList());
+                var commandMoveList = new CommandMoveList();
+                gameboard.ApplyMoves(commandMoveList.GetList());
                 gameboard.ShowBoard();
             }
         }

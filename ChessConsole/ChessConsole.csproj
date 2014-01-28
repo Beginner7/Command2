@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\CommandCreateGame.cs" />
     <Compile Include="Commands\CommandDisconnect.cs" />
     <Compile Include="Commands\CommandEcho.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Commands\CommandGameList.cs" />
     <Compile Include="Commands\CommandGameStats.cs" />
     <Compile Include="Commands\CommandHelp.cs" />
+    <Compile Include="Commands\CommandHelpLabel.cs" />
     <Compile Include="Commands\CommandJoinGame.cs" />
     <Compile Include="Commands\CommandLogin.cs" />
     <Compile Include="Commands\CommandLogout.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Commands\CommandSay.cs" />
     <Compile Include="Commands\CommandShowBoard.cs" />
     <Compile Include="Commands\CommandUserList.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="CurrentUser.cs" />
     <Compile Include="MessageProcessor.cs" />
     <Compile Include="StringUtils.cs" />

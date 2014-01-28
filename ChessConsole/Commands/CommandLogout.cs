@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandLogout
+    public class CommandLogout : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("logout", "Выход из аккаунта"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static void Logout()
+        public void Logout()
         {
             if (Utils.IsNotInGame() && Utils.IsLoggedIn())
             {

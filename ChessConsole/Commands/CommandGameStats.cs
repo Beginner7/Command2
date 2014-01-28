@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandGameStats
+    public class CommandGameStats : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("gs", "Отобразить состояния игры"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static void Show()
+        public void Show()
         {
             if (Utils.IsInGame())
             {

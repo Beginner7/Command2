@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandSay
+    public class CommandSay : CommandBase
     {
-        public static int ArgsNeed = -1;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("say", "Отправить сообщение оппоненту", "<message>"); } }
+        public override int ArgsNeed { get { return -1; } }
 
-        public static void Say(string sayString)
+        public void Say(string sayString)
         {
             if (Utils.IsInGame())
             {

@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandUserList
+    public class CommandUserList : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("ul", "Список вошедших пользователей"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static void Show()
+        public void Show()
         {
             var request = new UserListRequest();
             var response = ServerProvider.MakeRequest<UserListResponse>(request);

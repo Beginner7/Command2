@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandJoinGame
+    public class CommandJoinGame : CommandBase
     {
-        public static int ArgsNeed = 1;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("jg", "Присоединиться к игре по номеру", "<game id>"); } }
+        public override int ArgsNeed { get { return 1; } }
 
-        public static void Join(string gameIdString)
+        public void Join(string gameIdString)
         {
             if (Utils.IsLoggedIn() && Utils.IsNotInGame())
             {

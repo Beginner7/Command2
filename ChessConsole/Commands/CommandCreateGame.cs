@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandCreateGame
+    public class CommandCreateGame : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("cg", "Создать игру"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static void Create()
+        public void Create()
         {
             if (Utils.IsLoggedIn() && Utils.IsNotInGame())
             {
