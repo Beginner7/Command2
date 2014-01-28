@@ -3,13 +3,17 @@ The base color for this template is #5c87b2. If you'd like
 to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
-body {
+html,body{
     background-color: #eed8ae;
     font-size: .85em;
     font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
-    padding: 0;
     color: #000;
+}
+
+.wrap {
+    position:relative;
+	
 }
 
 a:link {
@@ -35,15 +39,6 @@ p, ul {
     line-height: 1.6em;
 }
 
-header,
-footer,
-nav,
-section {
-    display:block;
-    
-    
-
-}
 
 /* HEADINGS   
 ----------------------------------------------------------*/
@@ -80,7 +75,7 @@ h5, h6 {
 /* you can specify a greater or lesser percentage for the 
 page width. Or, you can specify an exact pixel width. */
 .page {
-    width: 100%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -109,28 +104,23 @@ header h1, #header h1 {
 }
 
 #main {
-    width:90%;
-    margin-left:20px;
-    -webkit-border-radius: 0px 0 0 0;
-    -moz-border-radius: 0px 0 0 0;
-    border-radius: 0px 0 0 0;
+    text-align: center;
+    background-size:100%;
 }
 
-footer, 
+
+ 
 #footer {
-    background-size: 100% 100%; 
-    height: 60px;
     background-image:url(img/footer.jpg);
-    position:relative;
-    
-   
+    background-repeat:no-repeat;
+    background-size:cover;
+    width:90%;
+    position:absolute;
+    bottom:0;
+    height: 60px;
+    clear:both;
     text-align: center;
-    line-height: normal;
     
-    font-size: .9em;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    border-radius: 0 0 4px 4px;
 }
 
 /* TAB MENU   
@@ -247,9 +237,8 @@ table th {
 
 /* MISC  
 ----------------------------------------------------------*/
-.clear {
-    clear: both;
-}
+
+
 
 .error {
     color: Red;
