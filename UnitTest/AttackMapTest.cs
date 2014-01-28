@@ -46,7 +46,7 @@ namespace UnitTest
             Board board = new Board();
             var king = new FigureKing(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
-            var knight = new FigureKnight(Side.BLACK);
+            var knight = new FigureKnight(Side.WHITE);
 
             board["e8"] = king;
             board["a8"] = rook;
@@ -55,8 +55,9 @@ namespace UnitTest
             List<Move> moves = new List<Move>{
                 new Move { From = "c8", To = "d6" }};
             AttackMap map = new AttackMap(moves, board);
+            
             //a - assert
-            Assert.IsTrue(map["c8"].Contains(king));
+            Assert.IsFalse(map["c8"].Contains(king));
         }
 
         /// <summary>
