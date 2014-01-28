@@ -5,10 +5,13 @@ using Newtonsoft.Json;
 using Protocol;
 using Protocol.GameObjects;
 using Protocol.Transport;
+using ChessServer.GameLogic;
 
-namespace UnitTest {
+namespace UnitTest
+{
     [TestClass]
-    public class GameTest {
+    public class GameTest
+    {
         [TestMethod]
         public void GameIDNotZero()
         {
@@ -17,11 +20,11 @@ namespace UnitTest {
         }
 
         [TestMethod]
-        public void UniqIDs() 
+        public void UniqIDs()
         {
             //a - arange
             //a - act
-           
+
             var game1 = new Game(null);
             var game2 = new Game(null);
 
@@ -39,6 +42,7 @@ namespace UnitTest {
             //a - assert
             Assert.IsTrue(game.PlayerBlack != null || game.PlayerWhite != null);
         }
+
     }
 
 }

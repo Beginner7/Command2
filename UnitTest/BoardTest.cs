@@ -2,6 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Protocol;
 using Protocol.GameObjects;
+using System.Text;
+using System.Collections.Generic;
+using ChessServer.GameLogic;
+using Protocol.Transport;
 
 namespace UnitTest
 {
@@ -64,6 +68,26 @@ namespace UnitTest
             //a - act
             board.DoMove("z0", "de");
             //a - assert
+        }
+
+        [TestMethod]
+        public void WhitePassedPawnTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawnWhite = new FigurePawn(Side.WHITE);
+            var pawnBlack = new FigurePawn(Side.BLACK);
+            board["f5"] = pawnWhite;
+            board["g5"] = pawnBlack;
+
+            List<Move> moves = new List<Move>{
+                new Move { From = "g7", To = "g5" }};
+            //a - act
+            AttackMap map = new AttackMap(moves, board);
+            board.DoMove("f5", "g6");
+            //a - assert
+            //Assert.AreEqual(pawnWhite.GetType(), board["g6"].GetType());
+            Assert.AreEqual(typeof(FigureNone), board["g5"].GetType());
         }
     }
 }

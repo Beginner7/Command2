@@ -134,8 +134,17 @@ namespace Protocol.GameObjects
         {
             if (CheckNotation(from) && CheckNotation(to))
             {
+                if (Cells[GetCoords(to).Item1, GetCoords(to).Item2].GetType() == typeof(FigureNone) &&
+                    Cells[GetCoords(from).Item1, GetCoords(from).Item2].GetType() == typeof(FigurePawn))
+                {
+                    if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.BLACK)
+                        Cells[GetCoords(to).Item1, GetCoords(to).Item2 + 1] = new FigureNone(Protocol.Transport.Side.NONE);
+                    if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.WHITE)
+                        Cells[GetCoords(to).Item1, GetCoords(to).Item2 - 1] = new FigureNone(Protocol.Transport.Side.NONE);
+                }
                 Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
                 Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Protocol.Transport.Side.NONE);
+                
             }
             else
             {

@@ -1159,7 +1159,6 @@ namespace UnitTest
             board["c4"] = pawnWhite;
             board["b4"] = pawnBlack;
 
-
             List<Move> moves = new List<Move>{
                 new Move { From = "c2", To = "c4" }};
             //a - act
@@ -1167,7 +1166,74 @@ namespace UnitTest
             //a - assert
             Assert.IsTrue(map["c3"].Contains(pawnBlack));
         }
-    
+
+        /// <summary>
+        /// проходная пешка
+        /// </summary>
+        [TestMethod]
+        public void BlackPassedPawnTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawnWhite = new FigurePawn(Side.WHITE);
+            var pawnBlack = new FigurePawn(Side.BLACK);
+            board["f5"] = pawnWhite;
+            board["g5"] = pawnBlack;
+
+            List<Move> moves = new List<Move>{
+                new Move { From = "g7", To = "g5" }};
+            //a - act
+            AttackMap map = new AttackMap(moves, board);
+            //a - assert
+            Assert.IsTrue(map["g6"].Contains(pawnWhite));
+        }
+
+        /// <summary>
+        /// проходная пешка
+        /// </summary>
+        [TestMethod]
+        public void BlackPassedPawnTest2()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawnWhite = new FigurePawn(Side.WHITE);
+            var pawnBlack = new FigurePawn(Side.BLACK);
+            board["f5"] = pawnWhite;
+            board["g5"] = pawnBlack;
+
+            List<Move> moves = new List<Move>{
+                new Move { From = "g7", To = "g6" },
+                new Move { From = "g6", To = "g5" }};
+            //a - act
+            AttackMap map = new AttackMap(moves, board);
+            //a - assert
+            Assert.IsFalse(map["g6"].Contains(pawnWhite));
+        }
+
+        /// <summary>
+        /// проходная пешка
+        /// </summary>
+        [TestMethod]
+        public void WhitePassedPawnTest2()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawnWhite = new FigurePawn(Side.WHITE);
+            var pawnBlack = new FigurePawn(Side.BLACK);
+            var rookBlack = new FigureRook(Side.BLACK);
+            //board["c4"] = pawnWhite;
+            //board["b4"] = pawnBlack;
+            //board["d4"] = rookBlack;
+            
+            List<Move> moves = new List<Move>{
+                new Move { From = "c2", To = "c4" },
+                new Move { From = "f6", To = "d4" },
+                new Move { From = "b5", To = "b4" }};
+            //a - act
+            AttackMap map = new AttackMap(moves, new Board());
+            //a - assert
+            Assert.IsTrue(!map["c3"].Contains(pawnBlack));
+        }
     }
 
 }
