@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandMove
+    public class CommandMove : CommandBase
     {
-        public static int ArgsNeed = 2;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("move", "Сделать ход", "<start cell> <target cell>"); } }
+        public override int ArgsNeed { get { return 2; } }
 
-        public static void Move(string from, string to)
+        public void Move(string from, string to)
         {
             if (Utils.IsInGame())
             {

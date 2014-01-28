@@ -3,40 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChessConsole.Commands;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandHelp
+    public class CommandHelp : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("help", "Помощь по коммандам (Эта самая)"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        private static List<string> _HelpStrings = new List<string>();
-
-        static CommandHelp()
+        public void ShowHelp()
         {
-            _HelpStrings.Add("help                            - Помощь по коммандам (Эта самая)");
-            _HelpStrings.Add("login <user name>               - Вход а аккаунт");
-            _HelpStrings.Add("logout                          - Выход из аккаунта");
-            _HelpStrings.Add("me                              - Состояние аккаунта");
-            _HelpStrings.Add("gl                              - Список игр");
-            _HelpStrings.Add("cg                              - Создать игру");
-            _HelpStrings.Add("jg <game id>                    - Присоединиться к игре по номеру");
-            _HelpStrings.Add("disconnect                      - Покинуть игру");
-            _HelpStrings.Add("move <start cell> <target cell> - Сделать ход");
-            _HelpStrings.Add("say <message>                   - Отправить сообщение оппоненту");
-            _HelpStrings.Add("ml                              - Показать лог игры");
-            _HelpStrings.Add("sb                              - Отобразить доску");
-            _HelpStrings.Add("gs                              - Отобразить состояния игры");
-            _HelpStrings.Add("ul                              - Список вошедших пользователей");
-            _HelpStrings.Add("echo <echo string>              - Эхо запрос на сервер");
-            _HelpStrings.Add("exit                            - Выйти");  
-        }
-
-        public static void ShowHelp()
-        {
-            foreach (var element in _HelpStrings)
+            int longestStringLength = 0;
+            foreach (var element in CommandFactory.Instance.AllCommands)
             {
-                Console.WriteLine(element);
+                if (element.Help.Name.Length + ((element.Help.Args != null) ? element.Help.Args.Length : 0) > longestStringLength)
+                {
+                    longestStringLength = element.Help.Name.Length + ((element.Help.Args != null) ? element.Help.Args.Length : 0);
+                }
+            }
+
+            foreach (var element in CommandFactory.Instance.AllCommands)
+            {
+                Console.Write(element.Help.Name);
+                if (element.Help.Args != null)
+                {
+                    Console.Write(' ' + element.Help.Args);
+                }
+                for (int i = 0; i < 1 + longestStringLength - (element.Help.Name.Length + ((element.Help.Args != null) ? element.Help.Args.Length + 1 : 0)); i++)
+                {
+                    Console.Write(' ');
+                }
+                Console.Write(" - ");
+                Console.WriteLine(element.Help.HelpString);
             }
         }
     }

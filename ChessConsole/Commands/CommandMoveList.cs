@@ -9,11 +9,12 @@ using Protocol.GameObjects;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandMoveList
+    public class CommandMoveList : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("ml", "Показать лог игры"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static List<Move> GetList()
+        public List<Move> GetList()
         {
             var request = new MoveListRequest();
             request.Game = CurrentUser.CurrentGame.Value;
@@ -21,7 +22,7 @@ namespace ChessConsole.Commands
             return response.Moves;
         }
 
-        public static void ShowList()
+        public void ShowList()
         {
             if (Utils.IsInGame())
             {

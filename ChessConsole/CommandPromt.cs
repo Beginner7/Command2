@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol;
 using Protocol.GameObjects;
+using ChessConsole.Commands;
 
 namespace ChessConsole
 {
@@ -19,120 +20,151 @@ namespace ChessConsole
                 Console.Write('>');
                 string commandInput = Console.ReadLine();
                 var commandWords = commandInput.Split(' ');
+                /*foreach (var element in CommandFactory.Instance.AllCommands)
+                {
+                    if (!String.IsNullOrWhiteSpace(commandWords[0]))
+                    {
+                        bool IsStuffDone = false;
+                        if (commandWords[0].ToLower() == element.Help.Name)
+                        {
+                            IsStuffDone = true;
+                        }
+                        if (!IsStuffDone)
+                        {
+                            Console.WriteLine("Unknown command: '" + commandWords[0] + '\'');
+                        }
+                    }
+                }*/
                 switch (commandWords[0].ToLower())
                 {
                     case "":
                         break;
 
                     case "me":
-                        if (Utils.CheckArgs(Commands.CommandMe.ArgsNeed, commandWords.Length - 1))
+                        var commandMe = new CommandMe();
+                        if (Utils.CheckArgs(commandMe.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandMe.Show();
+                            commandMe.Show();
                         }
                         break;
 
                     case "sb":
-                        if (Utils.CheckArgs(Commands.CommandShowBoard.ArgsNeed, commandWords.Length - 1))
+                        var commandShowBoard = new CommandShowBoard();
+                        if (Utils.CheckArgs(commandShowBoard.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandShowBoard.ShowBoard();
+                            commandShowBoard.ShowBoard();
                         }
                         break;
 
                     case "gs":
-                        if (Utils.CheckArgs(Commands.CommandGameStats.ArgsNeed, commandWords.Length - 1))
+                        var commandGameStats = new CommandGameStats();
+                        if (Utils.CheckArgs(commandGameStats.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandGameStats.Show();
+                            commandGameStats.Show();
                         }
                         break;
 
                     case "echo":
-                        if (Utils.CheckArgs(Commands.CommandEcho.ArgsNeed, commandWords.Length - 1))
+                        var commandEcho = new CommandEcho();
+                        if (Utils.CheckArgs(commandEcho.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandEcho.Echo(commandWords.Skip(1).StrJoin(' '));
+                           commandEcho.Echo(commandWords.Skip(1).StrJoin(' '));
                         }
                         break;
 
                     case "say":
-                        if (Utils.CheckArgs(Commands.CommandSay.ArgsNeed, commandWords.Length - 1))
+                        var commandSay = new CommandSay();
+                        if (Utils.CheckArgs(commandSay.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandSay.Say(commandWords.Skip(1).StrJoin(' '));
+                            commandSay.Say(commandWords.Skip(1).StrJoin(' '));
                         }
                         break;
 
                     case "login":
-                        if (Utils.CheckArgs(Commands.CommandLogin.ArgsNeed, commandWords.Length - 1))
+                        var commandLogin = new CommandLogin();
+                        if (Utils.CheckArgs(commandLogin.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandLogin.Login(commandWords[1]);
+                            commandLogin.Login(commandWords[1]);
                         }
                         break;
 
                     case "logout":
-                        if (Utils.CheckArgs(Commands.CommandLogout.ArgsNeed, commandWords.Length - 1))
+                        var commandLogout = new CommandLogout();
+                        if (Utils.CheckArgs(commandLogout.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandLogout.Logout();
+                            commandLogout.Logout();
                         }
                         break;
 
                     case "ul":
-                        if (Utils.CheckArgs(Commands.CommandUserList.ArgsNeed, commandWords.Length - 1))
+                        var commandUserList = new CommandUserList();
+                        if (Utils.CheckArgs(commandUserList.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandUserList.Show();
+                            commandUserList.Show();
                         }
                         break;
 
                     case "ml":
-                        if (Utils.CheckArgs(Commands.CommandMoveList.ArgsNeed, commandWords.Length - 1))
+                        var commandMoveList = new CommandMoveList();
+                        if (Utils.CheckArgs(commandMoveList.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandMoveList.ShowList();
+                            commandMoveList.ShowList();
                         }
                         break;
 
                     case "cg":
-                        if (Utils.CheckArgs(Commands.CommandCreateGame.ArgsNeed, commandWords.Length - 1))
+                        var commandCreateGame = new CommandCreateGame();
+                        if (Utils.CheckArgs(commandCreateGame.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandCreateGame.Create();
+                            commandCreateGame.Create();
                         }
                         break;
 
                     case "disconnect":
-                        if (Utils.CheckArgs(Commands.CommandDisconnect.ArgsNeed, commandWords.Length - 1))
+                        var commandDisconnect = new CommandDisconnect();
+                        if (Utils.CheckArgs(commandDisconnect.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandDisconnect.Disconnect();
+                            commandDisconnect.Disconnect();
                         }
                         break;
 
                     case "gl":
-                        if (Utils.CheckArgs(Commands.CommandGameList.ArgsNeed, commandWords.Length - 1))
+                        var commandGameList = new CommandGameList();
+                        if (Utils.CheckArgs(commandGameList.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandGameList.Show();
+                            commandGameList.Show();
                         }
                         break;
 
                     case "jg":
-                        if (Utils.CheckArgs(Commands.CommandJoinGame.ArgsNeed, commandWords.Length - 1))
+                        var commandJoinGame = new CommandJoinGame();
+                        if (Utils.CheckArgs(commandJoinGame.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandJoinGame.Join(commandWords[1]);
+                            commandJoinGame.Join(commandWords[1]);
                         }
                         break;
 
                     case "move":
-                        if (Utils.CheckArgs(Commands.CommandMove.ArgsNeed, commandWords.Length - 1))
+                        var commandMove = new CommandMove();
+                        if (Utils.CheckArgs(commandMove.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandMove.Move(commandWords[1], commandWords[2]);
+                            commandMove.Move(commandWords[1], commandWords[2]);
                         }
                         break;
 
                     case "help":
-                        if (Utils.CheckArgs(Commands.CommandHelp.ArgsNeed, commandWords.Length - 1))
+                        var commandHelp = new CommandHelp();
+                        if (Utils.CheckArgs(commandHelp.ArgsNeed, commandWords.Length - 1))
                         {
-                            Commands.CommandHelp.ShowHelp();
+                            commandHelp.ShowHelp();
                         }
                         break;
 
                     case "exit":
-                        if (Utils.CheckArgs(Commands.CommandExit.ArgsNeed, commandWords.Length - 1))
+                        var commandExit = new CommandExit();
+                        if (Utils.CheckArgs(commandExit.ArgsNeed, commandWords.Length - 1))
                         {
-                            closing = Commands.CommandExit.Exit();
+                            closing = commandExit.Exit();
                         }
                         break;
 

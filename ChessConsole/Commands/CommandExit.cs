@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandExit
+    public class CommandExit : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("exit", "Выйти"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static bool Exit()
+        public bool Exit()
         {
             if (Utils.IsNotInGame())
             {
-                CommandLogout.Logout();
+                var commandLogout = new CommandLogout();
+                commandLogout.Logout();
                 return true;
             }
             else
