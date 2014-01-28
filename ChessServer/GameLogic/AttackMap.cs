@@ -11,8 +11,10 @@ namespace ChessServer.GameLogic
 {
     public class AttackMap
     {
-        public Board board { get; private set; }
-        private List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
+        private string _whiteKing;
+        private string _blackKing;
+        public Board board {get; private set;}
+        public List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         private List<Move> moves;
 
         public List<Figure> this[string cell]
@@ -27,8 +29,11 @@ namespace ChessServer.GameLogic
             }
         }
 
+        
+
         public AttackMap(List<Move> moves, Board forceBoard = null)
         {
+            
             if (forceBoard == null)
             {
                 board = new Board();
@@ -48,8 +53,7 @@ namespace ChessServer.GameLogic
                     Attackers[i, j] = new List<Figure>();
                 }
             }
-
-            for (char i = 'a'; i <= 'h'; i++)
+            for (char i = 'a'; i <= 'h' ; i++)
             {
                 for (int j = 1; j <= Board.BoardSize; j++)
                 {
@@ -58,62 +62,11 @@ namespace ChessServer.GameLogic
                     {
                         continue;
                     }
-                    if (f.GetType() == typeof(FigureKing))
-                    {
-                        char x = (char)(i + 1);
-                        int y;
-
-                        if (x <= 'h')
-                        {
-                            y = j + 1;
-                            if (y <= Board.BoardSize)
-                                KingKnightStep(board, f, x, y);
-
-                            y = j - 1;
-                            if (y >= 1)
-                                KingKnightStep(board, f, x, y);
-
-                            KingKnightStep(board, f, x, j);
-                        }
-
-                        x = (char)(i - 1);
-                        if (x >= 'a')
-                        {
-                            y = j + 1;
-                            if (y <= Board.BoardSize)
-                                KingKnightStep(board, f, x, y);
-                            y = j - 1;
-                            if (y > 0)
-                                KingKnightStep(board, f, x, y);
-
-                            KingKnightStep(board, f, x, j);
-                        }
-
-                        y = j + 1;
-                        if (y <= Board.BoardSize)
-                            KingKnightStep(board, f, i, y);
-
-                        y = j - 1;
-                        if (y >= 1)
-                            KingKnightStep(board, f, i, y);
-
-                        //if (board["a1"].GetType() == typeof(FigureRook) && board["a1"].side == Side.WHITE)
-                        char kingX = board.ReturnPosition(f).Item1;
-                        int kingY = board.ReturnPosition(f).Item2;
-                        if (kingX == 'e' && (kingY == 1 || kingY == 8))
-                        {
-                            if (board["a" + kingY.ToString()].GetType() == typeof(FigureRook))
-                                Castling(this.moves, board, f, board["a" + kingY.ToString()]);
-                            else if (board["h" + kingY.ToString()].GetType() == typeof(FigureRook))
-                                Castling(this.moves, board, f, board["h" + kingY.ToString()]);
-                        }
-
-                        continue;
-                    }
+                       
 
                     if (f.GetType() == typeof(FigurePawn))
                     {
-                        if (j + 1 <= Board.BoardSize && j - 1 >= 1)
+                        if (j + 1 <= Board.BoardSize && j - 1 >= 1 )
                         {
                             int k;
                             if (f.side == Side.WHITE)
@@ -127,7 +80,7 @@ namespace ChessServer.GameLogic
                                     if (j == 2) // первый или нет
                                     {
                                         Figure f2 = board[i.ToString() + (k + 1)];
-                                        if (f2.GetType() == typeof(FigureNone))
+                                        if (f2.GetType() == typeof(FigureNone)) 
                                             Attackers[i - 'a', k].Add(f);
                                     }
                                 }
@@ -184,7 +137,7 @@ namespace ChessServer.GameLogic
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                             }
-
+                            
                         }
                         continue;
                     }
@@ -264,6 +217,75 @@ namespace ChessServer.GameLogic
                         }
                         continue;
                     }
+                    if (f.GetType() == typeof(FigureKing))
+                    {
+                        char x = (char)(i + 1);
+                        int y;
+
+                        if (x <= 'h')
+                        {
+                            y = j + 1;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+
+                            y = j - 1;
+                            if (y >= 1)
+                                KingKnightStep(board, f, x, y);
+
+                            KingKnightStep(board, f, x, j);
+                        }
+
+                        x = (char)(i - 1);
+                        if (x >= 'a')
+                        {
+                            y = j + 1;
+                            if (y <= Board.BoardSize)
+                                KingKnightStep(board, f, x, y);
+                            y = j - 1;
+                            if (y > 0)
+                                KingKnightStep(board, f, x, y);
+
+                            KingKnightStep(board, f, x, j);
+                        }
+
+                        y = j + 1;
+                        if (y <= Board.BoardSize)
+                            KingKnightStep(board, f, i, y);
+
+                        y = j - 1;
+                        if (y >= 1)
+                            KingKnightStep(board, f, i, y);
+
+                        //if (board["a1"].GetType() == typeof(FigureRook) && board["a1"].side == Side.WHITE)
+                        char kingX = board.ReturnPosition(f).Item1;
+                        int kingY = board.ReturnPosition(f).Item2;
+
+                        Side side;
+                        if (f.side == Side.WHITE)
+                            side = Side.BLACK;
+                        else
+                            side = Side.WHITE;
+
+                        if (kingX == 'e' && (kingY == 1 || kingY == 8))
+                        {
+                            if (ColorFigureAttack(this[kingX.ToString() + kingY.ToString()], side))
+                                if (board["a" + kingY.ToString()].GetType() == typeof(FigureRook))
+                                    Castling(this.moves, board, f, board["a" + kingY.ToString()], side);
+                                else if (board["h" + kingY.ToString()].GetType() == typeof(FigureRook))
+                                    Castling(this.moves, board, f, board["h" + kingY.ToString()], side);
+                        }
+                        if (f.side == Side.WHITE)
+                        {
+                            _whiteKing = (i.ToString() + y);
+                        }
+
+                        if (f.side == Side.BLACK)
+                        {
+                            _blackKing = (i.ToString() + y);
+                        }
+
+                        continue;
+                    }
                 }
             }
         }
@@ -301,7 +323,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
 
         }
 
@@ -329,7 +351,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
 
         }
 
@@ -357,7 +379,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
         }
 
         private void NorthEast(Board board, char i, int j, Figure f)
@@ -384,7 +406,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }
+            }            
 
         }
 
@@ -476,7 +498,18 @@ namespace ChessServer.GameLogic
             }
         }
 
-        private void Castling(List<Move> moves, Board board, Figure king, Figure rook)
+
+        public bool IsCheck {
+            get
+            {
+                if (this[_blackKing].Count > 0 || this[_whiteKing].Count > 0) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        private void Castling(List<Move> moves, Board board, Figure king, Figure rook, Side side)
         {
             int rows = 0;
             if (king.side == Side.WHITE)
@@ -495,7 +528,6 @@ namespace ChessServer.GameLogic
             //else if (bishopX == 'h')
             //    cell = new List<char> { 'f', 'g' };
 
-            var move = new Move { From = "a8" };
             
             if (moves.Count != 0)
                 for (int i = 0; i < moves.Count; i++)
@@ -505,23 +537,7 @@ namespace ChessServer.GameLogic
                         for (int j = 0; j < moves.Count; j++)
                             if (!moves[j].From.Contains(kingX.ToString() + kingY.ToString()))
                             {
-                                if (rookX == 'a')
-                                {
-                                    if (board["b" + rows.ToString()].GetType() == typeof(FigureNone) &&
-                                           board["c" + rows.ToString()].GetType() == typeof(FigureNone) &&
-                                           board["d" + rows.ToString()].GetType() == typeof(FigureNone))
-                                    {
-                                        Attackers['c' - 'a', rows - 1].Add(king);
-                                        Attackers['d' - 'a', rows - 1].Add(rook);
-                                    }
-                                }
-                                else if (rookX == 'h')
-                                    if (board["f" + rows.ToString()].GetType() == typeof(FigureNone) &&
-                                        board["g" + rows.ToString()].GetType() == typeof(FigureNone))
-                                    {
-                                        Attackers['g' - 'a', rows - 1].Add(king);
-                                        Attackers['f' - 'a', rows - 1].Add(rook);
-                                    }
+                                CastlingTest(board, king, rook, side, rows, rookX);
                             }
                             else
                                 return;
@@ -531,25 +547,94 @@ namespace ChessServer.GameLogic
                 }
             else
             {
-                if (rookX == 'a')
-                {
-                    if (board["b" + rows.ToString()].GetType() == typeof(FigureNone) && board["c" + rows.ToString()].GetType() == typeof(FigureNone) &&
-                           board["d" + rows.ToString()].GetType() == typeof(FigureNone))
-                    {
-                        Attackers['c' - 'a', rows - 1].Add(king);
-                        Attackers['d' - 'a', rows - 1].Add(rook);
-                    }
-                }
-                else if (rookX == 'h')
-                    if (board["f" + rows.ToString()].GetType() == typeof(FigureNone) &&
-                        board["g" + rows.ToString()].GetType() == typeof(FigureNone))
-                    {
-                        Attackers['g' - 'a', rows - 1].Add(king);
-                        Attackers['f' - 'a', rows - 1].Add(rook);
-                    }
+                CastlingTest(board, king, rook, side, rows, rookX);
             }
 
         }
+
+        private void CastlingTest(Board board, Figure king, Figure rook, Side side, int rows, char rookX)
+        {
+            if (rookX == 'a')
+            {
+                var figure = this["c" + rows.ToString()];
+                figure = this["d" + rows.ToString()];
+
+                if (board["b" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                    board["c" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                    board["d" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                    ColorFigureAttack(this["c" + rows.ToString()], king.side) &&
+                    // Attackers['c' - 'a', rows - 1]
+                    ColorFigureAttack(this["d" + rows.ToString()], king.side) )
+                //   Attackers['d' - 'a', rows - 1].Contains(new Figure(side)))
+                {
+                    Attackers['c' - 'a', rows - 1].Add(king);
+                    Attackers['d' - 'a', rows - 1].Add(rook);
+                }
+            }
+            else if (rookX == 'h')
+            {
+                if (board["f" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                    board["g" + rows.ToString()].GetType() == typeof(FigureNone) &&
+                    ColorFigureAttack(this["f" + rows.ToString()], king.side) &&
+                    ColorFigureAttack(this["g" + rows.ToString()], king.side))
+                {
+                    Attackers['g' - 'a', rows - 1].Add(king);
+                    Attackers['f' - 'a', rows - 1].Add(rook);
+                }
+            }
+        }
+
+        private bool ColorFigureAttack(List<Figure> figure, Side side)
+        {
+            for (int i = 0; i < figure.Count; i++)
+            {
+                if (figure[i].side != side)
+                    return false;
+            }
+            return true;
+        }
+        //private void PassedPawn(List<Move> moves, Board board, Figure pawn, Side side)
+        //{
+        //    int rows = 0;
+        //    if (pawn.side == Side.WHITE)
+        //        rows = 4;
+        //    else if (pawn.side == Side.BLACK)
+        //        rows = 5;
+
+        //    char pawnX = board.ReturnPosition(pawn).Item1;
+        //    int pawnY = board.ReturnPosition(pawn).Item2;
+        //    //char kingX = board.ReturnPosition(king).Item1;
+        //    //int kingY = board.ReturnPosition(king).Item2;
+
+        //    //List<char> cell = new List<char>();
+        //    //if (bishopX == 'a')
+        //    //    cell = new List<char> { 'b', 'c', 'd' };
+        //    //else if (bishopX == 'h')
+        //    //    cell = new List<char> { 'f', 'g' };
+
+
+        //    if (moves.Count != 0)
+        //        for (int i = 0; i < moves.Count; i++)
+        //        {
+        //            if (!moves[i].From.Contains(pawnX.ToString() + (pawnY - 2).ToString()))
+        //            {
+        //                for (int j = 0; j < moves.Count; j++)
+        //                    if (!moves[j].From.Contains(kingX.ToString() + kingY.ToString()))
+        //                    {
+        //                        CastlingTest(board, king, rook, side, rows, rookX);
+        //                    }
+        //                    else
+        //                        return;
+        //            }
+        //            else
+        //                return;
+        //        }
+        //    else
+        //    {
+        //        CastlingTest(board, king, rook, side, rows, rookX);
+        //    }
+
+        //}
 
     }
 }
