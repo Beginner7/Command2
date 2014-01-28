@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandGameList
+    public class CommandGameList : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("gl", "Список игр"); } }
+        public override int ArgsNeed { get { return 0; } }
  
-        public static void Show()
+        public void Show()
         {
             Console.WriteLine("Active games:");
             var request = new GameListRequest();

@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandLogin
+    public class CommandLogin : CommandBase
     {
-        public static int ArgsNeed = 1;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("login", "Вход а аккаунт", "<user name>"); } }
+        public override int ArgsNeed { get { return 1; } }
 
-        public static void Login(string userName)
+        public void Login(string userName)
         {
             if (Utils.IsNotLoggedIn())
             {

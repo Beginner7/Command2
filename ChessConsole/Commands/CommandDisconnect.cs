@@ -8,11 +8,12 @@ using Protocol.Transport;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandDisconnect
+    public class CommandDisconnect : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("disconnect", "Покинуть игру"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static void Disconnect()
+        public void Disconnect()
         {
             if (Utils.IsInGame())
             {

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace ChessConsole.Commands
 {
-    public static class CommandMe
+    public class CommandMe : CommandBase
     {
-        public static int ArgsNeed = 0;
+        public override CommandHelpLabel Help { get { return new CommandHelpLabel("me", "Состояние аккаунта"); } }
+        public override int ArgsNeed { get { return 0; } }
 
-        public static void Show()
+        public void Show()
         {
             if (Utils.IsLoggedIn())
             {
