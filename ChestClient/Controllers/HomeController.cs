@@ -6,7 +6,7 @@ namespace ChestClient.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Добро пожаловать в ASP.NET MVC!";
+            ViewBag.Message = "";
 
             return View();
         }
