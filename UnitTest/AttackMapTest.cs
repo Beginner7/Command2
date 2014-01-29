@@ -1234,6 +1234,38 @@ namespace UnitTest
             //a - assert
             Assert.IsTrue(!map["c3"].Contains(pawnBlack));
         }
+
+        /// <summary>
+        /// Проверим, что в случае шаха возможны только ходы, которые убирают этот шах
+        /// </summary>
+        [TestMethod]
+        [Ignore]
+        public void AfterIsCheckTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.WHITE);
+            var king = new FigureKing(Side.WHITE);
+            board["h3"] = king;
+            board["g2"] = pawn;
+            board["f3"] = new FigureQueen(Side.BLACK);
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            if (map.IsCheck)
+            {
+                map = new AttackMap(new List<Move>(), board);
+            }
+            //a - assert
+            Assert.IsTrue(map["f3"].Contains(pawn));
+            Assert.IsTrue(map["g3"].Contains(pawn));
+            Assert.IsFalse(map["g4"].Contains(pawn));
+            Assert.IsFalse(map["g3"].Contains(king));
+            Assert.IsFalse(map["g4"].Contains(king));
+            Assert.IsTrue(map["h2"].Contains(king));
+            Assert.IsTrue(map["h4"].Contains(king));
+        }
+    
     }
 
 }

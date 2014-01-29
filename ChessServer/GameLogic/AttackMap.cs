@@ -16,6 +16,7 @@ namespace ChessServer.GameLogic
         public Board board {get; private set;}
         public List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         private List<Move> moves;
+        private Dictionary<Figure, string> _figuresPosition = new Dictionary<Figure, string>();
 
         public List<Figure> this[string cell]
         {
@@ -29,7 +30,7 @@ namespace ChessServer.GameLogic
             }
         }
 
-        public AttackMap(List<Move> moves, Board forceBoard = null)
+        public AttackMap(List<Move> moves, Board forceBoard = null, bool isRecursive = false)
         {
             
             if (forceBoard == null)
@@ -287,6 +288,23 @@ namespace ChessServer.GameLogic
                     }
                 }
             }
+            if (!isRecursive) {
+
+                foreach (var move in AllPossibleMoves)
+                {
+                    Board newBoard = board.Clone();
+                    var additionalMoves = new List<Move> { move };
+                    board.ApplyMoves(additionalMoves);
+                    var newAttackMap = new AttackMap(moves.Concat(additionalMoves).ToList(), newBoard, true);
+                    var figure = board[move.From];
+                    if ((figure.side == Side.WHITE && newAttackMap.IsCheckWhite)
+                      || (figure.side == Side.BLACK && newAttackMap.IsCheckBlack))
+                    {
+                        Attackers[Board.GetCoords(move.To).Item1, Board.GetCoords(move.To).Item2].Remove(figure);
+                    }
+                }
+            }
+        
         }
 
         private void KingKnightStep(Board board, Figure f, char x, int y)
@@ -628,5 +646,27 @@ namespace ChessServer.GameLogic
             }
         }
 
+          public IEnumerable<Move> AllPossibleMoves
+        {
+            get
+            {
+                var _moves = new List<Move>();
+                for (char i = 'a'; i <= 'h'; i++)
+                {
+                    for (int j = 1; j <= Board.BoardSize; j++)
+                    {
+                        var currentCell = i.ToString() + j;
+                        foreach (var figure in this[currentCell])
+                        {
+                            var move = new Move();
+                            move.From = _figuresPosition[figure];
+                            move.To = currentCell;
+                            _moves.Add(move);
+                        }
+                    }
+                }
+                return _moves;
+            }
+        }
     }
 }
