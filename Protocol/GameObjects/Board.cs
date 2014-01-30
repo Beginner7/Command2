@@ -16,7 +16,7 @@ namespace Protocol.GameObjects
             return (cell.Length == 2) && !OutputAbroad(GetCoords(cell));
         }
         public static int BoardSize = 8;
-        public static Figure[,] Cells = new Figure[BoardSize, BoardSize];
+        public Figure[,] Cells = new Figure[BoardSize, BoardSize];
 
         public Board()
         {
@@ -56,7 +56,7 @@ namespace Protocol.GameObjects
             Cells[7, 7] = new FigureRook(Protocol.Transport.Side.BLACK);
         }
 
-        private static void FillEmptyCells(int startX, int endX, int startY, int endY)
+        private void FillEmptyCells(int startX, int endX, int startY, int endY)
         {
             for (int i = startX; i < endX; i++)
             {
@@ -185,6 +185,13 @@ namespace Protocol.GameObjects
                 }
             }
             throw new Exception("Figure not found");
+        }
+
+        public Board Clone()
+        {
+            var board = new Board();
+            board.Cells = (Figure[,])this.Cells.Clone();
+            return board;
         }
     }
 }

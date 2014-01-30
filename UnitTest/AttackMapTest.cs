@@ -1265,6 +1265,24 @@ namespace UnitTest
             Assert.IsTrue(map["h2"].Contains(king));
             Assert.IsTrue(map["h4"].Contains(king));
         }
+
+        /// <summary>
+        /// Проверка работоспособности IsCheck
+        /// </summary>
+        [TestMethod]
+        public void IsCheckTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var rook = new FigureRook(Side.BLACK);
+            var king = new FigureKing(Side.WHITE);
+            board["e3"] = king;
+            board["h3"] = rook;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            Assert.IsTrue(map.IsCheck);
+        }
     
     }
 
