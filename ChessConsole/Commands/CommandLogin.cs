@@ -12,32 +12,35 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("login", "Вход а аккаунт", "<user name>"); } }
         public override int ArgsNeed { get { return 1; } }
-
-        public void Login(string userName)
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsNotLoggedIn())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                var request = new AddUserRequest();
-                request.UserName = userName;
-                var response = ServerProvider.MakeRequest(request);
-                if (response.Status == Statuses.OK)
+                if (Utils.IsNotLoggedIn())
                 {
-                    CurrentUser.Name = userName;
-                    CurrentUser.StartPulse();
-                    Console.WriteLine("You logged in as: " + CurrentUser.Name);
-                }
-                else
-                {
-                    if (response.Status == Statuses.DuplicateUser)
+                    var request = new AddUserRequest();
+                    request.UserName = args.ToArray()[0];
+                    var response = ServerProvider.MakeRequest(request);
+                    if (response.Status == Statuses.OK)
                     {
-                        Console.WriteLine("This user already logged in.");
+                        CurrentUser.Name = args.ToArray()[0];
+                        CurrentUser.StartPulse();
+                        Console.WriteLine("You logged in as: " + CurrentUser.Name);
                     }
                     else
                     {
-                        Console.WriteLine("Bad status");
+                        if (response.Status == Statuses.DuplicateUser)
+                        {
+                            Console.WriteLine("This user already logged in.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Bad status");
+                        }
                     }
                 }
             }
+            return true;
         }
     }
 }

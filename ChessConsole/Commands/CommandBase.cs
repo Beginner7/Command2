@@ -9,5 +9,6 @@ namespace ChessConsole.Commands
     {
         public abstract CommandHelpLabel Help { get; }
         public abstract int ArgsNeed { get; }
+        public abstract bool DoWork(IEnumerable<string> args);
     }
 }

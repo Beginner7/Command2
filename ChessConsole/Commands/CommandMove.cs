@@ -12,39 +12,42 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("move", "Сделать ход", "<start cell> <target cell>"); } }
         public override int ArgsNeed { get { return 2; } }
-
-        public void Move(string from, string to)
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsInGame())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                var command = new MoveRequest();
-                command.From = from;
-                command.To = to;
-                command.Player = new User { Name = CurrentUser.Name };
-                command.GameID = CurrentUser.CurrentGame.Value;
-                var response = ServerProvider.MakeRequest(command);
-                switch (response.Status)
+                if (Utils.IsInGame())
                 {
-                    case Statuses.OK:
-                        Console.WriteLine("Move done.");
-                        break;
-                    case Statuses.NoUser:
-                        Console.WriteLine("No opponent yet.");
-                        break;
-                    case Statuses.OpponentTurn:
-                        Console.WriteLine("Now is opponent turn.");
-                        break;
-                    case Statuses.WrongMove:
-                        Console.WriteLine("Wrong move.");
-                        break;
-                    case Statuses.WrongMoveNotation:
-                        Console.WriteLine("Wrong move notation.");
-                        break;
-                    default:
-                        Console.WriteLine("Wrong status.");
-                        break;
+                    var command = new MoveRequest();
+                    command.From = args.ToArray()[0];
+                    command.To = args.ToArray()[1];
+                    command.Player = new User { Name = CurrentUser.Name };
+                    command.GameID = CurrentUser.CurrentGame.Value;
+                    var response = ServerProvider.MakeRequest(command);
+                    switch (response.Status)
+                    {
+                        case Statuses.OK:
+                            Console.WriteLine("Move done.");
+                            break;
+                        case Statuses.NoUser:
+                            Console.WriteLine("No opponent yet.");
+                            break;
+                        case Statuses.OpponentTurn:
+                            Console.WriteLine("Now is opponent turn.");
+                            break;
+                        case Statuses.WrongMove:
+                            Console.WriteLine("Wrong move.");
+                            break;
+                        case Statuses.WrongMoveNotation:
+                            Console.WriteLine("Wrong move notation.");
+                            break;
+                        default:
+                            Console.WriteLine("Wrong status.");
+                            break;
+                    }
                 }
             }
+            return true;
         }
     }
 }

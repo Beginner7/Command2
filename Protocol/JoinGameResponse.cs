@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public class ConnectToGameResponse: Response
+    public class JoinGameResponse: Response
     {
     }
 }

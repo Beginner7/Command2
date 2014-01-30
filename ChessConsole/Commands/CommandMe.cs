@@ -10,17 +10,20 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("me", "Состояние аккаунта"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public void Show()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsLoggedIn())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                Console.WriteLine("You are logged as: " + CurrentUser.Name);
+                if (Utils.IsLoggedIn())
+                {
+                    Console.WriteLine("You are logged as: " + CurrentUser.Name);
+                }
+                if (Utils.IsInGame())
+                {
+                    Console.WriteLine("You are in game. ID: " + CurrentUser.CurrentGame);
+                }
             }
-            if (Utils.IsInGame())
-            {
-                Console.WriteLine("You are in game. ID: " + CurrentUser.CurrentGame);
-            }
+            return true;
         }
     }
 }

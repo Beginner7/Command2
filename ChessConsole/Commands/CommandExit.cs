@@ -10,19 +10,18 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("exit", "Выйти"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public bool Exit()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsNotInGame())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                var commandLogout = new CommandLogout();
-                commandLogout.Logout();
-                return true;
+                if (Utils.IsNotInGame())
+                {
+                    var commandLogout = new CommandLogout();
+                    commandLogout.DoWork(args);
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
+            return true;
         }
     }
 }

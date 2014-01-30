@@ -12,23 +12,26 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("logout", "Выход из аккаунта"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public void Logout()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsNotInGame() && Utils.IsLoggedIn())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                var request = new DeleteUserRequest();
-                request.UserName = CurrentUser.Name;
-                var response = ServerProvider.MakeRequest(request);
-                if (response.Status == Statuses.OK)
+                if (Utils.IsNotInGame() && Utils.IsLoggedIn())
                 {
-                    Console.WriteLine("You logged out.");
-                }
-                else
-                {
-                    Console.WriteLine("Bad status");
+                    var request = new DeleteUserRequest();
+                    request.UserName = CurrentUser.Name;
+                    var response = ServerProvider.MakeRequest(request);
+                    if (response.Status == Statuses.OK)
+                    {
+                        Console.WriteLine("You logged out.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Bad status");
+                    }
                 }
             }
+            return true;
         }
     }
 }

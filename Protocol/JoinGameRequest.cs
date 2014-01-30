@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Protocol
 {
-    public class ConnectToGameRequest: Request
+    public class JoinGameRequest: Request
     {
-        public ConnectToGameRequest()
+        public JoinGameRequest()
         {
-            Command = "connecttogame";
+            Command = "joingame";
         }
         public int GameID;
         public User NewPlayer;

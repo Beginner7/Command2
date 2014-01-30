@@ -11,17 +11,20 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("sb", "Отобразить доску"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public void ShowBoard()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsInGame())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                var gameboard = new Board();
-                gameboard.InitialPosition();
-                var commandMoveList = new CommandMoveList();
-                gameboard.ApplyMoves(commandMoveList.GetList());
-                gameboard.ShowBoard();
+                if (Utils.IsInGame())
+                {
+                    var gameboard = new Board();
+                    gameboard.InitialPosition();
+                    var commandMoveList = new CommandMoveList();
+                    gameboard.ApplyMoves(commandMoveList.GetList());
+                    gameboard.ShowBoard();
+                }
             }
+            return true;
         }
     }
 }

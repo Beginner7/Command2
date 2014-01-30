@@ -12,21 +12,24 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("say", "Отправить сообщение оппоненту", "<message>"); } }
         public override int ArgsNeed { get { return -1; } }
-
-        public void Say(string sayString)
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsInGame())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                var request = new ChatRequest();
-                request.SayString = sayString;
-                request.From = CurrentUser.Name;
-                request.GameID = CurrentUser.CurrentGame.Value;
-                var response = ServerProvider.MakeRequest<ChatResponse>(request);
-                if (response.Status != Statuses.OK)
+                if (Utils.IsInGame())
                 {
-                    Console.WriteLine("Bad status.");
+                    var request = new ChatRequest();
+                    request.SayString = args.StrJoin(' ');
+                    request.From = CurrentUser.Name;
+                    request.GameID = CurrentUser.CurrentGame.Value;
+                    var response = ServerProvider.MakeRequest<ChatResponse>(request);
+                    if (response.Status != Statuses.OK)
+                    {
+                        Console.WriteLine("Bad status.");
+                    }
                 }
             }
+            return true;
         }
     }
 }

@@ -13,7 +13,6 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("ml", "Показать лог игры"); } }
         public override int ArgsNeed { get { return 0; } }
-
         public List<Move> GetList()
         {
             var request = new MoveListRequest();
@@ -21,17 +20,20 @@ namespace ChessConsole.Commands
             var response = ServerProvider.MakeRequest<MoveListResponse>(request);
             return response.Moves;
         }
-
-        public void ShowList()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsInGame())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                Console.WriteLine("Moves from game \"" + CurrentUser.CurrentGame + "\":");
-                foreach (var element in GetList())
+                if (Utils.IsInGame())
                 {
-                    Console.WriteLine(String.Format("{0}: {1}-{2}", element.Player.Name, element.From, element.To));
+                    Console.WriteLine("Moves from game \"" + CurrentUser.CurrentGame + "\":");
+                    foreach (var element in GetList())
+                    {
+                        Console.WriteLine(String.Format("{0}: {1}-{2}", element.Player.Name, element.From, element.To));
+                    }
                 }
             }
+            return true;
         }
     }
 }

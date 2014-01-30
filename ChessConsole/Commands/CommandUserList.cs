@@ -12,15 +12,18 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("ul", "Список вошедших пользователей"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public void Show()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            var request = new UserListRequest();
-            var response = ServerProvider.MakeRequest<UserListResponse>(request);
-            foreach (var element in response.Users)
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                Console.WriteLine(element);
+                var request = new UserListRequest();
+                var response = ServerProvider.MakeRequest<UserListResponse>(request);
+                foreach (var element in response.Users)
+                {
+                    Console.WriteLine(element);
+                }
             }
+            return true;
         }
     }
 }

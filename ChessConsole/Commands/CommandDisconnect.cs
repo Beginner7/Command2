@@ -12,25 +12,28 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("disconnect", "Покинуть игру"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public void Disconnect()
+        public override bool DoWork(IEnumerable<string> args)
         {
             if (Utils.IsInGame())
             {
-                var request = new DisconnectRequest();
-                request.User = CurrentUser.Name;
-                request.GameID = CurrentUser.CurrentGame.Value;
-                var response = ServerProvider.MakeRequest(request);
-                if (response.Status == Statuses.OK)
+                if (Utils.CheckArgs(ArgsNeed, args.Count()))
                 {
-                    Console.WriteLine("You abandoned the game.");
-                    CurrentUser.CurrentGame = null;
-                }
-                else
-                {
-                    Console.WriteLine(response.Status.ToString());
+                    var request = new DisconnectRequest();
+                    request.User = CurrentUser.Name;
+                    request.GameID = CurrentUser.CurrentGame.Value;
+                    var response = ServerProvider.MakeRequest(request);
+                    if (response.Status == Statuses.OK)
+                    {
+                        Console.WriteLine("You abandoned the game.");
+                        CurrentUser.CurrentGame = null;
+                    }
+                    else
+                    {
+                        Console.WriteLine(response.Status.ToString());
+                    }
                 }
             }
+            return true;
         }
     }
 }

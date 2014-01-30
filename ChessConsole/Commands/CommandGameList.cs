@@ -12,16 +12,19 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("gl", "Список игр"); } }
         public override int ArgsNeed { get { return 0; } }
- 
-        public void Show()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            Console.WriteLine("Active games:");
-            var request = new GameListRequest();
-            var response = ServerProvider.MakeRequest<GameListResponse>(request);
-            foreach (int element in response.Games)
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                Console.WriteLine(element);
+                Console.WriteLine("Active games:");
+                var request = new GameListRequest();
+                var response = ServerProvider.MakeRequest<GameListResponse>(request);
+                foreach (int element in response.Games)
+                {
+                    Console.WriteLine(element);
+                }
             }
+            return true;
         }
     }
 }

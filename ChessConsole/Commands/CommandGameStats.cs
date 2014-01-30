@@ -12,57 +12,60 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("gs", "Отобразить состояния игры"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public void Show()
+        public override bool DoWork(IEnumerable<string> args)
         {
             if (Utils.IsInGame())
             {
-                var reques = new GameStatRequest();
-                reques.gameID = CurrentUser.CurrentGame.Value;
-                var response = ServerProvider.MakeRequest<GameStatResponse>(reques);
-                Console.WriteLine("Game \"" + response.ID + "\" stats:");
-                switch (response.Act)
+                if (Utils.CheckArgs(ArgsNeed, args.Count()))
                 {
-                    case Act.AbandonedByWhite:
-                        Console.WriteLine("Was abandoned by White");
-                        break;
+                    var reques = new GameStatRequest();
+                    reques.gameID = CurrentUser.CurrentGame.Value;
+                    var response = ServerProvider.MakeRequest<GameStatResponse>(reques);
+                    Console.WriteLine("Game \"" + response.ID + "\" stats:");
+                    switch (response.Act)
+                    {
+                        case Act.AbandonedByWhite:
+                            Console.WriteLine("Was abandoned by White");
+                            break;
 
-                    case Act.AbandonedByBlack:
-                        Console.WriteLine("Was abandoned by Black");
-                        break;
+                        case Act.AbandonedByBlack:
+                            Console.WriteLine("Was abandoned by Black");
+                            break;
 
-                    case Act.Cancled:
-                        Console.WriteLine("Was cancled");
-                        break;
+                        case Act.Cancled:
+                            Console.WriteLine("Was cancled");
+                            break;
 
-                    case Act.WaitingOpponent:
-                        Console.WriteLine("Waiting for 2nd player");
-                        break;
+                        case Act.WaitingOpponent:
+                            Console.WriteLine("Waiting for 2nd player");
+                            break;
 
-                    case Act.Pat:
-                        Console.WriteLine("Finished with pat");
-                        break;
+                        case Act.Pat:
+                            Console.WriteLine("Finished with pat");
+                            break;
 
-                    case Act.WhiteWon:
-                        Console.WriteLine("Won by White");
-                        break;
+                        case Act.WhiteWon:
+                            Console.WriteLine("Won by White");
+                            break;
 
-                    case Act.BlackWon:
-                        Console.WriteLine("Won by Black");
-                        break;
+                        case Act.BlackWon:
+                            Console.WriteLine("Won by Black");
+                            break;
 
-                    case Act.InProgress:
-                        Console.WriteLine("Now in progress");
-                        break;
+                        case Act.InProgress:
+                            Console.WriteLine("Now in progress");
+                            break;
 
-                    default:
-                        Console.WriteLine("Unexpected act");
-                        break;
+                        default:
+                            Console.WriteLine("Unexpected act");
+                            break;
+                    }
+                    Console.WriteLine("White player: " + response.PlayerWhite);
+                    Console.WriteLine("Black player: " + response.PlayerBlack);
+                    Console.WriteLine("Now " + ((response.Turn == Side.BLACK) ? "black's" : "white's") + " turn");
                 }
-                Console.WriteLine("White player: " + response.PlayerWhite);
-                Console.WriteLine("Black player: " + response.PlayerBlack);
-                Console.WriteLine("Now " + ((response.Turn == Side.BLACK) ? "black's" : "white's") + " turn");
             }
+            return true;
         }
     }
 }

@@ -46,6 +46,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandMove.cs" />
+    <Compile Include="Commands\CommandGameStat.cs" />
+    <Compile Include="Commands\CommandEcho.cs" />
+    <Compile Include="Commands\CommandJoinGame.cs" />
+    <Compile Include="Commands\CommandGamelist.cs" />
+    <Compile Include="Commands\CommandCreateGame.cs" />
+    <Compile Include="Commands\CommandMovelist.cs" />
+    <Compile Include="Commands\CommandChat.cs" />
+    <Compile Include="Commands\CommandUserlist.cs" />
+    <Compile Include="Commands\CommandPulse.cs" />
+    <Compile Include="Commands\CommandDisconnect.cs" />
+    <Compile Include="Commands\CommandDeleteUser.cs" />
+    <Compile Include="Commands\CommandAddUser.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameLogic\AttackMap.cs" />
     <Compile Include="Server.cs" />
@@ -60,6 +75,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -14,6 +14,7 @@ namespace Protocol
         ErrorCreateGame,
         GameNotFound,
         OpponentTurn,
+        GameCancled,
         GameIsRunning,
         WrongMove,
         WrongMoveNotation

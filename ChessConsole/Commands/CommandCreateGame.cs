@@ -12,24 +12,27 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("cg", "Создать игру"); } }
         public override int ArgsNeed { get { return 0; } }
-
-        public void Create()
+        public override bool DoWork(IEnumerable<string> args)
         {
-            if (Utils.IsLoggedIn() && Utils.IsNotInGame())
+            if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
-                var request = new CreateGameRequest();
-                request.NewPlayer = new User { Name = CurrentUser.Name };
-                var response = ServerProvider.MakeRequest<CreateGameResponse>(request);
-                if (response.Status == Statuses.OK)
+                if (Utils.IsLoggedIn() && Utils.IsNotInGame())
                 {
-                    Console.WriteLine("You create game. ID: " + response.ID);
-                    CurrentUser.CurrentGame = (int?)response.ID;
-                }
-                else
-                {
-                    Console.WriteLine("Bad status");
+                    var request = new CreateGameRequest();
+                    request.NewPlayer = new User { Name = CurrentUser.Name };
+                    var response = ServerProvider.MakeRequest<CreateGameResponse>(request);
+                    if (response.Status == Statuses.OK)
+                    {
+                        Console.WriteLine("You create game. ID: " + response.ID);
+                        CurrentUser.CurrentGame = (int?)response.ID;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Bad status");
+                    }
                 }
             }
+            return true;
         }
     }
 }
