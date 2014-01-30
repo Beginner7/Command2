@@ -182,10 +182,6 @@ namespace ChessServer
                             pulseResponse.Status = Statuses.NoUser;
                         }
                         resp = pulseResponse;
-                        if (resp.Messages.Count > 0)
-                        {
-                            int foo;
-                        }
                     }
                     break;
 

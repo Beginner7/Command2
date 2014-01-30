@@ -57,6 +57,7 @@ namespace ChessServer.GameLogic
                 for (int j = 1; j <= Board.BoardSize; j++)
                 {
                     Figure f = board[i.ToString() + j];
+                    _figuresPosition[f] = i.ToString() + j;
                     if (f.GetType() == typeof(FigureNone))
                     {
                         continue;
@@ -288,7 +289,8 @@ namespace ChessServer.GameLogic
                     }
                 }
             }
-            if (!isRecursive) {
+            if (!isRecursive)
+            {
 
                 foreach (var move in AllPossibleMoves)
                 {
@@ -515,10 +517,39 @@ namespace ChessServer.GameLogic
             }
         }
 
-        public bool IsCheck {
+        public bool IsCheckWhite
+        {
             get
             {
-                if (this[_blackKing].Count > 0 || this[_whiteKing].Count > 0) {
+                if (_whiteKing != null && this[_whiteKing].Count > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public bool IsCheckBlack
+        {
+            get
+            {
+                if (_blackKing != null && this[_blackKing].Count > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool IsCheck
+        {
+            get
+            {
+                if (IsCheckWhite)
+                {
+                    return true;
+                }
+                if (IsCheckBlack)
+                {
                     return true;
                 }
                 return false;
@@ -646,7 +677,7 @@ namespace ChessServer.GameLogic
             }
         }
 
-          public IEnumerable<Move> AllPossibleMoves
+        public IEnumerable<Move> AllPossibleMoves
         {
             get
             {
