@@ -247,7 +247,7 @@ table th {
 nav, 
 #menucontainer {
     
-    margin-top: 142px;
+    margin-top: 129px;
 }
 
 
@@ -328,6 +328,74 @@ div#title {
 .tri-state {
     width: 6em;
 }
+/* Profile
+----------------------------------------------------------*/
 
+.prof {
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+    
+    margin-top:20px;
+    
+    width:20%;
+    background-color:rgba(121, 106, 106, 0.61);
+    text-align:center;
+    font-size:large;
+    
+}
+.profend {
+    -webkit-border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 0px 10px 10px;
+    
+    margin-top:-20px;
+    
+    width:20%;
+    background-color:rgba(121, 106, 106, 0.61);
+    text-align:center;
+    font-size:large;
+}
 
+.profMenu {
+    
+    width:20%;
+    margin-top:-20px;
+    background-color:rgba(157, 121, 121, 1);
+    text-align:left;
+    font-size:large;
+    
+}
 
+.profMenu ul {
+    margin-left:-40px;
+    text-align:left;
+    text-decoration:none;
+}
+
+.profMenu ul li {
+    text-align:left;
+    list-style:none;
+    text-decoration:none;
+
+}
+.profMenu ul li:hover{
+    background-color:rgba(29, 96, 255, 0.71);
+    color:white;
+    text-decoration:none;
+
+}
+
+.profMenu ul li a{
+    margin-left:5px;
+    color:white;
+    text-decoration:none;
+
+}
+
+.profMenu ul li a:active{
+    
+    color:white;
+    text-decoration:none;
+
+}

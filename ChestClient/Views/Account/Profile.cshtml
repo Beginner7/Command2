@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Профиль игрока";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class ="prof">Профиль игрока @User.Identity.Name</div>
+<div class ="profMenu">
+    <ul>
+        <li>@Html.ActionLink("Информация", "Login", "User")</li>
+        <li>@Html.ActionLink("Статистика игр", "Index", "Home")</li>
+        <li>@Html.ActionLink("Почта", "Index", "User")</li>
+        <li>@Html.ActionLink("Выход", "About", "Home")</li>
+    </ul>
+</div>
+<div class ="profend">
+    <br />
+</div>

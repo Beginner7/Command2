@@ -1,13 +1,10 @@
 ﻿@model IEnumerable<string>
 @using ChestClient.Controllers;
 
-<!DOCTYPE html>
+@{
+    ViewBag.Title = "Список Пользователей";
+}
 
-<html>
-<head>
-    <title>Index</title>
-</head>
-<body>
     <div>
         <h1>
             Список пользователей Online
@@ -18,5 +15,5 @@
         }
         </ul>
     </div>
-</body>
-</html>
+
+

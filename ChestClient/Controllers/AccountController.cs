@@ -73,7 +73,11 @@ namespace ChestClient.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+        [HttpGet]
+        public ActionResult Profile()
+        {
+            return View();
+        }
         #region Status Codes
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {

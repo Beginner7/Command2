@@ -220,6 +220,7 @@
     <Content Include="Views\User\User.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Server.ashx" />
+    <Content Include="Views\Account\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
