@@ -6,32 +6,60 @@
     <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
 </head>
 <body>
-    <div class="page">
-        <div class="wrap">
-              
-            <div id="header">
-                    <div id="logindisplay">
-                        @Html.Partial("_LogOnPartial")
-                    </div>
-            
-                    <div id="menucontainer">
-                        <ul id="menu">
-                            <!--<li>@Html.ActionLink("Вход", "Login", "User")</li>-->
-                            <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Пользователи", "Index", "User")</li>
-                            <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                        </ul>
-                    </div>
-                </div>
-
-            <div id="main">
-                @RenderBody()
-            </div>
-        </div>
-        
-        <div id="footer">
-        </div>
-
+    <div id="logindisplay">
+        @Html.Partial("_LogOnPartial")
     </div>
+
+
+        <table id="menucontainer">
+            <tr>
+                <td class="spacer">&nbsp;</td>
+                <td class="header">Шахматы</td>
+                <td class="spacer">&nbsp;</td>
+                <td class="menu">
+                    <ul id="menu">
+                        <!--<li>@Html.ActionLink("Вход", "Login", "User")</li>-->
+                        <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Пользователи", "Index", "User")</li>
+                        <li>@Html.ActionLink("О программе", "About", "Home")</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+    <table id="mainblock">
+        <tr>
+            <td style="width:15%;vertical-align:top;padding-left:10px;">
+                <h2>Информация</h2>
+                <h2>Друзья онлайн</h2>
+                <a>Друг 1</a><br />
+                <a>Друг 2</a><br />
+                <a>Друг 3</a><br />
+                <a>Друг 4</a>
+                <h2>Почта</h2>
+                <h2>Статистика игр</h2>
+                Всего партий:<br />
+                Побед:<br />
+                Покинутых игр:<br />
+                <a href=""><h2>Скачать клиент</h2></a>
+                <br />
+                <input name="nomer2" value="" size="20" type="text" id="search"/>
+
+            </td>
+            <td>
+                
+    <div id="main">
+        @RenderBody()
+    </div>
+            </td>
+        </tr>
+    </table>
+
+
+    <div id="footer">
+        Copyright © Command2 2014 &nbsp;<br />
+        Все права защищены&nbsp; 
+    </div>
+
 </body>
 </html>

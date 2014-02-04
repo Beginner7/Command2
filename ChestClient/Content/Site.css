@@ -4,7 +4,7 @@ to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
 html,body{
-    background-color: #eed8ae;
+    
     font-size: .85em;
     font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -75,21 +75,8 @@ h5, h6 {
 /* you can specify a greater or lesser percentage for the 
 page width. Or, you can specify an exact pixel width. */
 .page {
-    width: 90%;
     margin-left: auto;
     margin-right: auto;
-}
-
-header, #header {
-    background-size: 100% 100%; 
-    height:200px;
-    
-    background-repeat:no-repeat;
-    background-image:url(img/Header.jpg);
-    position:relative;
-    
-    color: #000;
-    padding: 0;
 }
 
 header h1, #header h1 {
@@ -104,6 +91,7 @@ header h1, #header h1 {
 }
 
 #main {
+    padding-right:10px;
     text-align: center;
     background-size:100%;
 }
@@ -111,30 +99,24 @@ header h1, #header h1 {
 
  
 #footer {
-    background-image:url(img/footer.jpg);
-    background-repeat:no-repeat;
-    background-size:cover;
-    width:90%;
+    width: 100%;
     position:absolute;
     bottom:0;
-    height: 60px;
     clear:both;
-    text-align: center;
-    
+    text-align:right;
+
 }
 
 /* TAB MENU   
 ----------------------------------------------------------*/
+
 ul#menu {
-    
-    border-bottom: 0px #5C87B2 solid;
-    padding: 0 0 0;
-    position: relative;
-    margin: 0;
-    text-align:center;
+    padding: 0px;
+    margin: 0px;
 }
 
 ul#menu li {
+    margin-left:-5px;
     display: inline;
     list-style: none;
 }
@@ -143,7 +125,6 @@ ul#menu li#greeting {
     padding: 10px 20px;
     font-weight: bold;
     text-decoration: none;
-    line-height: 2.8em;
     color: #fff;
 }
 
@@ -152,12 +133,12 @@ ul#menu li a {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
-    background-color: rgba(0, 0, 0, 0.00);
+    background-color: rgba(0, 0, 0, 1.00);
     
     color: #fff;
-    -webkit-border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
 }
 
 ul#menu li a:hover {
@@ -244,12 +225,32 @@ table th {
     color: Red;
 }
 
-nav, 
-#menucontainer {
-    
-    margin-top: 129px;
+
+#menucontainer, #mainblock {
+    width: 100%;
+    border: 0px solid black;
+    border-spacing: 0px;
 }
 
+#menucontainer td, #mainblock td {
+    border: 0px;
+    padding: 0px;
+}
+
+#menucontainer .spacer {
+    width: 5%;
+    border-bottom: 2px #000 solid;
+}
+
+#menucontainer .header {
+    width: 20%;
+    vertical-align:bottom;
+}
+
+
+#menucontainer .menu {
+    border-bottom: 2px #000 solid;
+}
 
 
 div#title {
@@ -260,15 +261,22 @@ div#title {
 
 #logindisplay {
     font-size: 1.1em;
-    display: block;
     text-align: right;
     margin: 0px;
-    color: White;
 }
 
-#logindisplay a:link {
+#logindisplay a {
+    margin-left:0;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    background-color: rgba(0, 0, 0, 1.00);
+    
     color: white;
-    text-decoration: underline;
+    -webkit-border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 0px 10px 10px;
 }
 
 #logindisplay a:visited {
@@ -279,6 +287,9 @@ div#title {
 #logindisplay a:hover {
     color: white;
     text-decoration: none;
+}
+
+#search {
 }
 
 /* Styles for validation helpers

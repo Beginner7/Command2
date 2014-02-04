@@ -1,8 +1,7 @@
 ﻿@if(Request.IsAuthenticated) {
-    <text>Добро пожаловать, <strong>@User.Identity.Name</strong>!
-    [ @Html.ActionLink("Профиль", "Profile" , "Account") ]<br />
-    [ @Html.ActionLink("Выход", "LogOff", "Account") ]</text>
+    <a>Добро пожаловать, @User.Identity.Name</a>
+    @Html.ActionLink("Выход", "LogOff", "Account");
 }
 else {
-    @:[ @Html.ActionLink("Вход", "LogOn", "Account") ]
+    @: @Html.ActionLink("Вход", "LogOn", "Account")
 }
