@@ -882,7 +882,7 @@ namespace UnitTest
         }
 
         /// <summary>
-        /// один конь на поле
+        /// один король на поле
         /// </summary>
         [TestMethod]
         public void WhiteKingTest()
@@ -905,15 +905,15 @@ namespace UnitTest
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
             //a - assert
-            Assert.IsTrue(map["e5"].Contains(king));
-            Assert.IsTrue(!map["f5"].Contains(king));
+            Assert.IsFalse(map["e5"].Contains(king));
+            Assert.IsFalse(map["f5"].Contains(king));
             Assert.IsTrue(map["f4"].Contains(king));
-            Assert.IsTrue(map["f3"].Contains(king));
-            Assert.IsTrue(map["e3"].Contains(king));
-            Assert.IsTrue(map["d3"].Contains(king));
-            Assert.IsTrue(map["d4"].Contains(king));
-            Assert.IsTrue(map["d5"].Contains(king));
-            Assert.IsTrue(!map["h6"].Contains(king));
+            Assert.IsFalse(map["f3"].Contains(king));
+            Assert.IsFalse(map["e3"].Contains(king));
+            Assert.IsFalse(map["d3"].Contains(king));
+            Assert.IsFalse(map["d4"].Contains(king));
+            Assert.IsFalse(map["d5"].Contains(king));
+            Assert.IsFalse(map["g4"].Contains(king));
         }
         
         /// <summary>
@@ -1239,7 +1239,6 @@ namespace UnitTest
         /// Проверим, что в случае шаха возможны только ходы, которые убирают этот шах
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void AfterIsCheckTest()
         {
             //a - arange
@@ -1252,11 +1251,8 @@ namespace UnitTest
 
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
-            if (map.IsCheck)
-            {
-                map = new AttackMap(new List<Move>(), board);
-            }
             //a - assert
+            Assert.IsTrue(map.IsCheck);
             Assert.IsTrue(map["f3"].Contains(pawn));
             Assert.IsTrue(map["g3"].Contains(pawn));
             Assert.IsFalse(map["g4"].Contains(pawn));

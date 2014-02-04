@@ -277,12 +277,12 @@ namespace ChessServer.GameLogic
                         }
                         if (f.side == Side.WHITE)
                         {
-                            _whiteKing = (i.ToString() + y);
+                            _whiteKing = (i.ToString() + j);
                         }
 
                         if (f.side == Side.BLACK)
                         {
-                            _blackKing = (i.ToString() + y);
+                            _blackKing = (i.ToString() + j);
                         }
 
                         continue;
@@ -296,7 +296,7 @@ namespace ChessServer.GameLogic
                 {
                     Board newBoard = board.Clone();
                     var additionalMoves = new List<Move> { move };
-                    board.ApplyMoves(additionalMoves);
+                    newBoard.ApplyMoves(additionalMoves);
                     var newAttackMap = new AttackMap(moves.Concat(additionalMoves).ToList(), newBoard, true);
                     var figure = board[move.From];
                     if ((figure.side == Side.WHITE && newAttackMap.IsCheckWhite)

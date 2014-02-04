@@ -135,7 +135,8 @@ namespace Protocol.GameObjects
             if (CheckNotation(from) && CheckNotation(to))
             {
                 if (Cells[GetCoords(to).Item1, GetCoords(to).Item2].GetType() == typeof(FigureNone) &&
-                    Cells[GetCoords(from).Item1, GetCoords(from).Item2].GetType() == typeof(FigurePawn))
+                    Cells[GetCoords(from).Item1, GetCoords(from).Item2].GetType() == typeof(FigurePawn)
+                    && (GetCoords(from).Item1 != GetCoords(to).Item1))
                 {
                     if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.BLACK)
                         Cells[GetCoords(to).Item1, GetCoords(to).Item2 + 1] = new FigureNone(Protocol.Transport.Side.NONE);
