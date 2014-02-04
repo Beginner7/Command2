@@ -130,7 +130,7 @@ namespace Protocol.GameObjects
             }
         }
 
-        public void DoMove(string from, string to)
+        public void DoMove(string from, string to, string inWho = null)
         {
             if (CheckNotation(from) && CheckNotation(to))
             {
@@ -143,14 +143,62 @@ namespace Protocol.GameObjects
                     if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.WHITE)
                         Cells[GetCoords(to).Item1, GetCoords(to).Item2 - 1] = new FigureNone(Protocol.Transport.Side.NONE);
                 }
+                
                 Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
                 Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Protocol.Transport.Side.NONE);
-                
+
+                if (isPromotion(to) && inWho != null &&
+                    Cells[GetCoords(to).Item1, GetCoords(to).Item2].GetType() == typeof(FigurePawn))
+                {
+                    DoPromotion(to, inWho);
+                }
             }
             else
             {
                 throw new WrongMoveException(string.Format("Incorrect move notation {0} {1}", from, to));
             }
+        }
+
+        private void DoPromotion(string to, string inWho)
+        {
+            switch (inWho.ToUpperInvariant()[0])
+            {
+                case FigureBishop.SYMBOL:
+                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
+                        new FigureBishop(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                    break;
+                case FigureKing.SYMBOL:
+                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
+                        new FigureKing(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                    break;
+                case FigureKnight.SYMBOL:
+                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
+                        new FigureKnight(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                    break;
+                case FigurePawn.SYMBOL:
+                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
+                        new FigurePawn(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                    break;
+                case FigureQueen.SYMBOL:
+                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
+                        new FigureQueen(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                    break;
+                case FigureRook.SYMBOL:
+                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
+                        new FigureRook(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                    break;
+                default:
+                    throw new WrongMoveException(string.Format("Incorrect symbol {0}", inWho));
+            }
+        }
+
+        private bool isPromotion(string to)
+        {
+            if  (GetCoords(to).Item2 == 7 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].side == Side.WHITE ||
+                GetCoords(to).Item2 == 0 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].side == Side.BLACK)
+                return true;
+            else
+                return false;
         }
 
         public static Tuple<int,int> GetCoords(string cell)

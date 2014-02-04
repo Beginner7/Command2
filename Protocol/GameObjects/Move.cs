@@ -12,5 +12,7 @@ namespace Protocol.GameObjects
         public string From;
         public string To;
         public User Player;
+
+        public string inWhom;
     }
 }

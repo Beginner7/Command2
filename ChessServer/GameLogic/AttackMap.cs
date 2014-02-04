@@ -528,6 +528,7 @@ namespace ChessServer.GameLogic
                 return false;
             }
         }
+        
         public bool IsCheckBlack
         {
             get
@@ -699,5 +700,19 @@ namespace ChessServer.GameLogic
                 return _moves;
             }
         }
+
+        public bool IsContains(Figure figure)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (Attackers[i, j].Contains(figure))
+                        return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

@@ -1279,7 +1279,8 @@ namespace UnitTest
             AttackMap map = new AttackMap(new List<Move>(), board);
             Assert.IsTrue(map.IsCheck);
         }
-    
+
+        
     }
 
 }

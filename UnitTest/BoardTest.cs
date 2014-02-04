@@ -89,5 +89,25 @@ namespace UnitTest
             //Assert.AreEqual(pawnWhite.GetType(), board["g6"].GetType());
             Assert.AreEqual(typeof(FigureNone), board["g5"].GetType());
         }
+
+        /// <summary>
+        /// одна белая пешка на 7ой горизонтали
+        /// </summary>
+        [TestMethod]
+        public void SimpleIsPromotionWhiteTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawnWhite = new FigurePawn(Side.WHITE);
+            board["d7"] = pawnWhite;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            board.DoMove("d7", "d8", FigureQueen.SYMBOL.ToString());
+
+            Assert.AreEqual(typeof(FigureQueen), board["d8"].GetType());
+        }
+
+        
     }
 }

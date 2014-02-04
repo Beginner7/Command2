@@ -9,9 +9,10 @@ namespace Protocol.GameObjects
 {
     public class FigureKing : Figure
     {
+        public const char SYMBOL = 'K';
         public FigureKing(Side side) : base(side)
         {
-            symbol = 'K';
+            symbol = SYMBOL;
         }
     }
 }
