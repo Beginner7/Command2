@@ -1307,7 +1307,7 @@ namespace UnitTest
         /// Проверка пата для белого короля
         /// </summary>
         [TestMethod]
-        public void IsStalemateTest()
+        public void IsStalemateWhiteTest()
         {
             //a - arange
             Board board = new Board();
@@ -1329,7 +1329,6 @@ namespace UnitTest
         /// Проверка пата для черного короля
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void IsStalemateBlackTest()
         {
             //a - arange
@@ -1339,8 +1338,8 @@ namespace UnitTest
             var king = new FigureKing(Side.BLACK);
             board["h8"] = king;
             board["f7"] = new FigureQueen(Side.WHITE);
-            board["b4"] = pawn;
-            board["b5"] = pawn2;
+            board["b4"] = pawn2;
+            board["b5"] = pawn;
 
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);

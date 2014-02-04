@@ -726,7 +726,7 @@ namespace ChessServer.GameLogic
         {
             get
             {
-                return BlackPossibleMoves.Count() == 0 && !IsCheckWhite;
+                return WhitePossibleMoves.Count() == 0 && !IsCheckWhite;
             }
         }
 
@@ -734,7 +734,7 @@ namespace ChessServer.GameLogic
         {
             get
             {
-                return AllPossibleMoves.Where(move => board[move.From].side == Side.WHITE);
+                return AllPossibleMoves.Where(move => board[move.From].side == Side.BLACK);
             }
         }
 
@@ -742,7 +742,7 @@ namespace ChessServer.GameLogic
         {
             get
             {
-                return BlackPossibleMoves.Count() == 0 && !IsCheckWhite;
+                return BlackPossibleMoves.Count() == 0 && !IsCheckBlack;
             }
         }
     }
