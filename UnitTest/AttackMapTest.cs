@@ -1280,7 +1280,75 @@ namespace UnitTest
             Assert.IsTrue(map.IsCheck);
         }
 
-        
+        /// <summary>
+        /// Проверим, что нельзя сделать ходы, которые приводят к шаху
+        /// </summary>
+        [TestMethod]
+        public void MovesToCheckTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.WHITE);
+            var king = new FigureKing(Side.WHITE);
+            board["h1"] = king;
+            board["g2"] = pawn;
+            board["a8"] = new FigureQueen(Side.BLACK);
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsFalse(map["g3"].Contains(pawn));
+            Assert.IsFalse(map["g4"].Contains(pawn));
+            Assert.IsTrue(map["g1"].Contains(king));
+            Assert.IsTrue(map["h2"].Contains(king));
+        }
+
+        /// <summary>
+        /// Проверка пата для белого короля
+        /// </summary>
+        [TestMethod]
+        public void IsStalemateWhiteTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.WHITE);
+            var pawn2 = new FigurePawn(Side.BLACK);
+            var king = new FigureKing(Side.WHITE);
+            board["h8"] = king;
+            board["f7"] = new FigureQueen(Side.BLACK);
+            board["b4"] = pawn;
+            board["b5"] = pawn2;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map.IsStalemateWhite);
+        }
+
+        /// <summary>
+        /// Проверка пата для черного короля
+        /// </summary>
+        [TestMethod]
+        public void IsStalemateBlackTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var pawn = new FigurePawn(Side.BLACK);
+            var pawn2 = new FigurePawn(Side.WHITE);
+            var king = new FigureKing(Side.BLACK);
+            board["h8"] = king;
+            board["f7"] = new FigureQueen(Side.WHITE);
+            board["b4"] = pawn2;
+            board["b5"] = pawn;
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map.IsStalemateBlack);
+        }
+
+
+    
     }
 
 }
