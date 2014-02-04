@@ -269,7 +269,7 @@ namespace ChessServer.GameLogic
 
                         if (kingX == 'e' && (kingY == 1 || kingY == 8))
                         {
-                            if (ColorFigureAttack(this[kingX.ToString() + kingY.ToString()], side))
+                            if (IsColorFigureAttack(this[kingX.ToString() + kingY.ToString()], side))
                                 if (board["a" + kingY.ToString()].GetType() == typeof(FigureRook))
                                     Castling(this.moves, board, f, board["a" + kingY.ToString()], side);
                                 else if (board["h" + kingY.ToString()].GetType() == typeof(FigureRook))
@@ -305,6 +305,20 @@ namespace ChessServer.GameLogic
                         Attackers[Board.GetCoords(move.To).Item1, Board.GetCoords(move.To).Item2].Remove(figure);
                     }
                 }
+            }
+            if (!isRecursive)
+            {
+                foreach (var move in AllPossibleMoves)
+                {
+                    Board newBoard = board.Clone();
+                    var additionalMoves = new List<Move> { move };
+                    newBoard.ApplyMoves(additionalMoves);
+                    var newAttackMap = new AttackMap(moves.Concat(additionalMoves).ToList(), newBoard, true);
+                    var figure = board[move.From];
+
+
+                }
+
             }
         
         }
@@ -609,9 +623,9 @@ namespace ChessServer.GameLogic
                 if (board["b" + rows.ToString()].GetType() == typeof(FigureNone) &&
                     board["c" + rows.ToString()].GetType() == typeof(FigureNone) &&
                     board["d" + rows.ToString()].GetType() == typeof(FigureNone) &&
-                    ColorFigureAttack(this["c" + rows.ToString()], king.side) &&
+                    IsColorFigureAttack(this["c" + rows.ToString()], king.side) &&
                     // Attackers['c' - 'a', rows - 1]
-                    ColorFigureAttack(this["d" + rows.ToString()], king.side) )
+                    IsColorFigureAttack(this["d" + rows.ToString()], king.side) )
                 //   Attackers['d' - 'a', rows - 1].Contains(new Figure(side)))
                 {
                     Attackers['c' - 'a', rows - 1].Add(king);
@@ -622,8 +636,8 @@ namespace ChessServer.GameLogic
             {
                 if (board["f" + rows.ToString()].GetType() == typeof(FigureNone) &&
                     board["g" + rows.ToString()].GetType() == typeof(FigureNone) &&
-                    ColorFigureAttack(this["f" + rows.ToString()], king.side) &&
-                    ColorFigureAttack(this["g" + rows.ToString()], king.side))
+                    IsColorFigureAttack(this["f" + rows.ToString()], king.side) &&
+                    IsColorFigureAttack(this["g" + rows.ToString()], king.side))
                 {
                     Attackers['g' - 'a', rows - 1].Add(king);
                     Attackers['f' - 'a', rows - 1].Add(rook);
@@ -631,7 +645,7 @@ namespace ChessServer.GameLogic
             }
         }
 
-        private bool ColorFigureAttack(List<Figure> figure, Side side)
+        private bool IsColorFigureAttack(List<Figure> figure, Side side)
         {
             for (int i = 0; i < figure.Count; i++)
             {
@@ -697,6 +711,38 @@ namespace ChessServer.GameLogic
                     }
                 }
                 return _moves;
+            }
+        }
+
+        public IEnumerable<Move> WhitePossibleMoves
+        {
+            get
+            {
+                return AllPossibleMoves.Where(move => board[move.From].side == Side.WHITE);
+            }
+        }
+
+        public bool IsStalemateWhite
+        {
+            get
+            {
+                return BlackPossibleMoves.Count() == 0 && !IsCheckWhite;
+            }
+        }
+
+        public IEnumerable<Move> BlackPossibleMoves
+        {
+            get
+            {
+                return AllPossibleMoves.Where(move => board[move.From].side == Side.WHITE);
+            }
+        }
+
+        public bool IsStalemateBlack
+        {
+            get
+            {
+                return BlackPossibleMoves.Count() == 0 && !IsCheckWhite;
             }
         }
     }
