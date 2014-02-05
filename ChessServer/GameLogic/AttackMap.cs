@@ -306,20 +306,7 @@ namespace ChessServer.GameLogic
                     }
                 }
             }
-            if (!isRecursive)
-            {
-                foreach (var move in AllPossibleMoves)
-                {
-                    Board newBoard = board.Clone();
-                    var additionalMoves = new List<Move> { move };
-                    newBoard.ApplyMoves(additionalMoves);
-                    var newAttackMap = new AttackMap(moves.Concat(additionalMoves).ToList(), newBoard, true);
-                    var figure = board[move.From];
-
-
-                }
-
-            }
+            
         
         }
 
@@ -758,6 +745,22 @@ namespace ChessServer.GameLogic
                 }
             }
             return false;
+        }
+
+        public bool IsMateWhite
+        {
+            get 
+            {
+                return WhitePossibleMoves.Count() == 0 && IsCheckWhite;
+            }
+        }
+
+        public bool IsMateBlack
+        {
+            get
+            {
+                return BlackPossibleMoves.Count() == 0 && IsCheckBlack;
+            }
         }
 
     }

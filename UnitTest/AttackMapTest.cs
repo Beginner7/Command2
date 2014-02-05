@@ -1347,6 +1347,46 @@ namespace UnitTest
             Assert.IsTrue(map.IsStalemateBlack);
         }
 
+        /// <summary>
+        /// Тест на мат черного короля 4 белыми фигурами
+        /// </summary>
+        [TestMethod]
+        public void IsMateBlackTest()
+        {
+            //a - arange
+            Board board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            board["e8"] = king;
+            board["g8"] = new FigureQueen(Side.WHITE);
+            board["c8"] = new FigureRook(Side.WHITE);
+            board["b7"] = new FigureRook(Side.WHITE);
+            board["e7"] = new FigureBishop(Side.WHITE);
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map.IsMateBlack);
+        }
+
+        /// <summary>
+        /// Тест на мат белого короля окруженного своими фигурами и находящимся под ударом лошади
+        /// </summary>
+        [TestMethod]
+        public void IsMateWhiteTest()
+        {
+            //a - arange
+            Board board = new Board();
+            board["a1"] = new FigureKing(Side.WHITE);
+            board["a2"] = new FigurePawn(Side.WHITE);
+            board["b1"] = new FigureRook(Side.WHITE);
+            board["b2"] = new FigureBishop(Side.WHITE);
+            board["c2"] = new FigureKnight(Side.BLACK);
+
+            //a - act
+            AttackMap map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map.IsMateWhite);
+        }
 
     
     }
