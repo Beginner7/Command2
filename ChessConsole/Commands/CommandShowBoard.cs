@@ -21,7 +21,7 @@ namespace ChessConsole.Commands
                     gameboard.InitialPosition();
                     var commandMoveList = new CommandMoveList();
                     gameboard.ApplyMoves(commandMoveList.GetList());
-                    gameboard.ShowBoard();
+                    gameboard.ShowBoardToConcole();
                 }
             }
             return true;

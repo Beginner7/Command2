@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ChestClient.Models;
+using Protocol.GameObjects;
 
 namespace ChestClient.Controllers
 {
@@ -16,6 +17,13 @@ namespace ChestClient.Controllers
         public ActionResult List()
         {
             return Json(Games.Values, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Status()
+        {
+            Board board = new Board();
+            board.InitialPosition();
+            return Json(board.ShowBoardToWeb(), JsonRequestBehavior.AllowGet);
         }
     }
 }

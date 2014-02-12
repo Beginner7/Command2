@@ -78,7 +78,7 @@
     <Compile Include="Response.cs" />
     <Compile Include="Statuses.cs" />
     <Compile Include="Transport\Messages\Message.cs" />
-    <Compile Include="Transport\Messages\MessageSander.cs" />
+    <Compile Include="Transport\Messages\MessageSender.cs" />
     <Compile Include="Transport\Messages\MessageType.cs" />
     <Compile Include="Transport\ServerProvider.cs" />
     <Compile Include="User.cs" />
@@ -90,6 +90,14 @@
     <Compile Include="MoveListResponse.cs" />
     <Compile Include="DisconnectRequest.cs" />
     <Compile Include="DisconnectResponse.cs" />
+    <Compile Include="SurrenderRequest.cs" />
+    <Compile Include="SurrenderResponse.cs" />
+    <Compile Include="PeaceRequest.cs" />
+    <Compile Include="PeaceResponse.cs" />
+    <Compile Include="AcceptPeaceRequest.cs" />
+    <Compile Include="AcceptPeaceResponse.cs" />
+    <Compile Include="DeclinePeaceRequest.cs" />
+    <Compile Include="DeclinePeaceResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

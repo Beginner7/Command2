@@ -67,7 +67,7 @@ namespace Protocol.GameObjects
             }
         }
 
-        public void ShowBoard()
+        public void ShowBoardToConcole()
         {
             Console.Clear();
             Console.Write("\n    A  B  C  D  E  F  G  H");
@@ -116,6 +116,20 @@ namespace Protocol.GameObjects
             }
             Console.ResetColor();
             Console.WriteLine();
+        }
+
+        public Dictionary<string, string> ShowBoardToWeb()
+        {
+            Dictionary<string,string> figures = new Dictionary<string,string>();
+            for (int y = 0; y < BoardSize; y++)
+            {
+                for (int x = 0; x < BoardSize; x++)
+                {
+                    if (Cells[x, y].symbol != 'X')
+                        figures.Add((char)('a' + x) + (y + 1).ToString(), Cells[x, y].symbol.ToString() + Cells[x, y].side.ToString()[0]);
+                }
+            }
+            return figures;
         }
 
         public Figure this[string cell]
