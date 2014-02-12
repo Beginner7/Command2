@@ -21,8 +21,8 @@ namespace Protocol.Transport
         BLACK,
         WHITE,
         SPECTATOR
-    
     }
+
     public enum Act
     {
         WaitingOpponent,
@@ -32,6 +32,8 @@ namespace Protocol.Transport
         AbandonedByBlack,
         WhiteWon,
         BlackWon,
-        Pat
+        Pat,
+        Draw,
+        Peace
     }
 }
