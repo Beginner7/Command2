@@ -181,6 +181,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\GameUI.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -221,6 +222,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Server.ashx" />
     <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Home\Game.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

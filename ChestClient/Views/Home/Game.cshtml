@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Game";
+}
+
+<h2>Game</h2>
+
+    
+    <script src="@Url.Content("~/Scripts/GameUI.js")" type="text/javascript"></script>
+    <table cellspacing="2" border="155" cellpadding="5">
+
+        @for (int i = 0; i < 9; i++)
+        {
+            <tr height="50">
+                @for (int j = 0; j < 9; j++)
+                {
+                    if (j == 0 && i == 0)
+                    {
+                    <td width="50"> </td>
+                    }
+                    else if (j == 0)
+                    {
+                    <td width="50">@(9-i) </td>
+                    }
+                    else if (i == 0)
+                    {
+                    <td width="50">@((char)('A' + j - 1)) </td>
+                    }
+                    else if ((i + j) % 2 == 0)
+                    {
+                    <td bgcolor="FFFFFF" width="50" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
+                    }
+                    else
+                    {
+                    <td bgcolor="000000" width="50" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+    
