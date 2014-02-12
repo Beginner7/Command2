@@ -40,7 +40,7 @@ namespace ChessServer
                             User geted;
                             if (Users.TryGetValue(elementGame.Value.PlayerBlack.Name, out geted))
                             {
-                                geted.Messages.Add(MessageSander.OpponentLostConnection());
+                                geted.Messages.Add(MessageSender.OpponentLostConnection());
                                 elementGame.Value.act = Act.AbandonedByWhite;
                             }
                         }
@@ -49,7 +49,7 @@ namespace ChessServer
                             User geted;
                             if (Users.TryGetValue(elementGame.Value.PlayerWhite.Name, out geted))
                             {
-                                geted.Messages.Add(MessageSander.OpponentLostConnection());
+                                geted.Messages.Add(MessageSender.OpponentLostConnection());
                                 elementGame.Value.act = Act.AbandonedByBlack;
                             }
                         }

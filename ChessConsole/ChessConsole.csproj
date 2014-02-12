@@ -78,6 +78,8 @@
     <Compile Include="Commands\CommandShowBoard.cs" />
     <Compile Include="Commands\CommandUserList.cs" />
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\CommandSurrender.cs" />
+    <Compile Include="Commands\CommandRequestPeace.cs" />
     <Compile Include="CurrentUser.cs" />
     <Compile Include="MessageProcessor.cs" />
     <Compile Include="StringUtils.cs" />

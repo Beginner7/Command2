@@ -29,11 +29,11 @@ namespace ChessServer.Commands
                 {
                     games[workRequest.GameID].act = Act.InProgress;
                     games[workRequest.GameID].PlayerBlack = workRequest.NewPlayer;
-                    games[workRequest.GameID].PlayerWhite.Messages.Add(MessageSander.OpponentJoinedGame());
+                    games[workRequest.GameID].PlayerWhite.Messages.Add(MessageSender.OpponentJoinedGame());
                     User geted;
                     if (users.TryGetValue(games[workRequest.GameID].PlayerWhite.Name, out geted))
                     {
-                        geted.Messages.Add(MessageSander.OpponentJoinedGame());
+                        geted.Messages.Add(MessageSender.OpponentJoinedGame());
                     }
                     workResponse.Status = Statuses.OK;
                 }
@@ -46,7 +46,7 @@ namespace ChessServer.Commands
                         User geted;
                         if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))
                         {
-                            geted.Messages.Add(MessageSander.OpponentJoinedGame());
+                            geted.Messages.Add(MessageSender.OpponentJoinedGame());
                         }
                         workResponse.Status = Statuses.OK;
                     }

@@ -70,7 +70,7 @@ namespace ChessServer.Commands
                         User geted;
                         if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))
                         {
-                            geted.Messages.Add(MessageSander.OpponentMove(workRequest.From, workRequest.To));
+                            geted.Messages.Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
                         }
                     }
                     else
@@ -81,7 +81,7 @@ namespace ChessServer.Commands
                             User geted;
                             if (users.TryGetValue(games[workRequest.GameID].PlayerWhite.Name, out geted))
                             {
-                                geted.Messages.Add(MessageSander.OpponentMove(workRequest.From, workRequest.To));
+                                geted.Messages.Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
                             }
                         }
                     }

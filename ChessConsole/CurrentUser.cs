@@ -14,6 +14,7 @@ namespace ChessConsole
         public static string Name;
         public static int? CurrentGame = null;
         public static System.Timers.Timer PulseTimer = new System.Timers.Timer();
+        public static bool NeedPeaseAnswer = false;
 
         public static void StartPulse()
         {

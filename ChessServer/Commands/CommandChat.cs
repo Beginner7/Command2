@@ -24,7 +24,7 @@ namespace ChessServer.Commands
                     User geted;
                     if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))
                     {
-                        geted.Messages.Add(MessageSander.ChatMessage(workRequest.From, workRequest.SayString));
+                        geted.Messages.Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
                     }
                 }
                 else
@@ -34,7 +34,7 @@ namespace ChessServer.Commands
                         User geted;
                         if (users.TryGetValue(games[workRequest.GameID].PlayerWhite.Name, out geted))
                         {
-                            geted.Messages.Add(MessageSander.ChatMessage(workRequest.From, workRequest.SayString));
+                            geted.Messages.Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
                         }
                     }
                 }
