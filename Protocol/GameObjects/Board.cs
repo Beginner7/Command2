@@ -181,17 +181,9 @@ namespace Protocol.GameObjects
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
                         new FigureBishop(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
                     break;
-                case FigureKing.SYMBOL:
-                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
-                        new FigureKing(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
-                    break;
                 case FigureKnight.SYMBOL:
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
                         new FigureKnight(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
-                    break;
-                case FigurePawn.SYMBOL:
-                    Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
-                        new FigurePawn(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
                     break;
                 case FigureQueen.SYMBOL:
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2] =

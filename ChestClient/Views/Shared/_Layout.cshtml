@@ -20,7 +20,7 @@
                     <ul id="menu">
                         <!--<li>@Html.ActionLink("Вход", "Login", "User")</li>-->
                         <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Пользователи", "Index", "User")</li>
+                        @*<li>@Html.ActionLink("Пользователи", "Index", "User")</li>*@
                         <li>@Html.ActionLink("О программе", "About", "Home")</li>
                     </ul>
                 </td>
@@ -31,11 +31,11 @@
         <tr>
             <td style="width:15%;vertical-align:top;padding-left:10px;">
                 <h2>Информация</h2>
-                <h2>Друзья онлайн</h2>
-                <a>Друг 1</a><br />
-                <a>Друг 2</a><br />
-                <a>Друг 3</a><br />
-                <a>Друг 4</a>
+                <h2 ><li>@Html.ActionLink("Пользователи", "Index", "User")</li></h2>
+                <a>Пользователь 1</a><br />
+                <a>Пользователь 2</a><br />
+                <a>Пользователь 3</a><br />
+                <a>Пользователь 4</a>
                 <h2>Почта</h2>
                 <h2>Статистика игр</h2>
                 Всего партий:<br />

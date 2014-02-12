@@ -17,25 +17,25 @@ html,body{
 }
 
 a:link {
-    color: #034af3;
-    text-decoration: underline;
+    color: #000;
+    text-decoration: none;
 }
 
 a:visited {
-    color: #505abc;
+    color: #000;
 }
 
 a:hover {
-    color: #1d60ff;
+    color: #000;
     text-decoration: none;
 }
 
 a:active {
-    color: #12eb87;
+    color: #c0c0c0;
 }
 
 p, ul {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     line-height: 1.6em;
 }
 
@@ -87,7 +87,7 @@ header h1, #header h1 {
     border: none;
     line-height: 2em;
     font-size: 32px !important;
-    text-shadow: 1px 1px 2px #111;
+    text-shadow: 1px 1px 2px #C0C0C0;
 }
 
 #main {
@@ -133,9 +133,9 @@ ul#menu li a {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
-    background-color: rgba(0, 0, 0, 1.00);
+    background-color: rgba(192, 192, 192, 0.76);
     
-    color: #fff;
+    color: #000;
     -webkit-border-radius: 10px 10px 0px 0px;
     -moz-border-radius: 10px 10px 0px 0px;
     border-radius: 10px 10px 0px 0px;
@@ -143,7 +143,7 @@ ul#menu li a {
 
 ul#menu li a:hover {
     
-    background-color: rgba(119, 120, 92, 0.5);
+    background-color: rgba(130, 120, 92, 0.5);
     text-decoration: none;
 }
 
@@ -154,7 +154,7 @@ ul#menu li a:active {
 
 ul#menu li.selected a {
     background-color: #fff;
-    color: #000;
+    color: #C0C0C0;
 }
 
 /* FORM LAYOUT ELEMENTS   
@@ -172,7 +172,7 @@ legend {
 }
 
 textarea {
-    min-height: 75px;
+    min-height: 85px;
 }
 
 input[type="text"], 
@@ -229,12 +229,14 @@ table th {
 #menucontainer, #mainblock {
     width: 100%;
     border: 0px solid black;
-    border-spacing: 0px;
+    border-spacing: 2px;
 }
 
 #menucontainer td, #mainblock td {
+  
     border: 0px;
     padding: 0px;
+    vertical-align: baseline;
 }
 
 #menucontainer .spacer {
@@ -244,7 +246,12 @@ table th {
 
 #menucontainer .header {
     width: 20%;
-    vertical-align:bottom;
+    vertical-align: text-bottom;
+    font-size: 5em;
+    color: #8b1a1a;
+    position: relative;
+    bottom: -.26em;
+
 }
 
 
@@ -271,21 +278,21 @@ div#title {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
-    background-color: rgba(0, 0, 0, 1.00);
+    background-color: rgba(192, 192, 192, 0.76);
     
-    color: white;
+    color: black;
     -webkit-border-radius: 0px 0px 10px 10px;
     -moz-border-radius: 0px 0px 10px 10px;
     border-radius: 0px 0px 10px 10px;
 }
 
 #logindisplay a:visited {
-    color: white;
+    color: black;
     text-decoration: underline;
 }
 
 #logindisplay a:hover {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
@@ -347,7 +354,7 @@ div#title {
     -moz-border-radius: 10px 10px 0px 0px;
     border-radius: 10px 10px 0px 0px;
     
-    margin-top:20px;
+    margin-top:10px;
     
     width:20%;
     background-color:rgba(121, 106, 106, 0.61);
