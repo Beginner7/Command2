@@ -54,6 +54,7 @@
     <Compile Include="Commands\CommandCreateGame.cs" />
     <Compile Include="Commands\CommandMovelist.cs" />
     <Compile Include="Commands\CommandChat.cs" />
+    <Compile Include="Commands\CommandMoveVariants.cs" />
     <Compile Include="Commands\CommandUserlist.cs" />
     <Compile Include="Commands\CommandPulse.cs" />
     <Compile Include="Commands\CommandDisconnect.cs" />

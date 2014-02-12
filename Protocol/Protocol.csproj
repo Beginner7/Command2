@@ -98,6 +98,8 @@
     <Compile Include="AcceptPeaceResponse.cs" />
     <Compile Include="DeclinePeaceRequest.cs" />
     <Compile Include="DeclinePeaceResponse.cs" />
+    <Compile Include="MoveVariantsRequest.cs" />
+    <Compile Include="MoveVariantsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

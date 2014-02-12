@@ -25,5 +25,16 @@ namespace ChestClient.Controllers
             board.InitialPosition();
             return Json(board.ShowBoardToWeb(), JsonRequestBehavior.AllowGet);
         }
+
+        //public ActionResult MoveVariants()
+        //{
+        //    Board board = new Board();
+        //    board.InitialPosition();
+
+        //    //var request = new UserListRequest();
+        //    //var response = ServerProvider.MakeRequest<UserListResponse>(request);
+
+        //    //Request.Params["cell"];
+        //}
     }
 }
