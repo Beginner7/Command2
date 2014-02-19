@@ -35,7 +35,7 @@ a:active {
 }
 
 p, ul {
-    margin-bottom: 0px;
+    margin-bottom: 0;
     line-height: 1.6em;
 }
 
@@ -111,8 +111,8 @@ header h1, #header h1 {
 ----------------------------------------------------------*/
 
 ul#menu {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 
 ul#menu li {
@@ -133,21 +133,23 @@ ul#menu li a {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
+    background-color: #c0c0c0;
     background-color: rgba(192, 192, 192, 0.76);
     
     color: #000;
-    -webkit-border-radius: 10px 10px 0px 0px;
-    -moz-border-radius: 10px 10px 0px 0px;
-    border-radius: 10px 10px 0px 0px;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
 }
 
 ul#menu li a:hover {
-    
+    background-color: #82785c;
     background-color: rgba(130, 120, 92, 0.5);
     text-decoration: none;
 }
 
 ul#menu li a:active {
+    background-color: #696969;
     background-color: rgba(105, 105, 105, 0.76);
     text-decoration: none;
 }
@@ -161,7 +163,7 @@ ul#menu li.selected a {
 ----------------------------------------------------------*/
 
 fieldset {
-    border: 0px solid #ddd;
+    border: 0 solid #ddd;
     padding: 0 1.4em 1.4em 1.4em;
     margin: 0 0 1.5em 0;
 }
@@ -228,20 +230,20 @@ table th {
 
 #menucontainer, #mainblock {
     width: 100%;
-    border: 0px solid black;
+    border: 0 solid black;
     border-spacing: 2px;
 }
 
 #menucontainer td, #mainblock td {
   
-    border: 0px;
-    padding: 0px;
-    vertical-align: baseline;
+    border: 0;
+    padding: 0;
+    vertical-align: text-bottom;
 }
 
 #menucontainer .spacer {
     width: 5%;
-    border-bottom: 2px #000 solid;
+    border-bottom: 2px #000000 solid;
 }
 
 #menucontainer .header {
@@ -269,7 +271,7 @@ div#title {
 #logindisplay {
     font-size: 1.1em;
     text-align: right;
-    margin: 0px;
+    margin: 0;
 }
 
 #logindisplay a {
@@ -278,12 +280,13 @@ div#title {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
+    background-color: #c0c0c0;
     background-color: rgba(192, 192, 192, 0.76);
     
     color: black;
-    -webkit-border-radius: 0px 0px 10px 10px;
-    -moz-border-radius: 0px 0px 10px 10px;
-    border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 10px;
 }
 
 #logindisplay a:visited {
@@ -294,9 +297,6 @@ div#title {
 #logindisplay a:hover {
     color: black;
     text-decoration: none;
-}
-
-#search {
 }
 
 /* Styles for validation helpers
@@ -350,26 +350,28 @@ div#title {
 ----------------------------------------------------------*/
 
 .prof {
-    -webkit-border-radius: 10px 10px 0px 0px;
-    -moz-border-radius: 10px 10px 0px 0px;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
     border-radius: 10px 10px 0px 0px;
     
     margin-top:10px;
     
     width:20%;
+    background-color:#796a6a;
     background-color:rgba(121, 106, 106, 0.61);
     text-align:center;
-    font-size:large;
-    
+    font-size:large;    
 }
+
 .profend {
-    -webkit-border-radius: 0px 0px 10px 10px;
-    -moz-border-radius: 0px 0px 10px 10px;
-    border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 10px;
     
     margin-top:-20px;
     
     width:20%;
+    background-color:#796a6a;
     background-color:rgba(121, 106, 106, 0.61);
     text-align:center;
     font-size:large;
@@ -379,10 +381,10 @@ div#title {
     
     width:20%;
     margin-top:-20px;
+    background-color:#9d7979;
     background-color:rgba(157, 121, 121, 1);
     text-align:left;
-    font-size:large;
-    
+    font-size:large;    
 }
 
 .profMenu ul {
@@ -397,11 +399,11 @@ div#title {
     text-decoration:none;
 
 }
-.profMenu ul li:hover{
+.profMenu ul li:hover {
+    background-color:#1d60ff;
     background-color:rgba(29, 96, 255, 0.71);
     color:white;
     text-decoration:none;
-
 }
 
 .profMenu ul li a{

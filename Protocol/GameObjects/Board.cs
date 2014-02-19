@@ -25,35 +25,35 @@ namespace Protocol.GameObjects
 
         public void InitialPosition()
         {
-            Cells[0, 0] = new FigureRook(Protocol.Transport.Side.WHITE);
-            Cells[1, 0] = new FigureKnight(Protocol.Transport.Side.WHITE);
-            Cells[2, 0] = new FigureBishop(Protocol.Transport.Side.WHITE);
-            Cells[3, 0] = new FigureQueen(Protocol.Transport.Side.WHITE);
-            Cells[4, 0] = new FigureKing(Protocol.Transport.Side.WHITE);
-            Cells[5, 0] = new FigureBishop(Protocol.Transport.Side.WHITE);
-            Cells[6, 0] = new FigureKnight(Protocol.Transport.Side.WHITE);
-            Cells[7, 0] = new FigureRook(Protocol.Transport.Side.WHITE);
+            Cells[0, 0] = new FigureRook(Side.WHITE);
+            Cells[1, 0] = new FigureKnight(Side.WHITE);
+            Cells[2, 0] = new FigureBishop(Side.WHITE);
+            Cells[3, 0] = new FigureQueen(Side.WHITE);
+            Cells[4, 0] = new FigureKing(Side.WHITE);
+            Cells[5, 0] = new FigureBishop(Side.WHITE);
+            Cells[6, 0] = new FigureKnight(Side.WHITE);
+            Cells[7, 0] = new FigureRook(Side.WHITE);
 
             for (int i = 0; i < BoardSize; i++)
             {
-                Cells[i, 1] = new FigurePawn(Protocol.Transport.Side.WHITE);
+                Cells[i, 1] = new FigurePawn(Side.WHITE);
             }
 
             //FillEmptyCells(0, BoardSize, 2, BoardSize - 2);
 
             for (int i = 0; i < BoardSize; i++)
             {
-                Cells[i, 6] = new FigurePawn(Protocol.Transport.Side.BLACK);
+                Cells[i, 6] = new FigurePawn(Side.BLACK);
             }
 
-            Cells[0, 7] = new FigureRook(Protocol.Transport.Side.BLACK);
-            Cells[1, 7] = new FigureKnight(Protocol.Transport.Side.BLACK);
-            Cells[2, 7] = new FigureBishop(Protocol.Transport.Side.BLACK);
-            Cells[3, 7] = new FigureQueen(Protocol.Transport.Side.BLACK);
-            Cells[4, 7] = new FigureKing(Protocol.Transport.Side.BLACK);
-            Cells[5, 7] = new FigureBishop(Protocol.Transport.Side.BLACK);
-            Cells[6, 7] = new FigureKnight(Protocol.Transport.Side.BLACK);
-            Cells[7, 7] = new FigureRook(Protocol.Transport.Side.BLACK);
+            Cells[0, 7] = new FigureRook(Side.BLACK);
+            Cells[1, 7] = new FigureKnight(Side.BLACK);
+            Cells[2, 7] = new FigureBishop(Side.BLACK);
+            Cells[3, 7] = new FigureQueen(Side.BLACK);
+            Cells[4, 7] = new FigureKing(Side.BLACK);
+            Cells[5, 7] = new FigureBishop(Side.BLACK);
+            Cells[6, 7] = new FigureKnight(Side.BLACK);
+            Cells[7, 7] = new FigureRook(Side.BLACK);
         }
 
         private void FillEmptyCells(int startX, int endX, int startY, int endY)
@@ -92,12 +92,12 @@ namespace Protocol.GameObjects
                     Console.Write('█');
                     if (Cells[x, 8 - y - 1].symbol != 'X')
                     {
-                        if (Cells[x, 8 - y - 1].side == Transport.Side.BLACK)
+                        if (Cells[x, 8 - y - 1].side == Side.BLACK)
                         {
                             Console.ForegroundColor = ConsoleColor.Black;
                             Console.BackgroundColor = ConsoleColor.White;
                         }
-                        if (Cells[x, 8 - y - 1].side == Transport.Side.WHITE)
+                        if (Cells[x, 8 - y - 1].side == Side.WHITE)
                         {
                             Console.ForegroundColor = ConsoleColor.White;
                             Console.BackgroundColor = ConsoleColor.Black;
@@ -153,15 +153,15 @@ namespace Protocol.GameObjects
                     && (GetCoords(from).Item1 != GetCoords(to).Item1))
                 {
                     if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.BLACK)
-                        Cells[GetCoords(to).Item1, GetCoords(to).Item2 + 1] = new FigureNone(Protocol.Transport.Side.NONE);
+                        Cells[GetCoords(to).Item1, GetCoords(to).Item2 + 1] = new FigureNone(Side.NONE);
                     if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.WHITE)
-                        Cells[GetCoords(to).Item1, GetCoords(to).Item2 - 1] = new FigureNone(Protocol.Transport.Side.NONE);
+                        Cells[GetCoords(to).Item1, GetCoords(to).Item2 - 1] = new FigureNone(Side.NONE);
                 }
                 
                 Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
-                Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Protocol.Transport.Side.NONE);
+                Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Side.NONE);
 
-                if (isPromotion(to) && inWho != null &&
+                if (IsPromotion(to) && inWho != null &&
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2].GetType() == typeof(FigurePawn))
                 {
                     DoPromotion(to, inWho);
@@ -198,13 +198,12 @@ namespace Protocol.GameObjects
             }
         }
 
-        private bool isPromotion(string to)
+        private bool IsPromotion(string to)
         {
             if  (GetCoords(to).Item2 == 7 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].side == Side.WHITE ||
                 GetCoords(to).Item2 == 0 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].side == Side.BLACK)
                 return true;
-            else
-                return false;
+            return false;
         }
 
         public static Tuple<int,int> GetCoords(string cell)
@@ -217,10 +216,9 @@ namespace Protocol.GameObjects
         {
             if (cell.Item1 > BoardSize - 1 || cell.Item2 > BoardSize - 1 || cell.Item1 < 0 || cell.Item2 < 0)
                 return true;
-            else
-                return false;
+            return false;
         }
-        
+
         public void ApplyMoves(List<Move> moveList)
         {
             foreach (Move element in moveList)
@@ -245,7 +243,7 @@ namespace Protocol.GameObjects
         public Board Clone()
         {
             var board = new Board();
-            board.Cells = (Figure[,])this.Cells.Clone();
+            board.Cells = (Figure[,])Cells.Clone();
             return board;
         }
     }
