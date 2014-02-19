@@ -26,12 +26,17 @@ namespace ChessServer.Commands
             var moveVariantsRequest = JsonConvert.DeserializeObject<MoveVariantsRequest>(request);
             var moveVariantsResponse = new MoveVariantsResponse();
 
-            Board board = new Board();
-            var moveListRequest = new MoveListRequest();
-            var moveListResponse = ServerProvider.MakeRequest<MoveListResponse>(moveListRequest);
-            board.ApplyMoves(moveListResponse.Moves);
-            AttackMap map = new AttackMap(moveListResponse.Moves);
-            moveVariantsResponse.Cells = map.MoveVariants(moveVariantsRequest.Cell);
+            Game game = games[moveVariantsRequest.GameID];
+            
+            var map = new AttackMap(game.Moves);
+            if (map.board[moveVariantsRequest.Cell].side == game.Turn)
+            {
+                moveVariantsResponse.Cells = map.MoveVariants(moveVariantsRequest.Cell);
+            }
+            else
+            {
+                moveVariantsResponse.Cells = new List<string>();
+            }
             moveVariantsResponse.Status = Statuses.OK;
             return moveVariantsResponse;
         }

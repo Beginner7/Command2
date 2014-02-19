@@ -766,12 +766,12 @@ namespace ChessServer.GameLogic
         public List<string> MoveVariants(string cell)
         {
             List<string> moveVariants = new List<string>();
-            for (int i=0;i<Board.BoardSize;i++)
+            for (int i = 0; i < Board.BoardSize; i++)
             {
-                for (int j=0;j<Board.BoardSize;j++)
+                for (int j = 0; j < Board.BoardSize; j++)
                 {
-                    if (Attackers[i,j].Contains(board[cell]))
-                        moveVariants.Add((char)('a' + i) + (j + 1).ToString());
+                    if (Attackers[i, j].Contains(board[cell]))
+                        moveVariants.Add((char) ('a' + i) + (j + 1).ToString());
                 }
             }
             return moveVariants;

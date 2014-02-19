@@ -16,5 +16,6 @@ namespace Protocol
         }
 
         public string Cell;
+        public int GameID;
     }
 }

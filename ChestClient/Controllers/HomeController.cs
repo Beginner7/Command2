@@ -16,9 +16,5 @@ namespace ChestClient.Controllers
             return View();
         }
 
-        public ActionResult Game()
-        {
-            return View();
-        }
     }
 }

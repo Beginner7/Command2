@@ -100,9 +100,9 @@ header h1, #header h1 {
  
 #footer {
     width: 100%;
-    position:absolute;
+    /*position:absolute;
     bottom:0;
-    clear:both;
+    clear:both;*/
     text-align:right;
 
 }
@@ -297,6 +297,28 @@ div#title {
 }
 
 #search {
+}
+
+/* Board styles */
+
+table#board  {
+    
+    border-spacing: 1px;
+    border-collapse: separate;
+}
+
+#board td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#board td.selected {
+    border: 4px solid red !important;
+}
+
+
+#board td[id] {
+    border: 4px solid black;
 }
 
 /* Styles for validation helpers

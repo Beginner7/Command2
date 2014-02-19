@@ -16,24 +16,19 @@ namespace ChessServer.Commands
     {
         public override string Name { get { return "move"; } }
 
-        private Side UserSide(string username, int gameid, ConcurrentDictionary<int, Game> games)
+        private string SideUser(Side side, int gameid, ConcurrentDictionary<int, Game> games)
         {
-            if ((username == games[gameid].PlayerWhite.Name))
+            if (side == Side.WHITE)
             {
-                return Side.WHITE;
+                return games[gameid].PlayerWhite.Name;
             }
 
-            if ((username == games[gameid].PlayerBlack.Name))
+            if (side == Side.BLACK)
             {
-                return Side.BLACK;
+                return games[gameid].PlayerBlack.Name;
             }
-
-            if ((username != games[gameid].PlayerWhite.Name) && (username != games[gameid].PlayerBlack.Name))
-            {
-                return Side.SPECTATOR;
-            }
-
-            return Side.NONE;
+            
+            return null;
         }
 
         public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
@@ -44,7 +39,8 @@ namespace ChessServer.Commands
             {
                 if (!(games[workRequest.GameID].act == Act.WaitingOpponent))
                 {
-                    if (UserSide(workRequest.Player.Name, workRequest.GameID, games) != games[workRequest.GameID].Turn)
+                    var userSide = games[workRequest.GameID].Turn;
+                    if (SideUser(userSide, workRequest.GameID, games) != workRequest.Player.Name)
                     {
                         workResponse.Status = Statuses.OpponentTurn;
                         return workResponse;
@@ -56,7 +52,7 @@ namespace ChessServer.Commands
                         workResponse.Status = Statuses.WrongMoveNotation;
                         return workResponse;
                     }
-                    if (!attackMap[workRequest.To].Contains(attackMap.board[workRequest.From]) || attackMap.board[workRequest.From].side != UserSide(workRequest.Player.Name, workRequest.GameID, games))
+                    if (!attackMap[workRequest.To].Contains(attackMap.board[workRequest.From]) || attackMap.board[workRequest.From].side != userSide)
                     {
                         workResponse.Status = Statuses.WrongMove;
                         return workResponse;
