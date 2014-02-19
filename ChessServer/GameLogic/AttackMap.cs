@@ -63,7 +63,7 @@ namespace ChessServer.GameLogic
                         if (j + 1 <= Board.BoardSize && j - 1 >= 1 )
                         {
                             int k;
-                            if (f.side == Side.WHITE)
+                            if (f.Side == Side.WHITE)
                             {
                                 k = j + 1;
                                 Figure f1 = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + k];
@@ -84,7 +84,7 @@ namespace ChessServer.GameLogic
                                     Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
                                     if (f2.GetType() != typeof(FigureNone))
                                     {
-                                        if (f2.side != f.side)
+                                        if (f2.Side != f.Side)
                                             Attackers[l - 'a', k - 1].Add(f);
                                     }
                                 }
@@ -94,12 +94,12 @@ namespace ChessServer.GameLogic
                                     Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
                                     if (f2.GetType() != typeof(FigureNone))
                                     {
-                                        if (f2.side != f.side)
+                                        if (f2.Side != f.Side)
                                             Attackers[l - 'a', k - 1].Add(f);
                                     }
                                 }
                             }
-                            if (f.side == Side.BLACK)
+                            if (f.Side == Side.BLACK)
                             {
                                 k = j - 1;
                                 Figure f1 = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + k];
@@ -119,7 +119,7 @@ namespace ChessServer.GameLogic
                                     var l = (char)(i + 1);
                                     Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
 
-                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone))
+                                    if (f2.Side != f.Side && f2.GetType() != typeof(FigureNone))
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                                 if (i - 1 >= 'a')
@@ -127,7 +127,7 @@ namespace ChessServer.GameLogic
                                     var l = (char)(i - 1);
                                     Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
 
-                                    if (f2.side != f.side && f2.GetType() != typeof(FigureNone))
+                                    if (f2.Side != f.Side && f2.GetType() != typeof(FigureNone))
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                             }
@@ -256,7 +256,7 @@ namespace ChessServer.GameLogic
                         int kingY = SourceBoard.ReturnPosition(f).Item2;
 
                         Side side;
-                        if (f.side == Side.WHITE)
+                        if (f.Side == Side.WHITE)
                             side = Side.BLACK;
                         else
                             side = Side.WHITE;
@@ -269,12 +269,12 @@ namespace ChessServer.GameLogic
                                 else if (SourceBoard["h" + kingY].GetType() == typeof(FigureRook))
                                     Castling(moves, SourceBoard, f, SourceBoard["h" + kingY]);
                         }
-                        if (f.side == Side.WHITE)
+                        if (f.Side == Side.WHITE)
                         {
                             _whiteKing = (i.ToString(CultureInfo.InvariantCulture) + j);
                         }
 
-                        if (f.side == Side.BLACK)
+                        if (f.Side == Side.BLACK)
                         {
                             _blackKing = (i.ToString(CultureInfo.InvariantCulture) + j);
                         }
@@ -291,8 +291,8 @@ namespace ChessServer.GameLogic
                     newBoard.ApplyMoves(additionalMoves);
                     var newAttackMap = new AttackMap(moves.Concat(additionalMoves).ToList(), newBoard, true);
                     var figure = SourceBoard[move.From];
-                    if ((figure.side == Side.WHITE && newAttackMap.IsCheckWhite)
-                      || (figure.side == Side.BLACK && newAttackMap.IsCheckBlack))
+                    if ((figure.Side == Side.WHITE && newAttackMap.IsCheckWhite)
+                      || (figure.Side == Side.BLACK && newAttackMap.IsCheckBlack))
                     {
                         Attackers[Board.GetCoords(move.To).Item1, Board.GetCoords(move.To).Item2].Remove(figure);
                     }
@@ -307,7 +307,7 @@ namespace ChessServer.GameLogic
             Figure f1 = board[x.ToString(CultureInfo.InvariantCulture) + y];
             if (f1.GetType() == typeof(FigureNone))
                 Attackers[x - 'a', y - 1].Add(f);
-            else if (f1.side != f.side)
+            else if (f1.Side != f.Side)
                 Attackers[x - 'a', y - 1].Add(f);
         }
 
@@ -327,7 +327,7 @@ namespace ChessServer.GameLogic
                 }
                 else
                 {
-                    if (f1.side != f.side)
+                    if (f1.Side != f.Side)
                     {
                         Attackers[k - 'a', l - 1].Add(f);
                     }
@@ -351,7 +351,7 @@ namespace ChessServer.GameLogic
                     k--;
                     l++;
                 }
-                else if (f1.side != f.side)
+                else if (f1.Side != f.Side)
                 {
                     Attackers[k - 'a', l - 1].Add(f);
                     break;
@@ -378,7 +378,7 @@ namespace ChessServer.GameLogic
                     k++;
                     l--;
                 }
-                else if (f1.side != f.side)
+                else if (f1.Side != f.Side)
                 {
                     Attackers[k - 'a', l - 1].Add(f);
                     break;
@@ -404,7 +404,7 @@ namespace ChessServer.GameLogic
                     k++;
                     l++;
                 }
-                else if (f1.side != f.side)
+                else if (f1.Side != f.Side)
                 {
                     Attackers[k - 'a', l - 1].Add(f);
                     break;
@@ -426,7 +426,7 @@ namespace ChessServer.GameLogic
                 {
                     Attackers[k - 'a', j - 1].Add(f);
                 }
-                else if (f1.side != f.side)
+                else if (f1.Side != f.Side)
                 {
                     Attackers[k - 'a', j - 1].Add(f);
                     break;
@@ -447,7 +447,7 @@ namespace ChessServer.GameLogic
                 {
                     Attackers[k - 'a', j - 1].Add(f);
                 }
-                else if (f1.side != f.side)
+                else if (f1.Side != f.Side)
                 {
                     Attackers[k - 'a', j - 1].Add(f);
                     break;
@@ -468,7 +468,7 @@ namespace ChessServer.GameLogic
                 {
                     Attackers[i - 'a', k - 1].Add(f);
                 }
-                else if (f1.side != f.side)
+                else if (f1.Side != f.Side)
                 {
                     Attackers[i - 'a', k - 1].Add(f);
                     break;
@@ -489,7 +489,7 @@ namespace ChessServer.GameLogic
                 {
                     Attackers[i - 'a', k - 1].Add(f);
                 }
-                else if (f1.side != f.side)
+                else if (f1.Side != f.Side)
                 {
                     Attackers[i - 'a', k - 1].Add(f);
                     break;
@@ -544,9 +544,9 @@ namespace ChessServer.GameLogic
         private void Castling(List<Move> moves, Board board, Figure king, Figure rook)
         {
             int rows = 0;
-            if (king.side == Side.WHITE)
+            if (king.Side == Side.WHITE)
                 rows = 1;
-            else if (king.side == Side.BLACK)
+            else if (king.Side == Side.BLACK)
                 rows = 8;
 
             char rookX = board.ReturnPosition(rook).Item1;
@@ -591,9 +591,9 @@ namespace ChessServer.GameLogic
                 if (board["b" + rows].GetType() == typeof(FigureNone) &&
                     board["c" + rows].GetType() == typeof(FigureNone) &&
                     board["d" + rows].GetType() == typeof(FigureNone) &&
-                    IsColorFigureAttack(this["c" + rows], king.side) &&
+                    IsColorFigureAttack(this["c" + rows], king.Side) &&
                     // Attackers['c' - 'a', rows - 1]
-                    IsColorFigureAttack(this["d" + rows], king.side) )
+                    IsColorFigureAttack(this["d" + rows], king.Side) )
                 //   Attackers['d' - 'a', rows - 1].Contains(new Figure(side)))
                 {
                     Attackers['c' - 'a', rows - 1].Add(king);
@@ -604,8 +604,8 @@ namespace ChessServer.GameLogic
             {
                 if (board["f" + rows].GetType() == typeof(FigureNone) &&
                     board["g" + rows].GetType() == typeof(FigureNone) &&
-                    IsColorFigureAttack(this["f" + rows], king.side) &&
-                    IsColorFigureAttack(this["g" + rows], king.side))
+                    IsColorFigureAttack(this["f" + rows], king.Side) &&
+                    IsColorFigureAttack(this["g" + rows], king.Side))
                 {
                     Attackers['g' - 'a', rows - 1].Add(king);
                     Attackers['f' - 'a', rows - 1].Add(rook);
@@ -615,15 +615,15 @@ namespace ChessServer.GameLogic
 
         private bool IsColorFigureAttack(IEnumerable<Figure> figure, Side side)
         {
-            return figure.All(t => t.side == side);
+            return figure.All(t => t.Side == side);
         }
 
         private void PassedPawn(List<Move> moves, Board board, Figure pawn)
         {
             int rows = 0;
-            if (pawn.side == Side.BLACK)
+            if (pawn.Side == Side.BLACK)
                 rows = 4;
-            else if (pawn.side == Side.WHITE)
+            else if (pawn.Side == Side.WHITE)
                 rows = 5;
 
             char pawnX = board.ReturnPosition(pawn).Item1;
@@ -637,7 +637,7 @@ namespace ChessServer.GameLogic
             foreach (string c in cell)
             {
                 if (board[c].GetType() == typeof(FigurePawn) &&
-                    board[c].side != pawn.side)
+                    board[c].Side != pawn.Side)
                 {
                     if (moves[moves.Count - 1].To == c)
                     {
@@ -678,7 +678,7 @@ namespace ChessServer.GameLogic
         {
             get
             {
-                return AllPossibleMoves.Where(move => SourceBoard[move.From].side == Side.WHITE);
+                return AllPossibleMoves.Where(move => SourceBoard[move.From].Side == Side.WHITE);
             }
         }
 
@@ -694,7 +694,7 @@ namespace ChessServer.GameLogic
         {
             get
             {
-                return AllPossibleMoves.Where(move => SourceBoard[move.From].side == Side.BLACK);
+                return AllPossibleMoves.Where(move => SourceBoard[move.From].Side == Side.BLACK);
             }
         }
 
