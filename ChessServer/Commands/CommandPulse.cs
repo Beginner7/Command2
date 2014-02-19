@@ -20,7 +20,7 @@ namespace ChessServer.Commands
             if (users.TryGetValue(workRequest.From, out geted))
             {
                 workResponse.Status = Statuses.OK;
-                geted.lostbeats = 0;
+                geted.Lostbeats = 0;
                 if (geted.Messages.Capacity != 0)
                 {
                     foreach (var element in geted.Messages)

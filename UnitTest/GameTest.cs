@@ -1,11 +1,6 @@
-﻿using System;
-using ChessServer;
+﻿using ChessServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Protocol;
-using Protocol.GameObjects;
-using Protocol.Transport;
-using ChessServer.GameLogic;
 
 namespace UnitTest
 {
@@ -13,10 +8,10 @@ namespace UnitTest
     public class GameTest
     {
         [TestMethod]
-        public void GameIDNotZero()
+        public void GameIdNotZero()
         {
             var game1 = new Game(null);
-            Assert.AreNotEqual(0, game1.ID);
+            Assert.AreNotEqual(0, game1.Id);
         }
 
         [TestMethod]
@@ -29,7 +24,7 @@ namespace UnitTest
             var game2 = new Game(null);
 
             //a - assert
-            Assert.AreNotEqual(game1.ID, game2.ID);
+            Assert.AreNotEqual(game1.Id, game2.Id);
         }
         [TestMethod]
         public void InitUserAfterCreateGame()

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Data.Entity;
-using Protocol;
+﻿using System.Data.Entity;
 
 namespace ChestClient.Models
 {

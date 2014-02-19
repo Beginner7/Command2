@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol.GameObjects;
 using Protocol.Transport;
 using Protocol;
@@ -13,8 +9,8 @@ namespace ChessServer
 {
     public class Game
     {
-        public Act act;
-        public readonly int ID;
+        public Act Act;
+        public readonly int Id;
         public User PlayerWhite;
         public User PlayerBlack;
         public Side Turn = Side.WHITE;
@@ -22,16 +18,16 @@ namespace ChessServer
         public DateTime TimeStartGame; //время начала игры
         public List<Move> Moves = new List<Move>();
 
-        public static int GameIDSeq = 0;
+        public static int GameIdSeq = 0;
 
-        private Random rnd = new Random();
+        private readonly Random _rnd = new Random();
 
         public Game(User user)
         {
-            Interlocked.Increment(ref GameIDSeq);
-            ID = GameIDSeq;
+            Interlocked.Increment(ref GameIdSeq);
+            Id = GameIdSeq;
 
-            if (rnd.Next(0, 2) == 0)
+            if (_rnd.Next(0, 2) == 0)
             {
                 PlayerWhite = user;
             }

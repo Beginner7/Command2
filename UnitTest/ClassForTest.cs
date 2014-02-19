@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using Protocol.GameObjects;
-using Protocol.Transport;
 using ChessServer.GameLogic;
 
 namespace UnitTest
 {
     public class ClassForTest
     {
-        public Board board = new Board();
-        public List<string> validCells = new List<string>();
-        public Figure figure;
-        AttackMap map;// = new AttackMap(new List<Move>(), board);
+        public Board Board = new Board();
+        public List<string> ValidCells = new List<string>();
+        public Figure Figure;
+        AttackMap _map;// = new AttackMap(new List<Move>(), board);
 
         public ClassForTest(Figure figure, string cell)
         {
-            this.board = new Board();
-            this.validCells = new List<string>();
-            this.figure = figure;
-            board[cell] = this.figure;
-            map = new AttackMap(new List<Move>(), board);
+            Board = new Board();
+            ValidCells = new List<string>();
+            Figure = figure;
+            Board[cell] = Figure;
+            _map = new AttackMap(new List<Move>(), Board);
          }
 
         public void MapUpdate()
         {
-            map = new AttackMap(new List<Move>(), board);
+            _map = new AttackMap(new List<Move>(), Board);
         }
 
         public bool Check()
@@ -37,12 +33,12 @@ namespace UnitTest
             {
                 for (char i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
-                    if (validCells.Contains(cell))
+                    string cell = i.ToString(CultureInfo.InvariantCulture) + j;
+                    if (ValidCells.Contains(cell))
                     {
-                        f =  map[cell].Contains(figure)? true : false;
+                        f =  _map[cell].Contains(Figure);
                     }
-                    else if (!map[cell].Contains(figure) && !map[cell].Contains(figure))
+                    else if (!_map[cell].Contains(Figure) && !_map[cell].Contains(Figure))
                     {
                         f = true;
                     }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
@@ -18,17 +16,9 @@ namespace ChessConsole.Commands
             {
                 if (Utils.IsNotInGame() && Utils.IsLoggedIn())
                 {
-                    var request = new DeleteUserRequest();
-                    request.UserName = CurrentUser.Name;
+                    var request = new DeleteUserRequest {UserName = CurrentUser.Name};
                     var response = ServerProvider.MakeRequest(request);
-                    if (response.Status == Statuses.OK)
-                    {
-                        Console.WriteLine("You logged out.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Bad status");
-                    }
+                    Console.WriteLine(response.Status == Statuses.OK ? "You logged out." : "Bad status");
                 }
             }
             return true;

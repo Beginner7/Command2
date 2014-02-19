@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
@@ -18,8 +16,7 @@ namespace ChessConsole.Commands
             {
                 if (Utils.IsLoggedIn() && Utils.IsNotInGame())
                 {
-                    var request = new CreateGameRequest();
-                    request.NewPlayer = new User { Name = CurrentUser.Name };
+                    var request = new CreateGameRequest {NewPlayer = new User {Name = CurrentUser.Name}};
                     var response = ServerProvider.MakeRequest<CreateGameResponse>(request);
                     if (response.Status == Statuses.OK)
                     {

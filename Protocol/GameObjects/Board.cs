@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Protocol;
+using System.Globalization;
 using Protocol.Transport;
-using Protocol.GameObjects;
 
 namespace Protocol.GameObjects
 {
@@ -72,37 +68,29 @@ namespace Protocol.GameObjects
             Console.Clear();
             Console.Write("\n    A  B  C  D  E  F  G  H");
             Console.Write("\n\n\n 8\n\n\n 7\n\n\n 6\n\n\n 5\n\n\n 4\n\n\n 3\n\n\n 2\n\n\n 1");
-            ConsoleColor cellcolor;
             for (int y = 0; y < BoardSize; y++)
             {
                 for (int x = 0; x < BoardSize; x++)
                 {
-                    if ((x + y) % 2 != 0)
-                    {
-                        cellcolor = ConsoleColor.Black;
-                    }
-                    else
-                    {
-                        cellcolor = ConsoleColor.Gray;
-                    }
+                    ConsoleColor cellcolor = (x + y) % 2 != 0 ? ConsoleColor.Black : ConsoleColor.Gray;
                     Console.ForegroundColor = cellcolor;
                     Console.SetCursorPosition((x + 1) * 3, (y + 1) * 3);
                     Console.Write("███");
                     Console.SetCursorPosition((x + 1) * 3, (y + 1) * 3 + 1);
                     Console.Write('█');
-                    if (Cells[x, 8 - y - 1].symbol != 'X')
+                    if (Cells[x, 8 - y - 1].Symbol != 'X')
                     {
-                        if (Cells[x, 8 - y - 1].side == Side.BLACK)
+                        if (Cells[x, 8 - y - 1].Side == Side.BLACK)
                         {
                             Console.ForegroundColor = ConsoleColor.Black;
                             Console.BackgroundColor = ConsoleColor.White;
                         }
-                        if (Cells[x, 8 - y - 1].side == Side.WHITE)
+                        if (Cells[x, 8 - y - 1].Side == Side.WHITE)
                         {
                             Console.ForegroundColor = ConsoleColor.White;
                             Console.BackgroundColor = ConsoleColor.Black;
                         }
-                        Console.Write(Cells[x, 8 - y - 1].symbol);
+                        Console.Write(Cells[x, 8 - y - 1].Symbol);
                     }
                     else
                     {
@@ -120,13 +108,13 @@ namespace Protocol.GameObjects
 
         public Dictionary<string, string> ShowBoardToWeb()
         {
-            Dictionary<string,string> figures = new Dictionary<string,string>();
+            var figures = new Dictionary<string,string>();
             for (int y = 0; y < BoardSize; y++)
             {
                 for (int x = 0; x < BoardSize; x++)
                 {
-                    if (Cells[x, y].symbol != 'X')
-                        figures.Add((char)('a' + x) + (y + 1).ToString(), Cells[x, y].symbol.ToString() + Cells[x, y].side.ToString()[0]);
+                    if (Cells[x, y].Symbol != 'X')
+                        figures.Add((char)('a' + x) + (y + 1).ToString(CultureInfo.InvariantCulture), Cells[x, y].Symbol.ToString(CultureInfo.InvariantCulture) + Cells[x, y].Side.ToString()[0]);
                 }
             }
             return figures;
@@ -152,9 +140,9 @@ namespace Protocol.GameObjects
                     Cells[GetCoords(from).Item1, GetCoords(from).Item2].GetType() == typeof(FigurePawn)
                     && (GetCoords(from).Item1 != GetCoords(to).Item1))
                 {
-                    if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.BLACK)
+                    if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].Side == Side.BLACK)
                         Cells[GetCoords(to).Item1, GetCoords(to).Item2 + 1] = new FigureNone(Side.NONE);
-                    if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].side == Side.WHITE)
+                    if (Cells[GetCoords(from).Item1, GetCoords(from).Item2].Side == Side.WHITE)
                         Cells[GetCoords(to).Item1, GetCoords(to).Item2 - 1] = new FigureNone(Side.NONE);
                 }
                 
@@ -179,19 +167,19 @@ namespace Protocol.GameObjects
             {
                 case FigureBishop.SYMBOL:
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
-                        new FigureBishop(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                        new FigureBishop(Cells[GetCoords(to).Item1, GetCoords(to).Item2].Side);
                     break;
                 case FigureKnight.SYMBOL:
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
-                        new FigureKnight(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                        new FigureKnight(Cells[GetCoords(to).Item1, GetCoords(to).Item2].Side);
                     break;
                 case FigureQueen.SYMBOL:
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
-                        new FigureQueen(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                        new FigureQueen(Cells[GetCoords(to).Item1, GetCoords(to).Item2].Side);
                     break;
                 case FigureRook.SYMBOL:
                     Cells[GetCoords(to).Item1, GetCoords(to).Item2] =
-                        new FigureRook(Cells[GetCoords(to).Item1, GetCoords(to).Item2].side);
+                        new FigureRook(Cells[GetCoords(to).Item1, GetCoords(to).Item2].Side);
                     break;
                 default:
                     throw new WrongMoveException(string.Format("Incorrect symbol {0}", inWho));
@@ -200,8 +188,8 @@ namespace Protocol.GameObjects
 
         private bool IsPromotion(string to)
         {
-            if  (GetCoords(to).Item2 == 7 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].side == Side.WHITE ||
-                GetCoords(to).Item2 == 0 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].side == Side.BLACK)
+            if  (GetCoords(to).Item2 == 7 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].Side == Side.WHITE ||
+                GetCoords(to).Item2 == 0 && Cells[GetCoords(to).Item1, GetCoords(to).Item2].Side == Side.BLACK)
                 return true;
             return false;
         }
@@ -209,7 +197,7 @@ namespace Protocol.GameObjects
         public static Tuple<int,int> GetCoords(string cell)
         {
             cell = cell.ToLowerInvariant();
-            return new Tuple<int, int>(cell[0] - 'a', int.Parse(cell[1].ToString()) - 1);
+            return new Tuple<int, int>(cell[0] - 'a', int.Parse(cell[1].ToString(CultureInfo.InvariantCulture)) - 1);
         }
 
         private static bool OutputAbroad(Tuple<int, int> cell)
@@ -233,7 +221,7 @@ namespace Protocol.GameObjects
             {
                 for (int j = 1; j <= BoardSize; j++)
                 {
-                    if (this[i.ToString() + j.ToString()] == figure)
+                    if (this[i + j.ToString(CultureInfo.InvariantCulture)] == figure)
                         return new Tuple<char, int>(i, j);
                 }
             }
@@ -242,8 +230,7 @@ namespace Protocol.GameObjects
 
         public Board Clone()
         {
-            var board = new Board();
-            board.Cells = (Figure[,])Cells.Clone();
+            var board = new Board {Cells = (Figure[,]) Cells.Clone()};
             return board;
         }
     }

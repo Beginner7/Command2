@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Protocol;
+﻿using System.Text;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
@@ -18,13 +13,13 @@ namespace Protocol.Transport
         }
         public static T MakeRequest<T>(Request r)
         {
-            string url = Consts.domain + "Server.ashx";
+            const string url = Consts.DOMAIN + "Server.ashx";
             var encoding = Encoding.UTF8;
             string postData = JsonConvert.SerializeObject(r);
             var data = encoding.GetBytes(postData);
 
-            System.Net.ServicePointManager.Expect100Continue = false;
-            HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(url);
+            ServicePointManager.Expect100Continue = false;
+            var httpWReq = (HttpWebRequest)WebRequest.Create(url);
             httpWReq.Method = "POST";
             httpWReq.ContentType = "text/json";
             httpWReq.ContentLength = data.Length;
@@ -33,7 +28,7 @@ namespace Protocol.Transport
                 stream.Write(data, 0, data.Length);
             }
 
-            HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+            var response = (HttpWebResponse)httpWReq.GetResponse();
 
             string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
