@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Concurrent;
+using System.Linq;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;

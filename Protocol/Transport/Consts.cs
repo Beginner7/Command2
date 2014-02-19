@@ -2,11 +2,11 @@
 {
     public static class Consts
     {
-        #if (DEBUG)
+#if (DEBUG)
         public  const string DOMAIN = "http://localhost:2964/";
-        #else
-        public const string domain = "http://command2.apphb.com/";
-        #endif
+#else
+        public const string DOMAIN = "http://command2.apphb.com/";
+#endif
     }
     
     public enum Side
