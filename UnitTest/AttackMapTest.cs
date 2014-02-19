@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Protocol.GameObjects;
 using Protocol.Transport;
@@ -21,17 +21,17 @@ namespace UnitTest
         public void LongCastlingBlackTest3()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
 
             board["e8"] = king;
             board["a8"] = rook;
             //a - act
-            List<Move> moves = new List<Move>{
+            var moves = new List<Move>{
                 new Move { From = "a8", To = "a4" },
                 new Move{From = "a4", To = "a8"}};
-            AttackMap map = new AttackMap(moves, board);
+            var map = new AttackMap(moves, board);
             //a - assert
             Assert.IsFalse(map["c8"].Contains(king));
         }
@@ -43,7 +43,7 @@ namespace UnitTest
         public void LongCastlingBlackTest4()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
             var knight = new FigureKnight(Side.WHITE);
@@ -52,9 +52,9 @@ namespace UnitTest
             board["a8"] = rook;
             board["d6"] = knight;
             //a - act
-            List<Move> moves = new List<Move>{
+            var moves = new List<Move>{
                 new Move { From = "c8", To = "d6" }};
-            AttackMap map = new AttackMap(moves, board);
+            var map = new AttackMap(moves, board);
             
             //a - assert
             Assert.IsFalse(map["c8"].Contains(king));
@@ -67,14 +67,14 @@ namespace UnitTest
         public void LongCastlingBlackTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
 
             board["e8"] = king;
             board["a8"] = rook;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map["c8"].Contains(king));
         }
@@ -86,14 +86,14 @@ namespace UnitTest
         public void ShortCastlingBlackTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
 
             board["e8"] = king;
             board["h8"] = rook;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map["g8"].Contains(king));
         }
@@ -105,7 +105,7 @@ namespace UnitTest
         public void LongCastlingBlackTest2()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
             var pawn = new FigurePawn(Side.BLACK);
@@ -114,7 +114,7 @@ namespace UnitTest
             board["a8"] = rook;
             board["b8"] = pawn;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsFalse(map["c8"].Contains(king));
         }
@@ -126,7 +126,7 @@ namespace UnitTest
         public void ShortCastlingBlackTest2()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
             var pawn = new FigurePawn(Side.BLACK);
@@ -135,7 +135,7 @@ namespace UnitTest
             board["h8"] = rook;
             board["f8"] = pawn;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsFalse(map["g8"].Contains(king));
         }
@@ -147,14 +147,14 @@ namespace UnitTest
         public void LongCastlingWhiteTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.WHITE);
             var rook = new FigureRook(Side.WHITE);
 
             board["e1"] = king;
             board["a1"] = rook;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map["c1"].Contains(king));
         }
@@ -166,14 +166,14 @@ namespace UnitTest
         public void ShortCastlingWhiteTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.WHITE);
             var rook = new FigureRook(Side.WHITE);
 
             board["e1"] = king;
             board["h1"] = rook;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map["g1"].Contains(king));
         }
@@ -185,7 +185,7 @@ namespace UnitTest
         public void LongCastlingWhiteTest2()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.WHITE);
             var rook = new FigureRook(Side.WHITE);
             var pawn = new FigurePawn(Side.WHITE);
@@ -194,7 +194,7 @@ namespace UnitTest
             board["a1"] = rook;
             board["b1"] = pawn;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsFalse(map["c1"].Contains(king));
         }
@@ -206,7 +206,7 @@ namespace UnitTest
         public void ShortCastlingWhiteTest2()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.WHITE);
             var rook = new FigureRook(Side.WHITE);
             var pawn = new FigurePawn(Side.WHITE);
@@ -215,7 +215,7 @@ namespace UnitTest
             board["h1"] = rook;
             board["f1"] = pawn;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsFalse(map["g1"].Contains(king));
         }
@@ -226,15 +226,15 @@ namespace UnitTest
         [TestMethod]
         public void NewWhiteKingTest()
         {
-            ClassForTest tmpClass = new ClassForTest(new FigureKing(Side.WHITE), "e4");
+            var tmpClass = new ClassForTest(new FigureKing(Side.WHITE), "e4");
             //a - arange
-            tmpClass.board["f5"] = new FigurePawn(Side.WHITE);
-            tmpClass.board["f4"] = new FigurePawn(Side.BLACK);
-            tmpClass.board["f3"] = new FigureBishop(Side.BLACK);
-            tmpClass.board["e3"] = new FigureRook(Side.BLACK);
-            tmpClass.board["d3"] = new FigureQueen(Side.BLACK);
+            tmpClass.Board["f5"] = new FigurePawn(Side.WHITE);
+            tmpClass.Board["f4"] = new FigurePawn(Side.BLACK);
+            tmpClass.Board["f3"] = new FigureBishop(Side.BLACK);
+            tmpClass.Board["e3"] = new FigureRook(Side.BLACK);
+            tmpClass.Board["d3"] = new FigureQueen(Side.BLACK);
 
-            tmpClass.validCells = new List<string>
+            tmpClass.ValidCells = new List<string>
             {
                 "d1", "d2",
                 "f1", "f2",
@@ -253,7 +253,7 @@ namespace UnitTest
         public void InitialPositionTest()
         {
             //a - act
-            AttackMap map = new AttackMap(new List<Move>());
+            var map = new AttackMap(new List<Move>());
         }
         /// <summary>
         /// Одна ладья в центре поля
@@ -262,22 +262,22 @@ namespace UnitTest
         public void SimpleRookTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var rook = new FigureRook(Side.WHITE);
             board["e4"] = rook;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
                 if (j != 4)
                     Assert.IsTrue(map["e" + j].Contains(rook));
 
             }
-            for (char i = 'a'; i <= 'h'; i++)
+            for (var i = 'a'; i <= 'h'; i++)
             {
                 if (i != 'e')
-                    Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
+                    Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + 4].Contains(rook));
             }
         }
         /// <summary>
@@ -287,7 +287,7 @@ namespace UnitTest
         public void WhiteRookTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var rook = new FigureRook(Side.WHITE);
             var knight = new FigureKnight(Side.BLACK);
             var bishop = new FigureBishop(Side.BLACK);
@@ -300,25 +300,25 @@ namespace UnitTest
             board["f4"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
-            for (char i = 'a'; i <= 'h'; i++)
+            var map = new AttackMap(new List<Move>(), board);
+            for (var i = 'a'; i <= 'h'; i++)
             {
-                for (int j = 1; j <= Board.BoardSize; j++)
+                for (var j = 1; j <= Board.BoardSize; j++)
                 {
                     if (j == 4)
                     {
                         if (i == 'f' || i == 'd')
-                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                         if (i == 'e')
-                            Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
+                            Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                     }
                     else if (j == 3 || j == 5)
                     {
                         if (i == 'e')
-                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                     }
                     else
-                        Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
+                        Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                 }
             }
         }
@@ -330,7 +330,7 @@ namespace UnitTest
         public void BlackRookTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var rook = new FigureRook(Side.BLACK);
             var knight = new FigureKnight(Side.WHITE);
             var bishop = new FigureBishop(Side.WHITE);
@@ -343,25 +343,25 @@ namespace UnitTest
             board["f4"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
-            for (char i = 'a'; i <= 'h'; i++)
+            var map = new AttackMap(new List<Move>(), board);
+            for (var i = 'a'; i <= 'h'; i++)
             {
-                for (int j = 1; j <= Board.BoardSize; j++)
+                for (var j = 1; j <= Board.BoardSize; j++)
                 {
                     if (j == 4)
                     {
                         if (i == 'f' || i == 'd')
-                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                         if (i == 'e')
-                            Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
+                            Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                     }
                     else if (j == 3 || j == 5)
                     {
                         if (i == 'e')
-                            Assert.IsTrue(map[i.ToString() + j].Contains(rook));
+                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                     }
                     else
-                        Assert.IsTrue(!map[i.ToString() + j].Contains(rook));
+                        Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(rook));
                 }
             }
         }
@@ -373,7 +373,7 @@ namespace UnitTest
         public void BlackRookVsBlackTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var rook = new FigureRook(Side.BLACK);
             var knight = new FigureKnight(Side.BLACK);
             var queen = new FigureQueen(Side.BLACK);
@@ -386,20 +386,20 @@ namespace UnitTest
             board["b4"] = bishop;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
 
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
                 if (j != 4 && j < 6 && j > 2)
                     Assert.IsTrue(map["e" + j].Contains(rook));
                 if (j >= 6 && j < 2)
                     Assert.IsTrue(!map["e" + j].Contains(rook));
             }
-            for (char i = 'a'; i <= 'h'; i++)
+            for (var i = 'a'; i <= 'h'; i++)
             {
                 if (i != 'e' && i < 'f' && i > 'b')
-                    Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
+                    Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + 4].Contains(rook));
             }
         }
 
@@ -410,7 +410,7 @@ namespace UnitTest
         public void WhiteRookVsWhiteTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var rook = new FigureRook(Side.WHITE);
             var knight = new FigureKnight(Side.WHITE);
             var queen = new FigureQueen(Side.WHITE);
@@ -423,20 +423,20 @@ namespace UnitTest
             board["b4"] = bishop;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
 
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
                 if (j != 4 && j < 6 && j > 2)
                     Assert.IsTrue(map["e" + j].Contains(rook));
                 if (j >= 6 && j < 2)
                     Assert.IsTrue(!map["e" + j].Contains(rook));
             }
-            for (char i = 'a'; i <= 'h'; i++)
+            for (var i = 'a'; i <= 'h'; i++)
             {
                 if (i != 'e' && i < 'f' && i > 'b')
-                    Assert.IsTrue(map[i.ToString() + 4].Contains(rook));
+                    Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + 4].Contains(rook));
             }
         }
 
@@ -448,12 +448,12 @@ namespace UnitTest
         public void OneWhitePawnTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.WHITE);
             board["e2"] = pawn;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map["e3"].Contains(pawn));
             Assert.IsTrue(map["e4"].Contains(pawn));
@@ -466,7 +466,7 @@ namespace UnitTest
         public void WhitePawnTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.WHITE);
             var rook = new FigureRook(Side.BLACK);
             var knight = new FigureKnight(Side.BLACK);
@@ -479,19 +479,19 @@ namespace UnitTest
             board["e6"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
-            for (char i = 'a'; i <= 'h'; i++)
+            for (var i = 'a'; i <= 'h'; i++)
             {
-                for (int j = 1; j <= Board.BoardSize; j++)
+                for (var j = 1; j <= Board.BoardSize; j++)
                 {
                     if (j == 5)
                     {
                         if (i == 'e' || i == 'd' || i == 'f')
-                            Assert.IsTrue(map[i.ToString() + j].Contains(pawn));
+                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
                     }
                     else
-                        Assert.IsTrue(!map[i.ToString() + j].Contains(pawn));
+                        Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
                 }
             }
         }
@@ -503,7 +503,7 @@ namespace UnitTest
         public void BlackPawnTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.BLACK);
             var rook = new FigureRook(Side.WHITE);
             var knight = new FigureKnight(Side.WHITE);
@@ -518,19 +518,19 @@ namespace UnitTest
             board["e7"] = queen1;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
-            for (char i = 'a'; i <= 'h'; i++)
+            for (var i = 'a'; i <= 'h'; i++)
             {
-                for (int j = 1; j <= Board.BoardSize; j++)
+                for (var j = 1; j <= Board.BoardSize; j++)
                 {
                     if (j == 5)
                     {
                         if (i == 'e' || i == 'd' || i == 'f')
-                            Assert.IsTrue(map[i.ToString() + j].Contains(pawn));
+                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
                     }
                     else
-                        Assert.IsTrue(!map[i.ToString() + j].Contains(pawn));
+                        Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
                 }
             }
         }
@@ -542,23 +542,23 @@ namespace UnitTest
         public void BlackPawnSimpleTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.BLACK);
             board["e7"] = pawn;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
 
             //a - assert
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "e6","e5"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(pawn));
@@ -579,25 +579,25 @@ namespace UnitTest
         public void SimpleBishopTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var bishop = new FigureBishop(Side.WHITE);
             board["e4"] = bishop;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
 
             //a - assert
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
                     if (Math.Abs('e' - i) == Math.Abs(4 - j) && j != 4)
                     {
-                        Assert.IsTrue(map[i.ToString() + j].Contains(bishop));
+                        Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(bishop));
                     }
                     else
                     {
-                        Assert.IsFalse(map[i.ToString() + j].Contains(bishop));
+                        Assert.IsFalse(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(bishop));
                     }
                 }
             }
@@ -610,7 +610,7 @@ namespace UnitTest
         public void WhiteBishopTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var bishop = new FigureBishop(Side.WHITE);
             var knight = new FigureKnight(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
@@ -623,21 +623,21 @@ namespace UnitTest
             board["g2"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
 
             //a - assert
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "f5","g6",
                 "d3","c2",
                 "d5","c6",
                 "f3","g2"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(bishop));
@@ -660,7 +660,7 @@ namespace UnitTest
         public void BlackBishopTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var bishop = new FigureBishop(Side.BLACK);
             var knight = new FigureKnight(Side.WHITE);
             var rook = new FigureRook(Side.WHITE);
@@ -673,21 +673,21 @@ namespace UnitTest
             board["g7"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
 
             //a - assert
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "f6","g7",
                 "d4","c3",
                 "d6","c7",
                 "f4","g3"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(bishop));
@@ -708,7 +708,7 @@ namespace UnitTest
         public void WhiteBishopVsWhiteTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var bishop = new FigureBishop(Side.WHITE);
             var knight = new FigureKnight(Side.WHITE);
             var rook = new FigureRook(Side.WHITE);
@@ -721,21 +721,21 @@ namespace UnitTest
             board["g2"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
 
             //a - assert
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "f5",
                 "d3",
                 "d5",
                 "f3"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(bishop));
@@ -756,7 +756,7 @@ namespace UnitTest
         public void BlackBishopVsBlackTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var bishop = new FigureBishop(Side.BLACK);
             var knight = new FigureKnight(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
@@ -769,21 +769,21 @@ namespace UnitTest
             board["g7"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
 
             //a - assert
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "f6",
                 "d4",
                 "d6",
                 "f4"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(bishop));
@@ -801,7 +801,7 @@ namespace UnitTest
         public void WhiteKnightTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var knight = new FigureKnight(Side.WHITE);
             var rook = new FigureRook(Side.BLACK);
             var bishop = new FigureBishop(Side.BLACK);
@@ -816,7 +816,7 @@ namespace UnitTest
             board["d2"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(!map["f6"].Contains(knight));
             Assert.IsTrue(map["g5"].Contains(knight));
@@ -839,12 +839,12 @@ namespace UnitTest
         public void SimpleKnightTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var knight = new FigureKnight(Side.WHITE);
             board["e4"] = knight;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map["f6"].Contains(knight));
             Assert.IsTrue(map["g5"].Contains(knight));
@@ -863,12 +863,12 @@ namespace UnitTest
         public void SimpleKingTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.WHITE);
             board["e4"] = king;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map["e5"].Contains(king));
             Assert.IsTrue(map["f5"].Contains(king));
@@ -888,7 +888,7 @@ namespace UnitTest
         public void WhiteKingTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.WHITE);
             var pawn = new FigurePawn(Side.WHITE);
             var rook = new FigureRook(Side.BLACK);
@@ -903,7 +903,7 @@ namespace UnitTest
             board["d3"] = queen;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsFalse(map["e5"].Contains(king));
             Assert.IsFalse(map["f5"].Contains(king));
@@ -923,15 +923,15 @@ namespace UnitTest
         public void SimpleQueenTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var queen = new FigureQueen(Side.WHITE);
             board["d4"] = queen;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
 
 
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "e3","f2",
                 "g1","c5",
@@ -945,11 +945,11 @@ namespace UnitTest
                 "e4","f4","g4","h4",
                 "c4","b4","a4"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(queen));
@@ -969,8 +969,7 @@ namespace UnitTest
         public void WhiteQueenVsBlackTest()
         {
             //a - arange
-            Board board = new Board();
-            var bishop = new FigureBishop(Side.BLACK);
+            var board = new Board();
             var knight = new FigureKnight(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
             var queen2 = new FigureQueen(Side.BLACK);
@@ -988,11 +987,11 @@ namespace UnitTest
             board["g1"] = pawn;
             board["h8"] = queen2;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
 
 
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "e3","f2",
                 "g1","c5",
@@ -1006,11 +1005,11 @@ namespace UnitTest
                 "e4","f4","g4","h4",
                 "c4","b4","a4"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(queen));
@@ -1031,8 +1030,7 @@ namespace UnitTest
         public void BlackQueenVsWhiteTest()
         {
             //a - arange
-            Board board = new Board();
-            var bishop = new FigureBishop(Side.WHITE);
+            var board = new Board();
             var knight = new FigureKnight(Side.WHITE);
             var rook = new FigureRook(Side.WHITE);
             var queen2 = new FigureQueen(Side.WHITE);
@@ -1050,11 +1048,11 @@ namespace UnitTest
             board["g1"] = pawn;
             board["h8"] = queen2;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
 
 
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "e3","f2",
                 "g1","c5",
@@ -1068,11 +1066,11 @@ namespace UnitTest
                 "e4","f4","g4","h4",
                 "c4","b4","a4"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(queen));
@@ -1093,8 +1091,7 @@ namespace UnitTest
         public void BlackQueenTest()
         {
             //a - arange
-            Board board = new Board();
-            var bishop = new FigureBishop(Side.BLACK);
+            var board = new Board();
             var knight = new FigureKnight(Side.BLACK);
             var rook = new FigureRook(Side.BLACK);
             var queen2 = new FigureQueen(Side.BLACK);
@@ -1112,11 +1109,11 @@ namespace UnitTest
             board["f2"] = pawn;
             board["g7"] = queen2;
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
 
 
-            List<string> validCells = new List<string>
+            var validCells = new List<string>
             {
                 "e3",
                 "c5",
@@ -1129,11 +1126,11 @@ namespace UnitTest
                 "e4","f4",
                 "c4"
             };
-            for (int j = 1; j <= Board.BoardSize; j++)
+            for (var j = 1; j <= Board.BoardSize; j++)
             {
-                for (char i = 'a'; i <= 'h'; i++)
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    string cell = i.ToString() + j;
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
                     if (validCells.Contains(cell))
                     {
                         Assert.IsTrue(map[cell].Contains(queen));
@@ -1153,16 +1150,16 @@ namespace UnitTest
         public void WhitePassedPawnTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawnWhite = new FigurePawn(Side.WHITE);
             var pawnBlack = new FigurePawn(Side.BLACK);
             board["c4"] = pawnWhite;
             board["b4"] = pawnBlack;
 
-            List<Move> moves = new List<Move>{
+            var moves = new List<Move>{
                 new Move { From = "c2", To = "c4" }};
             //a - act
-            AttackMap map = new AttackMap(moves, board);
+            var map = new AttackMap(moves, board);
             //a - assert
             Assert.IsTrue(map["c3"].Contains(pawnBlack));
         }
@@ -1174,16 +1171,16 @@ namespace UnitTest
         public void BlackPassedPawnTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawnWhite = new FigurePawn(Side.WHITE);
             var pawnBlack = new FigurePawn(Side.BLACK);
             board["f5"] = pawnWhite;
             board["g5"] = pawnBlack;
 
-            List<Move> moves = new List<Move>{
+            var moves = new List<Move>{
                 new Move { From = "g7", To = "g5" }};
             //a - act
-            AttackMap map = new AttackMap(moves, board);
+            var map = new AttackMap(moves, board);
             //a - assert
             Assert.IsTrue(map["g6"].Contains(pawnWhite));
         }
@@ -1195,17 +1192,17 @@ namespace UnitTest
         public void BlackPassedPawnTest2()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawnWhite = new FigurePawn(Side.WHITE);
             var pawnBlack = new FigurePawn(Side.BLACK);
             board["f5"] = pawnWhite;
             board["g5"] = pawnBlack;
 
-            List<Move> moves = new List<Move>{
+            var moves = new List<Move>{
                 new Move { From = "g7", To = "g6" },
                 new Move { From = "g6", To = "g5" }};
             //a - act
-            AttackMap map = new AttackMap(moves, board);
+            var map = new AttackMap(moves, board);
             //a - assert
             Assert.IsFalse(map["g6"].Contains(pawnWhite));
         }
@@ -1217,20 +1214,18 @@ namespace UnitTest
         public void WhitePassedPawnTest2()
         {
             //a - arange
-            Board board = new Board();
-            var pawnWhite = new FigurePawn(Side.WHITE);
+            var board = new Board();
             var pawnBlack = new FigurePawn(Side.BLACK);
-            var rookBlack = new FigureRook(Side.BLACK);
             //board["c4"] = pawnWhite;
             //board["b4"] = pawnBlack;
             //board["d4"] = rookBlack;
             
-            List<Move> moves = new List<Move>{
+            var moves = new List<Move>{
                 new Move { From = "c2", To = "c4" },
                 new Move { From = "f6", To = "d4" },
                 new Move { From = "b5", To = "b4" }};
             //a - act
-            AttackMap map = new AttackMap(moves, new Board());
+            var map = new AttackMap(moves, new Board());
             //a - assert
             Assert.IsTrue(!map["c3"].Contains(pawnBlack));
         }
@@ -1242,7 +1237,7 @@ namespace UnitTest
         public void AfterIsCheckTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.WHITE);
             var king = new FigureKing(Side.WHITE);
             board["h3"] = king;
@@ -1250,7 +1245,7 @@ namespace UnitTest
             board["f3"] = new FigureQueen(Side.BLACK);
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map.IsCheck);
             Assert.IsTrue(map["f3"].Contains(pawn));
@@ -1269,14 +1264,14 @@ namespace UnitTest
         public void IsCheckTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var rook = new FigureRook(Side.BLACK);
             var king = new FigureKing(Side.WHITE);
             board["e3"] = king;
             board["h3"] = rook;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             Assert.IsTrue(map.IsCheck);
         }
 
@@ -1287,7 +1282,7 @@ namespace UnitTest
         public void MovesToCheckTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.WHITE);
             var king = new FigureKing(Side.WHITE);
             board["h1"] = king;
@@ -1295,7 +1290,7 @@ namespace UnitTest
             board["a8"] = new FigureQueen(Side.BLACK);
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsFalse(map["g3"].Contains(pawn));
             Assert.IsFalse(map["g4"].Contains(pawn));
@@ -1310,7 +1305,7 @@ namespace UnitTest
         public void IsStalemateWhiteTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.WHITE);
             var pawn2 = new FigurePawn(Side.BLACK);
             var king = new FigureKing(Side.WHITE);
@@ -1320,7 +1315,7 @@ namespace UnitTest
             board["b5"] = pawn2;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map.IsStalemateWhite);
         }
@@ -1332,7 +1327,7 @@ namespace UnitTest
         public void IsStalemateBlackTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawn = new FigurePawn(Side.BLACK);
             var pawn2 = new FigurePawn(Side.WHITE);
             var king = new FigureKing(Side.BLACK);
@@ -1342,7 +1337,7 @@ namespace UnitTest
             board["b5"] = pawn;
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map.IsStalemateBlack);
         }
@@ -1354,7 +1349,7 @@ namespace UnitTest
         public void IsMateBlackTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var king = new FigureKing(Side.BLACK);
             board["e8"] = king;
             board["g8"] = new FigureQueen(Side.WHITE);
@@ -1363,7 +1358,7 @@ namespace UnitTest
             board["e7"] = new FigureBishop(Side.WHITE);
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map.IsMateBlack);
         }
@@ -1375,7 +1370,7 @@ namespace UnitTest
         public void IsMateWhiteTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             board["a1"] = new FigureKing(Side.WHITE);
             board["a2"] = new FigurePawn(Side.WHITE);
             board["b1"] = new FigureRook(Side.WHITE);
@@ -1383,7 +1378,7 @@ namespace UnitTest
             board["c2"] = new FigureKnight(Side.BLACK);
 
             //a - act
-            AttackMap map = new AttackMap(new List<Move>(), board);
+            var map = new AttackMap(new List<Move>(), board);
             //a - assert
             Assert.IsTrue(map.IsMateWhite);
         }

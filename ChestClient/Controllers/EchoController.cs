@@ -7,9 +7,9 @@ namespace ChestClient.Controllers
         //
         // GET: /Echo/
 
-        public ActionResult Index(string in_str)
+        public ActionResult Index(string inStr)
         {
-            return Json(in_str, JsonRequestBehavior.AllowGet);
+            return Json(inStr, JsonRequestBehavior.AllowGet);
         }
 
     }

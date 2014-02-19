@@ -16,7 +16,7 @@ namespace ChessServer
         static Server()
         {
             var timer = new Timer();
-            timer.Elapsed += new ElapsedEventHandler(PulseChecker);
+            timer.Elapsed += PulseChecker;
             timer.Start();
             timer.Interval = 5000;
         }
@@ -25,7 +25,7 @@ namespace ChessServer
         {
             foreach (var element in Users)
             {
-                if (element.Value.lostbeats > 10)
+                if (element.Value.Lostbeats > 10)
                 {
                     foreach (var elementGame in Games)
                     {
@@ -53,7 +53,7 @@ namespace ChessServer
                 }
                 else
                 {
-                    element.Value.lostbeats++;
+                    element.Value.Lostbeats++;
                 }
             }
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 using ChestClient.Models;
 using Protocol;
@@ -29,8 +28,7 @@ namespace ChestClient.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(model.UserName))
                 {
-                    var command = new AddUserRequest();
-                    command.UserName = model.UserName;
+                    var command = new AddUserRequest {UserName = model.UserName};
                     if (ServerProvider.MakeRequest(command).Status != Statuses.OK)
                     {
                         ModelState.AddModelError("", "Пользователь " + model.UserName + " уже в сети.");
@@ -44,10 +42,7 @@ namespace ChestClient.Controllers
                         {
                             return Redirect(returnUrl);
                         }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else
@@ -65,8 +60,7 @@ namespace ChestClient.Controllers
 
         public ActionResult LogOff()
         {
-            var command = new DeleteUserRequest();
-            command.UserName = HttpContext.User.Identity.Name;
+            var command = new DeleteUserRequest {UserName = HttpContext.User.Identity.Name};
             var response = ServerProvider.MakeRequest(command);
 
             FormsAuthentication.SignOut();

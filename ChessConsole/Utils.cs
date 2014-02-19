@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessConsole
 {
@@ -15,10 +11,7 @@ namespace ChessConsole
                 Console.WriteLine("You are not in game.");
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         public static bool IsNotInGame()
@@ -28,10 +21,7 @@ namespace ChessConsole
                 Console.WriteLine("End current game first!");
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         public static bool IsLoggedIn()
@@ -41,10 +31,7 @@ namespace ChessConsole
                 Console.WriteLine("You are not logged in.");
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         public static bool IsNotLoggedIn()
@@ -53,11 +40,8 @@ namespace ChessConsole
             {
                 return true;
             }
-            else
-            {
-                Console.WriteLine("You are logged in.");
-                return false;
-            }
+            Console.WriteLine("You are logged in.");
+            return false;
         }
 
         public static bool CheckArgs(int needArgs, int args)
@@ -70,11 +54,8 @@ namespace ChessConsole
             {
                 return true;
             }
-            else
-            {
-                Console.WriteLine("Wrong arguments count");
-                return false;
-            }
+            Console.WriteLine("Wrong arguments count");
+            return false;
         }
     }
 }

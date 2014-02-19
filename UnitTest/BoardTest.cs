@@ -1,8 +1,6 @@
-﻿using System;
+﻿using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Protocol;
 using Protocol.GameObjects;
-using System.Text;
 using System.Collections.Generic;
 using ChessServer.GameLogic;
 using Protocol.Transport;
@@ -16,7 +14,7 @@ namespace UnitTest
         public void SimpleMoveTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             board.InitialPosition();
             //a - act
             board.DoMove("e2", "e4");
@@ -33,7 +31,7 @@ namespace UnitTest
         public void OutputAbroadTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             board.InitialPosition();
             //a - act
             board.DoMove("e8", "e9");
@@ -48,7 +46,7 @@ namespace UnitTest
         public void NotationTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             board.InitialPosition();
             //a - act
             board.DoMove("e10", "e12");
@@ -63,7 +61,7 @@ namespace UnitTest
         public void NotationTest2()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             board.InitialPosition();
             //a - act
             board.DoMove("z0", "de");
@@ -74,16 +72,16 @@ namespace UnitTest
         public void WhitePassedPawnTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawnWhite = new FigurePawn(Side.WHITE);
             var pawnBlack = new FigurePawn(Side.BLACK);
             board["f5"] = pawnWhite;
             board["g5"] = pawnBlack;
 
-            List<Move> moves = new List<Move>{
+            var moves = new List<Move>{
                 new Move { From = "g7", To = "g5" }};
             //a - act
-            AttackMap map = new AttackMap(moves, board);
+            var map = new AttackMap(moves, board);
             board.DoMove("f5", "g6");
             //a - assert
             //Assert.AreEqual(pawnWhite.GetType(), board["g6"].GetType());
@@ -97,13 +95,13 @@ namespace UnitTest
         public void SimpleIsPromotionWhiteTest()
         {
             //a - arange
-            Board board = new Board();
+            var board = new Board();
             var pawnWhite = new FigurePawn(Side.WHITE);
             board["d7"] = pawnWhite;
 
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
-            board.DoMove("d7", "d8", FigureQueen.SYMBOL.ToString());
+            board.DoMove("d7", "d8", FigureQueen.SYMBOL.ToString(CultureInfo.InvariantCulture));
 
             Assert.AreEqual(typeof(FigureQueen), board["d8"].GetType());
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using ChestClient.Models;
 using Protocol.GameObjects;
@@ -21,7 +18,7 @@ namespace ChestClient.Controllers
 
         public ActionResult Status()
         {
-            Board board = new Board();
+            var board = new Board();
             board.InitialPosition();
             return Json(board.ShowBoardToWeb(), JsonRequestBehavior.AllowGet);
         }
