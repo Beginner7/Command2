@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using ChestClient.Models;
 using Protocol.GameObjects;
+using Protocol;
+using Protocol.Transport;
 
 namespace ChestClient.Controllers
 {
@@ -26,15 +28,17 @@ namespace ChestClient.Controllers
             return Json(board.ShowBoardToWeb(), JsonRequestBehavior.AllowGet);
         }
 
-        //public ActionResult MoveVariants()
-        //{
-        //    Board board = new Board();
-        //    board.InitialPosition();
+        public ActionResult MoveVariants()
+        {
+            Board board = new Board();
+            board.InitialPosition();
 
-        //    //var request = new UserListRequest();
-        //    //var response = ServerProvider.MakeRequest<UserListResponse>(request);
-
-        //    //Request.Params["cell"];
-        //}
+            var request = new MoveVariantsRequest();
+            var response = ServerProvider.MakeRequest<MoveVariantsResponse>(request);
+            
+            
+            //request.Params["cell"];
+            return Json(response.Cells, JsonRequestBehavior.AllowGet);
+        }
     }
 }

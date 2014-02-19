@@ -8,9 +8,11 @@ namespace Protocol
 {
     public class MoveVariantsRequest : Request
     {
+        public const string command = "moveVariants";
+
         public MoveVariantsRequest()
         {
-            Command = "moveVariants";
+            Command = command;
         }
 
         public string Cell;
