@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
@@ -19,7 +14,7 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<SurrenderRequest>(request);
             var workResponse = new SurrenderResponse();
-            if (games[workRequest.GameID].act == Act.WaitingOpponent)
+            if (games[workRequest.GameID].Act == Act.WaitingOpponent)
             {
                 workResponse.Status = Statuses.NoUser;
             }
@@ -27,7 +22,7 @@ namespace ChessServer.Commands
             {
                 if (workRequest.From == games[workRequest.GameID].PlayerWhite.Name)
                 {
-                    games[workRequest.GameID].act = Act.BlackWon;
+                    games[workRequest.GameID].Act = Act.BlackWon;
                     User geted;
                     if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))
                     {
@@ -37,7 +32,7 @@ namespace ChessServer.Commands
                 }
                 if (workRequest.From == games[workRequest.GameID].PlayerBlack.Name)
                 {
-                    games[workRequest.GameID].act = Act.WhiteWon;
+                    games[workRequest.GameID].Act = Act.WhiteWon;
                     User geted;
                     if (users.TryGetValue(games[workRequest.GameID].PlayerWhite.Name, out geted))
                     {

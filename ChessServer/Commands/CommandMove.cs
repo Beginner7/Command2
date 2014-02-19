@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
@@ -42,7 +37,7 @@ namespace ChessServer.Commands
             var workResponse = new MoveResponse();
             if (games.ContainsKey(workRequest.GameID))
             {
-                if (!(games[workRequest.GameID].act == Act.WaitingOpponent))
+                if (games[workRequest.GameID].Act != Act.WaitingOpponent)
                 {
                     if (UserSide(workRequest.Player.Name, workRequest.GameID, games) != games[workRequest.GameID].Turn)
                     {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
@@ -18,11 +16,13 @@ namespace ChessConsole.Commands
             {
                 if (Utils.IsInGame())
                 {
-                    var command = new MoveRequest();
-                    command.From = args.ToArray()[0];
-                    command.To = args.ToArray()[1];
-                    command.Player = new User { Name = CurrentUser.Name };
-                    command.GameID = CurrentUser.CurrentGame.Value;
+                    var command = new MoveRequest
+                    {
+                        From = args.ToArray()[0],
+                        To = args.ToArray()[1],
+                        Player = new User {Name = CurrentUser.Name},
+                        GameID = CurrentUser.CurrentGame.Value
+                    };
                     var response = ServerProvider.MakeRequest(command);
                     switch (response.Status)
                     {

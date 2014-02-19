@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-using System.Reflection;
 
 namespace ChessConsole.Commands
 {
     public class CommandFactory
     {
-        private IList<CommandBase> _commands = new List<CommandBase>();
+        private readonly IList<CommandBase> _commands = new List<CommandBase>();
         private CommandFactory()
         {
-            _commands = 
-            AppDomain.CurrentDomain.GetAssemblies()
+            _commands = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => typeof(CommandBase).IsAssignableFrom(type))
             .Where(type => !type.IsAbstract)
