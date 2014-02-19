@@ -56,7 +56,7 @@ namespace ChessServer.Commands
                         workResponse.Status = Statuses.WrongMoveNotation;
                         return workResponse;
                     }
-                    if (!attackMap[workRequest.To].Contains(attackMap.board[workRequest.From]) || attackMap.board[workRequest.From].side != UserSide(workRequest.Player.Name, workRequest.GameID, games))
+                    if (!attackMap[workRequest.To].Contains(attackMap.SourceBoard[workRequest.From]) || attackMap.SourceBoard[workRequest.From].side != UserSide(workRequest.Player.Name, workRequest.GameID, games))
                     {
                         workResponse.Status = Statuses.WrongMove;
                         return workResponse;
