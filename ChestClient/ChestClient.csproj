@@ -224,7 +224,8 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Server.ashx" />
     <Content Include="Views\Account\Profile.cshtml" />
-    <Content Include="Views\Home\Game.cshtml" />
+    <Content Include="Views\Game\Free.cshtml" />
+    <Content Include="Views\Game\NoAccess.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

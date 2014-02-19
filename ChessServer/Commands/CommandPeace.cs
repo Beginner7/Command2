@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Protocol;
+﻿using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
 using Newtonsoft.Json;
