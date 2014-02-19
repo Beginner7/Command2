@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Protocol;
 using Newtonsoft.Json;
 
@@ -15,9 +10,7 @@ namespace ChessServer.Commands
         public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
         {
             var workRequest = JsonConvert.DeserializeObject<GameStatRequest>(request);
-            var workResponse = new GameStatResponse();
-            workResponse.ID = workRequest.gameID;
-            workResponse.Act = games[workRequest.gameID].act;
+            var workResponse = new GameStatResponse {ID = workRequest.gameID, Act = games[workRequest.gameID].Act};
             if (games[workRequest.gameID].PlayerBlack != null)
             {
                 workResponse.PlayerBlack = games[workRequest.gameID].PlayerBlack.Name;

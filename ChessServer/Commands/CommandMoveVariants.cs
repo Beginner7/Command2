@@ -29,7 +29,7 @@ namespace ChessServer.Commands
             Game game = games[moveVariantsRequest.GameID];
             
             var map = new AttackMap(game.Moves);
-            if (map.board[moveVariantsRequest.Cell].side == game.Turn)
+            if (map.SourceBoard[moveVariantsRequest.Cell].Side == game.Turn)
             {
                 moveVariantsResponse.Cells = map.MoveVariants(moveVariantsRequest.Cell);
             }

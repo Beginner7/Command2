@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
@@ -37,7 +32,7 @@ namespace ChessServer.Commands
             var workResponse = new MoveResponse();
             if (games.ContainsKey(workRequest.GameID))
             {
-                if (!(games[workRequest.GameID].act == Act.WaitingOpponent))
+                if (games[workRequest.GameID].Act != Act.WaitingOpponent)
                 {
                     var userSide = games[workRequest.GameID].Turn;
                     if (SideUser(userSide, workRequest.GameID, games) != workRequest.Player.Name)
@@ -52,7 +47,7 @@ namespace ChessServer.Commands
                         workResponse.Status = Statuses.WrongMoveNotation;
                         return workResponse;
                     }
-                    if (!attackMap[workRequest.To].Contains(attackMap.board[workRequest.From]) || attackMap.board[workRequest.From].side != userSide)
+                    if (!attackMap[workRequest.To].Contains(attackMap.SourceBoard[workRequest.From]) || attackMap.SourceBoard[workRequest.From].Side != userSide)
                     {
                         workResponse.Status = Statuses.WrongMove;
                         return workResponse;

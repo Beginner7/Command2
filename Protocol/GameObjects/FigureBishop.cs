@@ -12,7 +12,7 @@ namespace Protocol.GameObjects
         public const char SYMBOL = 'B';
         public FigureBishop(Side side) : base(side)
         {
-            symbol = SYMBOL;
+            Symbol = SYMBOL;
         }
     }
 }

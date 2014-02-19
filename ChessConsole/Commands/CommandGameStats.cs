@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
@@ -18,8 +16,7 @@ namespace ChessConsole.Commands
             {
                 if (Utils.CheckArgs(ArgsNeed, args.Count()))
                 {
-                    var reques = new GameStatRequest();
-                    reques.gameID = CurrentUser.CurrentGame.Value;
+                    var reques = new GameStatRequest {gameID = CurrentUser.CurrentGame.Value};
                     var response = ServerProvider.MakeRequest<GameStatResponse>(reques);
                     Console.WriteLine("Game \"" + response.ID + "\" stats:");
                     switch (response.Act)

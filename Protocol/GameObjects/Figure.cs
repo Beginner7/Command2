@@ -11,9 +11,9 @@ namespace Protocol.GameObjects
     {
         public Figure(Side side)
         {
-            this.side = side;
+            Side = side;
         }
-        public Side side;
-        public char symbol;
+        public Side Side;
+        public char Symbol;
     }
 }

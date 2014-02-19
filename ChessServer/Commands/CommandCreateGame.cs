@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Protocol;
 using Protocol.Transport;
 using Newtonsoft.Json;
@@ -17,12 +12,11 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
             var workResponse = new CreateGameResponse();
-            var game = new Game(workRequest.NewPlayer);
-            game.act = Act.WaitingOpponent;
-            
-            if (games.TryAdd(game.ID, game))
+            var game = new Game(workRequest.NewPlayer) {Act = Act.WaitingOpponent};
+
+            if (games.TryAdd(game.Id, game))
             {
-                workResponse.ID = game.ID;
+                workResponse.ID = game.Id;
                 workResponse.Status = Statuses.OK;
             }
             else

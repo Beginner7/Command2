@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
@@ -19,7 +14,7 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<PeaceRequest>(request);
             var workResponse = new SurrenderResponse();
-            if (games[workRequest.GameID].act == Act.WaitingOpponent)
+            if (games[workRequest.GameID].Act == Act.WaitingOpponent)
             {
                 workResponse.Status = Statuses.NoUser;
             }

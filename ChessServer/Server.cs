@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Protocol;
-using Protocol.GameObjects;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
 using System.Collections.Concurrent;
@@ -21,8 +15,8 @@ namespace ChessServer
 
         static Server()
         {
-            Timer timer = new Timer();
-            timer.Elapsed += new ElapsedEventHandler(PulseChecker);
+            var timer = new Timer();
+            timer.Elapsed += PulseChecker;
             timer.Start();
             timer.Interval = 5000;
         }
@@ -31,7 +25,7 @@ namespace ChessServer
         {
             foreach (var element in Users)
             {
-                if (element.Value.lostbeats > 10)
+                if (element.Value.Lostbeats > 10)
                 {
                     foreach (var elementGame in Games)
                     {
@@ -41,7 +35,7 @@ namespace ChessServer
                             if (Users.TryGetValue(elementGame.Value.PlayerBlack.Name, out geted))
                             {
                                 geted.Messages.Add(MessageSender.OpponentLostConnection());
-                                elementGame.Value.act = Act.AbandonedByWhite;
+                                elementGame.Value.Act = Act.AbandonedByWhite;
                             }
                         }
                         if ((elementGame.Value.PlayerWhite.Name == element.Key))
@@ -50,7 +44,7 @@ namespace ChessServer
                             if (Users.TryGetValue(elementGame.Value.PlayerWhite.Name, out geted))
                             {
                                 geted.Messages.Add(MessageSender.OpponentLostConnection());
-                                elementGame.Value.act = Act.AbandonedByBlack;
+                                elementGame.Value.Act = Act.AbandonedByBlack;
                             }
                         }
                     }
@@ -59,7 +53,7 @@ namespace ChessServer
                 }
                 else
                 {
-                    element.Value.lostbeats++;
+                    element.Value.Lostbeats++;
                 }
             }
         }
@@ -74,7 +68,7 @@ namespace ChessServer
                     return JsonConvert.SerializeObject(element.DoWork(request, ref Users, ref Games));
                 }
             }
-            return JsonConvert.SerializeObject(new Response() { RequestCommand = req.Command, Status = Statuses.Unknown });
+            return JsonConvert.SerializeObject(new Response { RequestCommand = req.Command, Status = Statuses.Unknown });
         }
     }
 }

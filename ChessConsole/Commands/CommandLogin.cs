@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
@@ -18,8 +16,7 @@ namespace ChessConsole.Commands
             {
                 if (Utils.IsNotLoggedIn())
                 {
-                    var request = new AddUserRequest();
-                    request.UserName = args.ToArray()[0];
+                    var request = new AddUserRequest {UserName = args.ToArray()[0]};
                     var response = ServerProvider.MakeRequest(request);
                     if (response.Status == Statuses.OK)
                     {
@@ -29,14 +26,9 @@ namespace ChessConsole.Commands
                     }
                     else
                     {
-                        if (response.Status == Statuses.DuplicateUser)
-                        {
-                            Console.WriteLine("This user already logged in.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Bad status");
-                        }
+                        Console.WriteLine(response.Status == Statuses.DuplicateUser
+                            ? "This user already logged in."
+                            : "Bad status");
                     }
                 }
             }

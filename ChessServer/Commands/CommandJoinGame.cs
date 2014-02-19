@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
@@ -18,7 +14,7 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<JoinGameRequest>(request);
             var workResponse = new JoinGameResponse();
-            if (games[workRequest.GameID].act == Act.Cancled)
+            if (games[workRequest.GameID].Act == Act.Cancled)
             {
                 workResponse.Status = Statuses.GameCancled;
                 return workResponse;
@@ -27,7 +23,7 @@ namespace ChessServer.Commands
             {
                 if (games[workRequest.GameID].PlayerBlack == null)
                 {
-                    games[workRequest.GameID].act = Act.InProgress;
+                    games[workRequest.GameID].Act = Act.InProgress;
                     games[workRequest.GameID].PlayerBlack = workRequest.NewPlayer;
                     games[workRequest.GameID].PlayerWhite.Messages.Add(MessageSender.OpponentJoinedGame());
                     User geted;
@@ -41,7 +37,7 @@ namespace ChessServer.Commands
                 {
                     if (games[workRequest.GameID].PlayerWhite == null)
                     {
-                        games[workRequest.GameID].act = Act.InProgress;
+                        games[workRequest.GameID].Act = Act.InProgress;
                         games[workRequest.GameID].PlayerWhite = workRequest.NewPlayer;
                         User geted;
                         if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))

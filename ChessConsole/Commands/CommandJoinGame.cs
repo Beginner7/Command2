@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
@@ -21,9 +19,11 @@ namespace ChessConsole.Commands
                     try
                     {
                         int gameId = Convert.ToInt32(args.ToArray()[0]);
-                        var request = new JoinGameRequest();
-                        request.GameID = gameId;
-                        request.NewPlayer = new User { Name = CurrentUser.Name };
+                        var request = new JoinGameRequest
+                        {
+                            GameID = gameId,
+                            NewPlayer = new User {Name = CurrentUser.Name}
+                        };
                         var response = ServerProvider.MakeRequest(request);
                         if (response.Status == Statuses.OK)
                         {

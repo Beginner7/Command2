@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 
@@ -22,14 +20,9 @@ namespace ChessConsole.Commands
                     request.From = CurrentUser.Name;
                     request.GameID = CurrentUser.CurrentGame.Value;
                     var response = ServerProvider.MakeRequest(request);
-                    if (response.Status == Statuses.OK)
-                    {
-                        Console.WriteLine("Peace request sanded to opponent.");
-                    }
-                    else
-                    {
-                        Console.WriteLine(response.Status.ToString());
-                    }
+                    Console.WriteLine(response.Status == Statuses.OK
+                        ? "Peace request sanded to opponent."
+                        : response.Status.ToString());
                 }
             }
             return true;
