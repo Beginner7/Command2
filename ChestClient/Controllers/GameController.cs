@@ -22,8 +22,7 @@ namespace ChestClient.Controllers
         {
             var board = new Board();
             board.InitialPosition();
-            var request = new MoveListRequest();
-            request.Game = int.Parse(Request.Params["gameID"]);
+            var request = new MoveListRequest {Game = int.Parse(Request.Params["gameID"])};
             var response = ServerProvider.MakeRequest<MoveListResponse>(request);
 
             board.ApplyMoves(response.Moves);
@@ -45,20 +44,12 @@ namespace ChestClient.Controllers
 
         public ActionResult Free()
         {
-            if (Request.IsAuthenticated)
-            {
-                return View();
-            }
-            else
-            {
-                return View("NoAccess");
-            }
+            return Request.IsAuthenticated ? View() : View("NoAccess");
         }
 
         public ActionResult StartFree()
         {
-            var requestCreateGame = new CreateGameRequest();
-            requestCreateGame.NewPlayer = new User { Name = User.Identity.Name };
+            var requestCreateGame = new CreateGameRequest {NewPlayer = new User {Name = User.Identity.Name}};
             var responseCreateGame = ServerProvider.MakeRequest<CreateGameResponse>(requestCreateGame);
             
             int? gameId = null;
@@ -66,9 +57,11 @@ namespace ChestClient.Controllers
             {
 
                 gameId = responseCreateGame.ID;
-                var requestJoinGame = new JoinGameRequest();
-                requestJoinGame.GameID = gameId.Value;
-                requestJoinGame.NewPlayer = requestCreateGame.NewPlayer;
+                var requestJoinGame = new JoinGameRequest
+                {
+                    GameID = gameId.Value,
+                    NewPlayer = requestCreateGame.NewPlayer
+                };
                 var responseJoinGame = ServerProvider.MakeRequest(requestJoinGame);
                 if (responseJoinGame.Status != Statuses.OK)
                 {
@@ -81,11 +74,13 @@ namespace ChestClient.Controllers
 
         public ActionResult DoMove()
         {
-            var command = new MoveRequest();
-            command.From = Request.Params["From"];
-            command.To = Request.Params["To"];
-            command.Player = new User { Name =User.Identity.Name };
-            command.GameID = int.Parse(Request.Params["GameID"]);
+            var command = new MoveRequest
+            {
+                From = Request.Params["From"],
+                To = Request.Params["To"],
+                Player = new User {Name = User.Identity.Name},
+                GameID = int.Parse(Request.Params["GameID"])
+            };
             var response = ServerProvider.MakeRequest(command);
             string ret;
             switch (response.Status)

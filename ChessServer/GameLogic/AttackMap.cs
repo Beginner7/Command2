@@ -255,11 +255,7 @@ namespace ChessServer.GameLogic
                         char kingX = SourceBoard.ReturnPosition(f).Item1;
                         int kingY = SourceBoard.ReturnPosition(f).Item2;
 
-                        Side side;
-                        if (f.Side == Side.WHITE)
-                            side = Side.BLACK;
-                        else
-                            side = Side.WHITE;
+                        Side side = f.Side == Side.WHITE ? Side.BLACK : Side.WHITE;
 
                         if (kingX == 'e' && (kingY == 1 || kingY == 8))
                         {
@@ -618,38 +614,43 @@ namespace ChessServer.GameLogic
             return figure.All(t => t.Side == side);
         }
 
-        private void PassedPawn(List<Move> moves, Board board, Figure pawn)
+        private void PassedPawn(IReadOnlyList<Move> moves, Board board, Figure pawn)
         {
-            int rows = 0;
-            if (pawn.Side == Side.BLACK)
-                rows = 4;
-            else if (pawn.Side == Side.WHITE)
-                rows = 5;
-
-            char pawnX = board.ReturnPosition(pawn).Item1;
+            int rowFrom;
+            int rowTo;
+            int rows;
+            var pawnX = board.ReturnPosition(pawn).Item1;
+            var pawnY = board.ReturnPosition(pawn).Item2;
+            switch (pawn.Side)
+            {
+                case Side.BLACK:
+                    rows = 4;
+                    rowFrom = rows - 2;
+                    rowTo = rows - 1;
+                    break;
+                case Side.WHITE:
+                    rows = 5;
+                    rowFrom = rows + 2;
+                    rowTo = rows + 1;
+                    break;
+                default:
+                    return;
+            }
 
             var cell = new List<string>();
             if (pawnX != 'a')
-                cell.Add(((char)(pawnX - 1)).ToString(CultureInfo.InvariantCulture) + rows);
+                cell.Add(((char) (pawnX - 1)).ToString(CultureInfo.InvariantCulture) + rows);
             if (pawnX != 'h')
-                cell.Add(((char)(pawnX + 1)).ToString(CultureInfo.InvariantCulture) + rows);
+                cell.Add(((char) (pawnX + 1)).ToString(CultureInfo.InvariantCulture) + rows);
 
-            foreach (string c in cell)
+            foreach (var c in cell)
             {
-                if (board[c].GetType() == typeof(FigurePawn) &&
-                    board[c].Side != pawn.Side)
-                {
-                    if (moves[moves.Count - 1].To == c)
-                    {
-                        if ((rows == 4 &&
-                             moves[moves.Count - 1].From == c[0].ToString(CultureInfo.InvariantCulture) + (int.Parse(c[1].ToString(CultureInfo.InvariantCulture)) - 2)))
-                            Attackers[c[0] - 'a', (int.Parse(c[1].ToString(CultureInfo.InvariantCulture)) - 1) - 1].Add(pawn);
-                        if (rows == 5 &&
-                            moves[moves.Count - 1].From == c[0].ToString(CultureInfo.InvariantCulture) + (int.Parse(c[1].ToString(CultureInfo.InvariantCulture)) + 2))
-                            Attackers[c[0] - 'a', (int.Parse(c[1].ToString(CultureInfo.InvariantCulture)) + 1) - 1].Add(pawn);
-                    }
+                if (board[c].GetType() == typeof (FigurePawn) && board[c].Side != pawn.Side &&
+                    moves[moves.Count - 1].To == c && moves[moves.Count - 1].From ==
+                    c[0].ToString(CultureInfo.InvariantCulture) + rowFrom && pawnY == rows)
+                    Attackers[c[0] - 'a', rowTo - 1].Add(pawn);
 
-                }
+
             }
         }
 
@@ -737,13 +738,13 @@ namespace ChessServer.GameLogic
 
         public List<string> MoveVariants(string cell)
         {
-            List<string> moveVariants = new List<string>();
+            var moveVariants = new List<string>();
             for (int i = 0; i < Board.BoardSize; i++)
             {
                 for (int j = 0; j < Board.BoardSize; j++)
                 {
                     if (Attackers[i, j].Contains(SourceBoard[cell]))
-                        moveVariants.Add((char) ('a' + i) + (j + 1).ToString());
+                        moveVariants.Add((char) ('a' + i) + (j + 1).ToString(CultureInfo.InvariantCulture));
                 }
             }
             return moveVariants;

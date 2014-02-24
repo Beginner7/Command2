@@ -43,7 +43,6 @@ function cellClick(cellId) {
         $.get("/Game/MoveVariants", { cell: cellId, gameID: $.gameID }, function(data) {
             $("#board td[id]").removeClass("selected");
             for (var s in data) {
-                //alert(data[s]);
                 $("#" + data[s]).addClass("selected");
             }
         });
