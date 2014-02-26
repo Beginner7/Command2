@@ -46,233 +46,235 @@ namespace ChessServer.GameLogic
                     Attackers[i, j] = new List<Figure>();
                 }
             }
-            for (char i = 'a'; i <= 'h' ; i++)
+            for (char currentCellX = 'a'; currentCellX <= 'h' ; currentCellX++)
             {
-                for (int j = 1; j <= Board.BoardSize; j++)
+                for (int currentCellY = 1; currentCellY <= Board.BoardSize; currentCellY++)
                 {
-                    Figure f = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + j];
-                    _figuresPosition[f] = i.ToString(CultureInfo.InvariantCulture) + j;
-                    if (f.GetType() == typeof(FigureNone))
+                    Figure currentFigure = SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + currentCellY];
+                    _figuresPosition[currentFigure] = currentCellX.ToString(CultureInfo.InvariantCulture) + currentCellY;
+                    if (currentFigure.GetType() == typeof(FigureNone))
                     {
                         continue;
                     }
                        
 
-                    if (f.GetType() == typeof(FigurePawn))
+                    if (currentFigure.GetType() == typeof(FigurePawn))
                     {
-                        if (j + 1 <= Board.BoardSize && j - 1 >= 1 )
+                        if (currentCellY + 1 <= Board.BoardSize && currentCellY - 1 >= 1 )
                         {
-                            int k;
-                            if (f.Side == Side.WHITE)
+                            int cellY;
+                            if (currentFigure.Side == Side.WHITE)
                             {
-                                k = j + 1;
-                                Figure f1 = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + k];
-                                if (f1.GetType() != f.GetType())
-                                    Attackers[i - 'a', k - 1].Add(f);
-                                if (f1.GetType() == typeof(FigureNone))
+                                cellY = currentCellY + 1;
+                                Figure figure = SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                /*if (figure.Side != currentFigure.Side)
+                                    Attackers[currentCellX - 'a', cellY - 1].Add(currentFigure);*/
+                                if (figure.GetType() == typeof(FigureNone))
                                 {
-                                    if (j == 2) // первый или нет
+                                    Attackers[currentCellX - 'a', cellY - 1].Add(currentFigure);
+                                    if (currentCellY == 2) // первый или нет
                                     {
-                                        Figure f2 = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + (k + 1)];
-                                        if (f2.GetType() == typeof(FigureNone)) 
-                                            Attackers[i - 'a', k].Add(f);
+                                        cellY += 1;
+                                        figure = SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                        if (figure.GetType() == typeof(FigureNone)) 
+                                            Attackers[currentCellX - 'a', cellY - 1].Add(currentFigure);
                                     }
                                 }
-                                if (i + 1 <= 'h')
+
+                                cellY = currentCellY + 1;
+                                char cellX = (char)(currentCellX + 1);
+                                if (cellX <= 'h')
                                 {
-                                    var l = (char)(i + 1);
-                                    Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
-                                    if (f2.GetType() != typeof(FigureNone))
-                                    {
-                                        if (f2.Side != f.Side)
-                                            Attackers[l - 'a', k - 1].Add(f);
-                                    }
+                                    figure = SourceBoard[cellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                    if (figure.GetType() != typeof (FigureNone) && figure.Side != currentFigure.Side)
+                                        Attackers[cellX - 'a', cellY - 1].Add(currentFigure);
                                 }
-                                if (i - 1 >= 'a')
+                                cellX = (char)(currentCellX - 1);
+                                if (cellX >= 'a')
                                 {
-                                    var l = (char)(i - 1);
-                                    Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
-                                    if (f2.GetType() != typeof(FigureNone))
+                                    figure = SourceBoard[cellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                    if (figure.GetType() != typeof(FigureNone))
                                     {
-                                        if (f2.Side != f.Side)
-                                            Attackers[l - 'a', k - 1].Add(f);
+                                        if (figure.Side != currentFigure.Side)
+                                            Attackers[cellX - 'a', cellY - 1].Add(currentFigure);
                                     }
                                 }
                             }
-                            if (f.Side == Side.BLACK)
+
+                            if (currentFigure.Side == Side.BLACK)
                             {
-                                k = j - 1;
-                                Figure f1 = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + k];
-                                if (f1.GetType() != f.GetType())
-                                    Attackers[i - 'a', k - 1].Add(f);
-                                if (f1.GetType() == typeof(FigureNone))
+                                cellY = currentCellY - 1;
+                                Figure figure = SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                if (figure.GetType() == typeof(FigureNone))
                                 {
-                                    if (j == Board.BoardSize - 1) // первый или нет
+                                    Attackers[currentCellX - 'a', cellY - 1].Add(currentFigure);
+                                    if (currentCellY == Board.BoardSize - 1) // первый или нет
                                     {
-                                        Figure f2 = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + (k - 1)];
-                                        if (f2.GetType() == typeof(FigureNone))
-                                            Attackers[i - 'a', k - 2].Add(f);
+                                        cellY -= 1;
+                                        figure = SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                        if (figure.GetType() == typeof(FigureNone))
+                                            Attackers[currentCellX - 'a', cellY - 1].Add(currentFigure);
                                     }
                                 }
-                                if (i + 1 <= 'h')
-                                {
-                                    var l = (char)(i + 1);
-                                    Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
 
-                                    if (f2.Side != f.Side && f2.GetType() != typeof(FigureNone))
-                                        Attackers[l - 'a', k - 1].Add(f);
+                                cellY = currentCellY - 1;
+                                char cellX = (char)(currentCellX + 1);
+                                if (cellX <= 'h')
+                                {
+                                    figure = SourceBoard[cellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                    if (figure.Side != currentFigure.Side && figure.GetType() != typeof(FigureNone))
+                                        Attackers[cellX - 'a', cellY - 1].Add(currentFigure);
                                 }
-                                if (i - 1 >= 'a')
+                                cellX = (char)(currentCellX - 1);
+                                if (cellX >= 'a')
                                 {
-                                    var l = (char)(i - 1);
-                                    Figure f2 = SourceBoard[l.ToString(CultureInfo.InvariantCulture) + k];
-
-                                    if (f2.Side != f.Side && f2.GetType() != typeof(FigureNone))
-                                        Attackers[l - 'a', k - 1].Add(f);
+                                    figure = SourceBoard[cellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                    if (figure.Side != currentFigure.Side && figure.GetType() != typeof(FigureNone))
+                                        Attackers[cellX - 'a', cellY - 1].Add(currentFigure);
                                 }
                             }
                             
                         }
-                        PassedPawn(moves, SourceBoard, f);
+                        PassedPawn(moves, SourceBoard, currentFigure);
                         continue;
                     }
-                    if (f.GetType() == typeof(FigureRook))
+                    if (currentFigure.GetType() == typeof(FigureRook))
                     {
-                        North(SourceBoard, i, j, f);
-                        South(SourceBoard, i, j, f);
-                        East(SourceBoard, i, j, f);
-                        West(SourceBoard, i, j, f);
-                        continue;
-                    }
-
-                    if (f.GetType() == typeof(FigureQueen))
-                    {
-                        North(SourceBoard, i, j, f);
-                        South(SourceBoard, i, j, f);
-                        East(SourceBoard, i, j, f);
-                        West(SourceBoard, i, j, f);
-                        NorthEast(SourceBoard, i, j, f);
-                        SouthEast(SourceBoard, i, j, f);
-                        NorthWest(SourceBoard, i, j, f);
-                        SouthWest(SourceBoard, i, j, f);
+                        North(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        South(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        East(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        West(SourceBoard, currentCellX, currentCellY, currentFigure);
                         continue;
                     }
 
-                    if (f.GetType() == typeof(FigureBishop))
+                    if (currentFigure.GetType() == typeof(FigureQueen))
                     {
-                        NorthEast(SourceBoard, i, j, f);
-                        SouthEast(SourceBoard, i, j, f);
-                        NorthWest(SourceBoard, i, j, f);
-                        SouthWest(SourceBoard, i, j, f);
+                        North(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        South(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        East(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        West(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        NorthEast(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        SouthEast(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        NorthWest(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        SouthWest(SourceBoard, currentCellX, currentCellY, currentFigure);
                         continue;
                     }
 
-                    if (f.GetType() == typeof(FigureKnight))
+                    if (currentFigure.GetType() == typeof(FigureBishop))
                     {
-                        var x = (char)(i + 2);
+                        NorthEast(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        SouthEast(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        NorthWest(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        SouthWest(SourceBoard, currentCellX, currentCellY, currentFigure);
+                        continue;
+                    }
+
+                    if (currentFigure.GetType() == typeof(FigureKnight))
+                    {
+                        var x = (char)(currentCellX + 2);
                         int y;
                         if (x <= 'h')
                         {
-                            y = j + 1;
+                            y = currentCellY + 1;
                             if (y <= Board.BoardSize)
-                                KingKnightStep(SourceBoard, f, x, y);
-                            y = j - 1;
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
+                            y = currentCellY - 1;
                             if (y >= 1)
-                                KingKnightStep(SourceBoard, f, x, y);
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
                         }
-                        x = (char)(i + 1);
+                        x = (char)(currentCellX + 1);
                         if (x <= 'h')
                         {
-                            y = j + 2;
+                            y = currentCellY + 2;
                             if (y <= Board.BoardSize)
-                                KingKnightStep(SourceBoard, f, x, y);
-                            y = j - 2;
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
+                            y = currentCellY - 2;
                             if (y >= 1)
-                                KingKnightStep(SourceBoard, f, x, y);
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
                         }
-                        x = (char)(i - 2);
+                        x = (char)(currentCellX - 2);
                         if (x >= 'a')
                         {
-                            y = j + 1;
+                            y = currentCellY + 1;
                             if (y <= Board.BoardSize)
-                                KingKnightStep(SourceBoard, f, x, y);
-                            y = j - 1;
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
+                            y = currentCellY - 1;
                             if (y >= 1)
-                                KingKnightStep(SourceBoard, f, x, y);
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
                         }
-                        x = (char)(i - 1);
+                        x = (char)(currentCellX - 1);
                         if (x >= 'a')
                         {
-                            y = j + 2;
+                            y = currentCellY + 2;
                             if (y <= Board.BoardSize)
-                                KingKnightStep(SourceBoard, f, x, y);
-                            y = j - 2;
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
+                            y = currentCellY - 2;
                             if (y >= 1)
-                                KingKnightStep(SourceBoard, f, x, y);
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
                         }
                         continue;
                     }
-                    if (f.GetType() == typeof(FigureKing))
+                    if (currentFigure.GetType() == typeof(FigureKing))
                     {
-                        var x = (char)(i + 1);
+                        var x = (char)(currentCellX + 1);
                         int y;
 
                         if (x <= 'h')
                         {
-                            y = j + 1;
+                            y = currentCellY + 1;
                             if (y <= Board.BoardSize)
-                                KingKnightStep(SourceBoard, f, x, y);
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
 
-                            y = j - 1;
+                            y = currentCellY - 1;
                             if (y >= 1)
-                                KingKnightStep(SourceBoard, f, x, y);
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
 
-                            KingKnightStep(SourceBoard, f, x, j);
+                            KingKnightStep(SourceBoard, currentFigure, x, currentCellY);
                         }
 
-                        x = (char)(i - 1);
+                        x = (char)(currentCellX - 1);
                         if (x >= 'a')
                         {
-                            y = j + 1;
+                            y = currentCellY + 1;
                             if (y <= Board.BoardSize)
-                                KingKnightStep(SourceBoard, f, x, y);
-                            y = j - 1;
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
+                            y = currentCellY - 1;
                             if (y > 0)
-                                KingKnightStep(SourceBoard, f, x, y);
+                                KingKnightStep(SourceBoard, currentFigure, x, y);
 
-                            KingKnightStep(SourceBoard, f, x, j);
+                            KingKnightStep(SourceBoard, currentFigure, x, currentCellY);
                         }
 
-                        y = j + 1;
+                        y = currentCellY + 1;
                         if (y <= Board.BoardSize)
-                            KingKnightStep(SourceBoard, f, i, y);
+                            KingKnightStep(SourceBoard, currentFigure, currentCellX, y);
 
-                        y = j - 1;
+                        y = currentCellY - 1;
                         if (y >= 1)
-                            KingKnightStep(SourceBoard, f, i, y);
+                            KingKnightStep(SourceBoard, currentFigure, currentCellX, y);
 
                         //if (SourceBoard["a1"].GetType() == typeof(FigureRook) && SourceBoard["a1"].side == Side.WHITE)
-                        char kingX = SourceBoard.ReturnPosition(f).Item1;
-                        int kingY = SourceBoard.ReturnPosition(f).Item2;
+                        char kingX = SourceBoard.ReturnPosition(currentFigure).Item1;
+                        int kingY = SourceBoard.ReturnPosition(currentFigure).Item2;
 
-                        Side side = f.Side == Side.WHITE ? Side.BLACK : Side.WHITE;
+                        Side side = currentFigure.Side == Side.WHITE ? Side.BLACK : Side.WHITE;
 
                         if (kingX == 'e' && (kingY == 1 || kingY == 8))
                         {
                             if (IsColorFigureAttack(this[kingX + kingY.ToString(CultureInfo.InvariantCulture)], side))
                                 if (SourceBoard["a" + kingY].GetType() == typeof(FigureRook))
-                                    Castling(moves, SourceBoard, f, SourceBoard["a" + kingY]);
+                                    Castling(moves, SourceBoard, currentFigure, SourceBoard["a" + kingY]);
                                 else if (SourceBoard["h" + kingY].GetType() == typeof(FigureRook))
-                                    Castling(moves, SourceBoard, f, SourceBoard["h" + kingY]);
+                                    Castling(moves, SourceBoard, currentFigure, SourceBoard["h" + kingY]);
                         }
-                        if (f.Side == Side.WHITE)
+                        if (currentFigure.Side == Side.WHITE)
                         {
-                            _whiteKing = (i.ToString(CultureInfo.InvariantCulture) + j);
+                            _whiteKing = (currentCellX.ToString(CultureInfo.InvariantCulture) + currentCellY);
                         }
 
-                        if (f.Side == Side.BLACK)
+                        if (currentFigure.Side == Side.BLACK)
                         {
-                            _blackKing = (i.ToString(CultureInfo.InvariantCulture) + j);
+                            _blackKing = (currentCellX.ToString(CultureInfo.InvariantCulture) + currentCellY);
                         }
                     }
                 }
@@ -298,18 +300,18 @@ namespace ChessServer.GameLogic
         
         }
 
-        private void KingKnightStep(Board board, Figure f, char x, int y)
+        private void KingKnightStep(Board board, Figure currentFigure, char x, int y)
         {
             Figure f1 = board[x.ToString(CultureInfo.InvariantCulture) + y];
             if (f1.GetType() == typeof(FigureNone))
-                Attackers[x - 'a', y - 1].Add(f);
-            else if (f1.Side != f.Side)
-                Attackers[x - 'a', y - 1].Add(f);
+                Attackers[x - 'a', y - 1].Add(currentFigure);
+            else if (f1.Side != currentFigure.Side)
+                Attackers[x - 'a', y - 1].Add(currentFigure);
         }
 
-        private void SouthWest(Board board, char i, int j, Figure f)
+        private void SouthWest(Board board, char i, int currentCell, Figure currentFigure)
         {
-            int l = j - 1;
+            int l = currentCell - 1;
             var k = (char)(i - 1);
             for (; k >= 'a' && l >= 1; )
             {
@@ -317,15 +319,15 @@ namespace ChessServer.GameLogic
 
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', l - 1].Add(f);
+                    Attackers[k - 'a', l - 1].Add(currentFigure);
                     k--;
                     l--;
                 }
                 else
                 {
-                    if (f1.Side != f.Side)
+                    if (f1.Side != currentFigure.Side)
                     {
-                        Attackers[k - 'a', l - 1].Add(f);
+                        Attackers[k - 'a', l - 1].Add(currentFigure);
                     }
                     break;
                 }
@@ -333,9 +335,9 @@ namespace ChessServer.GameLogic
 
         }
 
-        private void NorthWest(Board board, char i, int j, Figure f)
+        private void NorthWest(Board board, char i, int currentCell, Figure currentFigure)
         {
-            int l = j + 1;
+            int l = currentCell + 1;
             var k = (char)(i - 1);
             for (; k >= 'a' && l <= Board.BoardSize; )
             {
@@ -343,13 +345,13 @@ namespace ChessServer.GameLogic
 
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', l - 1].Add(f);
+                    Attackers[k - 'a', l - 1].Add(currentFigure);
                     k--;
                     l++;
                 }
-                else if (f1.Side != f.Side)
+                else if (f1.Side != currentFigure.Side)
                 {
-                    Attackers[k - 'a', l - 1].Add(f);
+                    Attackers[k - 'a', l - 1].Add(currentFigure);
                     break;
                 }
                 else
@@ -360,9 +362,9 @@ namespace ChessServer.GameLogic
 
         }
 
-        private void SouthEast(Board board, char i, int j, Figure f)
+        private void SouthEast(Board board, char i, int currentCell, Figure currentFigure)
         {
-            int l = j - 1;
+            int l = currentCell - 1;
             var k = (char)(i + 1);
             for (; k <= 'h' && l >= 1; )
             {
@@ -370,13 +372,13 @@ namespace ChessServer.GameLogic
 
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', l - 1].Add(f);
+                    Attackers[k - 'a', l - 1].Add(currentFigure);
                     k++;
                     l--;
                 }
-                else if (f1.Side != f.Side)
+                else if (f1.Side != currentFigure.Side)
                 {
-                    Attackers[k - 'a', l - 1].Add(f);
+                    Attackers[k - 'a', l - 1].Add(currentFigure);
                     break;
                 }
                 else
@@ -386,9 +388,9 @@ namespace ChessServer.GameLogic
             }            
         }
 
-        private void NorthEast(Board board, char i, int j, Figure f)
+        private void NorthEast(Board board, char i, int currentCell, Figure currentFigure)
         {
-            int l = j + 1;
+            int l = currentCell + 1;
             var k = (char)(i + 1);
             for (; k <= 'h' && l <= Board.BoardSize; )
             {
@@ -396,13 +398,13 @@ namespace ChessServer.GameLogic
 
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', l - 1].Add(f);
+                    Attackers[k - 'a', l - 1].Add(currentFigure);
                     k++;
                     l++;
                 }
-                else if (f1.Side != f.Side)
+                else if (f1.Side != currentFigure.Side)
                 {
-                    Attackers[k - 'a', l - 1].Add(f);
+                    Attackers[k - 'a', l - 1].Add(currentFigure);
                     break;
                 }
                 else
@@ -413,18 +415,18 @@ namespace ChessServer.GameLogic
 
         }
 
-        private void West(Board board, char i, int j, Figure f)
+        private void West(Board board, char i, int currentCell, Figure currentFigure)
         {
             for (var k = (char)(i - 1); k >= 'a'; k--)
             {
-                Figure f1 = board[k.ToString(CultureInfo.InvariantCulture) + j];
+                Figure f1 = board[k.ToString(CultureInfo.InvariantCulture) + currentCell];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', j - 1].Add(f);
+                    Attackers[k - 'a', currentCell - 1].Add(currentFigure);
                 }
-                else if (f1.Side != f.Side)
+                else if (f1.Side != currentFigure.Side)
                 {
-                    Attackers[k - 'a', j - 1].Add(f);
+                    Attackers[k - 'a', currentCell - 1].Add(currentFigure);
                     break;
                 }
                 else
@@ -434,18 +436,18 @@ namespace ChessServer.GameLogic
             }
         }
 
-        private void East(Board board, char i, int j, Figure f)
+        private void East(Board board, char i, int currentCell, Figure currentFigure)
         {
             for (var k = (char)(i + 1); k <= 'h'; k++)
             {
-                Figure f1 = board[k.ToString(CultureInfo.InvariantCulture) + j];
+                Figure f1 = board[k.ToString(CultureInfo.InvariantCulture) + currentCell];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[k - 'a', j - 1].Add(f);
+                    Attackers[k - 'a', currentCell - 1].Add(currentFigure);
                 }
-                else if (f1.Side != f.Side)
+                else if (f1.Side != currentFigure.Side)
                 {
-                    Attackers[k - 'a', j - 1].Add(f);
+                    Attackers[k - 'a', currentCell - 1].Add(currentFigure);
                     break;
                 }
                 else
@@ -455,18 +457,18 @@ namespace ChessServer.GameLogic
             }
         }
 
-        private void South(Board board, char i, int j, Figure f)
+        private void South(Board board, char i, int currentCell, Figure currentFigure)
         {
-            for (int k = j - 1; k >= 1; k--)
+            for (int k = currentCell - 1; k >= 1; k--)
             {
                 Figure f1 = board[i.ToString(CultureInfo.InvariantCulture) + k];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[i - 'a', k - 1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(currentFigure);
                 }
-                else if (f1.Side != f.Side)
+                else if (f1.Side != currentFigure.Side)
                 {
-                    Attackers[i - 'a', k - 1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(currentFigure);
                     break;
                 }
                 else
@@ -476,18 +478,18 @@ namespace ChessServer.GameLogic
             }
         }
 
-        private void North(Board board, char i, int j, Figure f)
+        private void North(Board board, char i, int currentCell, Figure currentFigure)
         {
-            for (int k = j + 1; k <= Board.BoardSize; k++)
+            for (int k = currentCell + 1; k <= Board.BoardSize; k++)
             {
                 Figure f1 = board[i.ToString(CultureInfo.InvariantCulture) + k];
                 if (f1.GetType() == typeof(FigureNone))
                 {
-                    Attackers[i - 'a', k - 1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(currentFigure);
                 }
-                else if (f1.Side != f.Side)
+                else if (f1.Side != currentFigure.Side)
                 {
-                    Attackers[i - 'a', k - 1].Add(f);
+                    Attackers[i - 'a', k - 1].Add(currentFigure);
                     break;
                 }
                 else
