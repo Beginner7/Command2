@@ -10,7 +10,7 @@ namespace ChessServer.GameLogic
     {
         private readonly string _whiteKing;
         private readonly string _blackKing;
-        public Board SourceBoard {get; private set;}
+        public Board SourceBoard { get; private set; }
         public List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         private readonly Dictionary<Figure, string> _figuresPosition = new Dictionary<Figure, string>();
 
@@ -46,7 +46,7 @@ namespace ChessServer.GameLogic
                     Attackers[i, j] = new List<Figure>();
                 }
             }
-            for (char i = 'a'; i <= 'h' ; i++)
+            for (char i = 'a'; i <= 'h'; i++)
             {
                 for (int j = 1; j <= Board.BoardSize; j++)
                 {
@@ -59,7 +59,7 @@ namespace ChessServer.GameLogic
 
                     if (f.GetType() == typeof(FigurePawn))
                     {
-                        if (j + 1 <= Board.BoardSize && j - 1 >= 1 )
+                        if (j + 1 <= Board.BoardSize && j - 1 >= 1)
                         {
                             int k;
                             if (f.Side == Side.WHITE)
@@ -73,7 +73,7 @@ namespace ChessServer.GameLogic
                                     if (j == 2) // первый или нет
                                     {
                                         Figure f2 = SourceBoard[i.ToString(CultureInfo.InvariantCulture) + (k + 1)];
-                                        if (f2.GetType() == typeof(FigureNone)) 
+                                        if (f2.GetType() == typeof(FigureNone))
                                             Attackers[i - 'a', k].Add(f);
                                     }
                                 }
@@ -326,7 +326,7 @@ namespace ChessServer.GameLogic
                     }
                     break;
                 }
-            }            
+            }
 
         }
 
@@ -353,7 +353,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
 
         }
 
@@ -380,7 +380,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
         }
 
         private void NorthEast(Board board, char i, int j, Figure f)
@@ -545,7 +545,7 @@ namespace ChessServer.GameLogic
                 return false;
             }
         }
-        
+
         public bool IsCheckBlack
         {
             get
@@ -593,7 +593,7 @@ namespace ChessServer.GameLogic
             //else if (bishopX == 'h')
             //    cell = new List<char> { 'f', 'g' };
 
-            
+
             if (moves.Count != 0)
                 foreach (Move move in moves)
                 {
@@ -625,7 +625,7 @@ namespace ChessServer.GameLogic
                     board["d" + rows].GetType() == typeof(FigureNone) &&
                     IsColorFigureAttack(this["c" + rows], king.Side) &&
                     // Attackers['c' - 'a', rows - 1]
-                    IsColorFigureAttack(this["d" + rows], king.Side) )
+                    IsColorFigureAttack(this["d" + rows], king.Side))
                 //   Attackers['d' - 'a', rows - 1].Contains(new Figure(side)))
                 {
                     Attackers['c' - 'a', rows - 1].Add(king);
@@ -675,13 +675,13 @@ namespace ChessServer.GameLogic
 
             var cell = new List<string>();
             if (pawnX != 'a')
-                cell.Add(((char) (pawnX - 1)).ToString(CultureInfo.InvariantCulture) + rows);
+                cell.Add(((char)(pawnX - 1)).ToString(CultureInfo.InvariantCulture) + rows);
             if (pawnX != 'h')
-                cell.Add(((char) (pawnX + 1)).ToString(CultureInfo.InvariantCulture) + rows);
+                cell.Add(((char)(pawnX + 1)).ToString(CultureInfo.InvariantCulture) + rows);
 
             foreach (var c in cell)
             {
-                if (board[c].GetType() == typeof (FigurePawn) && board[c].Side != pawn.Side &&
+                if (board[c].GetType() == typeof(FigurePawn) && board[c].Side != pawn.Side &&
                     moves[moves.Count - 1].To == c && moves[moves.Count - 1].From ==
                     c[0].ToString(CultureInfo.InvariantCulture) + rowFrom && pawnY == rows)
                     Attackers[c[0] - 'a', rowTo - 1].Add(pawn);
@@ -700,7 +700,7 @@ namespace ChessServer.GameLogic
                         var currentCell = i.ToString(CultureInfo.InvariantCulture) + j;
                         foreach (var figure in this[currentCell])
                         {
-                            var move = new Move {From = _figuresPosition[figure], To = currentCell};
+                            var move = new Move { From = _figuresPosition[figure], To = currentCell };
                             moves.Add(move);
                         }
                     }
@@ -756,7 +756,7 @@ namespace ChessServer.GameLogic
 
         public bool IsMateWhite
         {
-            get 
+            get
             {
                 return WhitePossibleMoves.Count() == 0 && IsCheckWhite;
             }
@@ -778,7 +778,7 @@ namespace ChessServer.GameLogic
                 for (int j = 0; j < Board.BoardSize; j++)
                 {
                     if (Attackers[i, j].Contains(SourceBoard[cell]))
-                        moveVariants.Add((char) ('a' + i) + (j + 1).ToString(CultureInfo.InvariantCulture));
+                        moveVariants.Add((char)('a' + i) + (j + 1).ToString(CultureInfo.InvariantCulture));
                 }
             }
             return moveVariants;

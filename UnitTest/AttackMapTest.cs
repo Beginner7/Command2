@@ -458,7 +458,7 @@ namespace UnitTest
             Assert.IsTrue(map["e3"].Contains(pawn));
             Assert.IsTrue(map["e4"].Contains(pawn));
         }
-        
+
         /// <summary>
         /// белая пешка
         /// </summary>
@@ -472,6 +472,50 @@ namespace UnitTest
             var knight = new FigureKnight(Side.BLACK);
             var bishop = new FigureBishop(Side.BLACK);
             var queen = new FigureQueen(Side.BLACK);
+            board["e4"] = pawn;
+            board["e5"] = knight;
+            board["d5"] = bishop;
+            board["f5"] = rook;
+            board["e6"] = queen;
+
+            //a - act
+            var map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            var validCells = new List<string>
+            {
+                "d5","f5"
+            };
+            for (var j = 1; j <= Board.BoardSize; j++)
+            {
+                for (var i = 'a'; i <= 'h'; i++)
+                {
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
+                    if (validCells.Contains(cell))
+                    {
+                        Assert.IsTrue(map[cell].Contains(pawn));
+                    }
+                    else
+                    {
+                        Assert.IsFalse(map[cell].Contains(pawn));
+                    }
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// белая пешка
+        /// </summary>
+        [TestMethod]
+        public void WhitePawnTest2()
+        {
+            //a - arange
+            var board = new Board();
+            var pawn = new FigurePawn(Side.WHITE);
+            var rook = new FigureRook(Side.BLACK);
+            var knight = new FigureKnight(Side.WHITE);
+            var bishop = new FigureBishop(Side.BLACK);
+            var queen = new FigureQueen(Side.BLACK);
             board["e4"] = pawn; 
             board["e5"] = knight;
             board["d5"] = bishop;
@@ -481,17 +525,24 @@ namespace UnitTest
             //a - act
             var map = new AttackMap(new List<Move>(), board);
             //a - assert
-            for (var i = 'a'; i <= 'h'; i++)
+            var validCells = new List<string>
             {
-                for (var j = 1; j <= Board.BoardSize; j++)
+                "d5","f5"
+            };
+            for (var j = 1; j <= Board.BoardSize; j++)
+            {
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    if (j == 5)
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
+                    if (validCells.Contains(cell))
                     {
-                        if (i == 'e' || i == 'd' || i == 'f')
-                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
+                        Assert.IsTrue(map[cell].Contains(pawn));
                     }
                     else
-                        Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
+                    {
+                        Assert.IsFalse(map[cell].Contains(pawn));
+                    }
+
                 }
             }
         }
@@ -520,17 +571,24 @@ namespace UnitTest
             //a - act
             var map = new AttackMap(new List<Move>(), board);
             //a - assert
-            for (var i = 'a'; i <= 'h'; i++)
+            var validCells = new List<string>
             {
-                for (var j = 1; j <= Board.BoardSize; j++)
+                "d5","f5"
+            };
+            for (var j = 1; j <= Board.BoardSize; j++)
+            {
+                for (var i = 'a'; i <= 'h'; i++)
                 {
-                    if (j == 5)
+                    var cell = i.ToString(CultureInfo.InvariantCulture) + j;
+                    if (validCells.Contains(cell))
                     {
-                        if (i == 'e' || i == 'd' || i == 'f')
-                            Assert.IsTrue(map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
+                        Assert.IsTrue(map[cell].Contains(pawn));
                     }
                     else
-                        Assert.IsTrue(!map[i.ToString(CultureInfo.InvariantCulture) + j].Contains(pawn));
+                    {
+                        Assert.IsFalse(map[cell].Contains(pawn));
+                    }
+
                 }
             }
         }
