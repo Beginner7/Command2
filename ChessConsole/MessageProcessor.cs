@@ -43,17 +43,25 @@ namespace ChessConsole
                         break;
 
                     case MessageType.OpponentDeclinedPeace:
-                        Console.WriteLine("Opponent decline peace.");
+                        Console.WriteLine("Opponent declined peace.");
                         break;
 
                     case MessageType.OpponentRequestPeace:
                         Console.WriteLine("Opponent request peace.");
-                        Console.Write("You accept it? (Yes/No): ");
+                        Console.Write("You argee? (yes/no): ");
                         CurrentUser.NeedPeaseAnswer = true;
                         break;
 
                     case MessageType.OpponentJoinedGame:
                         Console.WriteLine("Opponent joined the game.");
+                        break;
+
+                    case MessageType.CheckToOpponent:
+                        Console.WriteLine("You make Check.");
+                        break;
+
+                    case MessageType.CheckToYou:
+                        Console.WriteLine("You have Check!");
                         break;
 
                     case MessageType.OpponentAbandonedGame:

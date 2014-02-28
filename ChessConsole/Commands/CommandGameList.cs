@@ -10,7 +10,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("gl", "Список игр"); } }
         public override int ArgsNeed { get { return 0; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
@@ -22,7 +22,6 @@ namespace ChessConsole.Commands
                     Console.WriteLine(element);
                 }
             }
-            return true;
         }
     }
 }

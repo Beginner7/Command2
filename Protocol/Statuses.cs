@@ -3,9 +3,10 @@
     public enum Statuses
     {
         Unknown,
-        OK,
+        Ok,
         DuplicateUser,
         NoUser,
+        NeedPawnPromotion,
         ErrorCreateGame,
         GameNotFound,
         OpponentTurn,

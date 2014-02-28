@@ -29,7 +29,7 @@ namespace ChestClient.Controllers
                 if (!string.IsNullOrWhiteSpace(model.UserName))
                 {
                     var command = new AddUserRequest {UserName = model.UserName};
-                    if (ServerProvider.MakeRequest(command).Status != Statuses.OK)
+                    if (ServerProvider.MakeRequest(command).Status != Statuses.Ok)
                     {
                         ModelState.AddModelError("", "Пользователь " + model.UserName + " уже в сети.");
                     }

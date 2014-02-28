@@ -10,7 +10,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("disconnect", "Покинуть игру"); } }
         public override int ArgsNeed { get { return 0; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.IsInGame())
             {
@@ -22,7 +22,7 @@ namespace ChessConsole.Commands
                         GameID = CurrentUser.CurrentGame.Value
                     };
                     var response = ServerProvider.MakeRequest(request);
-                    if (response.Status == Statuses.OK)
+                    if (response.Status == Statuses.Ok)
                     {
                         Console.WriteLine("You abandoned the game.");
                         CurrentUser.CurrentGame = null;
@@ -33,7 +33,6 @@ namespace ChessConsole.Commands
                     }
                 }
             }
-            return true;
         }
     }
 }

@@ -17,16 +17,14 @@ namespace ChessServer
         public DateTime TimeCreateGame = new DateTime(); //время создания игры
         public DateTime TimeStartGame; //время начала игры
         public List<Move> Moves = new List<Move>();
-
         public static int GameIdSeq = 0;
 
-        private readonly Random _rnd = new Random();
 
         public Game(User user)
         {
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;
-
+            var _rnd = new Random();
             if (_rnd.Next(0, 2) == 0)
             {
                 PlayerWhite = user;

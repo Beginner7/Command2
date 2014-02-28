@@ -13,6 +13,7 @@ namespace Protocol.GameObjects
         }
         public static int BoardSize = 8;
         public Figure[,] Cells = new Figure[BoardSize, BoardSize];
+        public bool IsNeedPawnPromotion = false;
 
         public Board()
         {
@@ -132,7 +133,12 @@ namespace Protocol.GameObjects
             }
         }
 
-        public void DoMove(string from, string to, string inWho = null)
+        public void DoMove(string from, string to)
+        {
+            DoMove(from, to, null);
+        }
+
+        public void DoMove(string from, string to, string inWho)
         {
             if (CheckNotation(from) && CheckNotation(to))
             {
@@ -149,10 +155,17 @@ namespace Protocol.GameObjects
                 Cells[GetCoords(to).Item1, GetCoords(to).Item2] = Cells[GetCoords(from).Item1, GetCoords(from).Item2];
                 Cells[GetCoords(from).Item1, GetCoords(from).Item2] = new FigureNone(Side.NONE);
 
-                if (IsPromotion(to) && inWho != null &&
-                    Cells[GetCoords(to).Item1, GetCoords(to).Item2].GetType() == typeof(FigurePawn))
+                if (Cells[GetCoords(to).Item1, GetCoords(to).Item2].GetType() == typeof(FigurePawn) && IsPromotion(to))
                 {
-                    DoPromotion(to, inWho);
+                    if (inWho != null && "rnbqc".IndexOf(inWho.ToLower()) >= 0)
+                    {
+                        DoPromotion(to, inWho);
+                        IsNeedPawnPromotion = false;
+                    }
+                    else
+                    {
+                        IsNeedPawnPromotion = true;
+                    }
                 }
             }
             else
@@ -211,7 +224,7 @@ namespace Protocol.GameObjects
         {
             foreach (Move element in moveList)
             {
-                DoMove(element.From, element.To);
+                DoMove(element.From, element.To, element.InWhom);
             }
         }
 

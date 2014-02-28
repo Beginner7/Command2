@@ -11,10 +11,9 @@
     
     public enum Side
     {
-        NONE, 
+        NONE,
         BLACK,
-        WHITE,
-        SPECTATOR
+        WHITE
     }
 
     public enum Act

@@ -10,7 +10,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("jg", "Присоединиться к игре по номеру", "<game id>"); } }
         public override int ArgsNeed { get { return 1; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
@@ -25,7 +25,7 @@ namespace ChessConsole.Commands
                             NewPlayer = new User {Name = CurrentUser.Name}
                         };
                         var response = ServerProvider.MakeRequest(request);
-                        if (response.Status == Statuses.OK)
+                        if (response.Status == Statuses.Ok)
                         {
                             Console.WriteLine("You joined game. ID: " + gameId);
                             CurrentUser.CurrentGame = gameId;
@@ -52,7 +52,6 @@ namespace ChessConsole.Commands
                     }
                 }
             }
-            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Timers;
 using Protocol;
+using Protocol.GameObjects;
 using Protocol.Transport;
 
 namespace ChessConsole
@@ -11,6 +12,8 @@ namespace ChessConsole
         public static int? CurrentGame = null;
         public static Timer PulseTimer = new Timer();
         public static bool NeedPeaseAnswer = false;
+        public static bool NeedPawnPromotion = false;
+        public static Move LastMove = null;
 
         public static void StartPulse()
         {
@@ -28,17 +31,11 @@ namespace ChessConsole
         {
             var command = new PulseRequest {From = Name};
             var response = ServerProvider.MakeRequest<PulseResponse>(command);
-            if (response.Status != Statuses.OK)
+            if (response.Status != Statuses.Ok)
             {
                 Console.WriteLine("Connection lost!");
-                if (CurrentGame != null)
-                {
-                    CurrentGame = null;
-                }
-                if (Name != null)
-                {
-                    Name = null;
-                }
+                CurrentGame = null;
+                Name = null;
                 StopPulse();
             }
 

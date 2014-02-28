@@ -56,7 +56,6 @@ namespace ChessServer.GameLogic
                     {
                         continue;
                     }
-                       
 
                     if (f.GetType() == typeof(FigurePawn))
                     {
@@ -131,11 +130,11 @@ namespace ChessServer.GameLogic
                                         Attackers[l - 'a', k - 1].Add(f);
                                 }
                             }
-                            
                         }
                         PassedPawn(moves, SourceBoard, f);
                         continue;
                     }
+
                     if (f.GetType() == typeof(FigureRook))
                     {
                         North(SourceBoard, i, j, f);
@@ -212,6 +211,7 @@ namespace ChessServer.GameLogic
                         }
                         continue;
                     }
+
                     if (f.GetType() == typeof(FigureKing))
                     {
                         var x = (char)(i + 1);
@@ -279,7 +279,6 @@ namespace ChessServer.GameLogic
             }
             if (!isRecursive)
             {
-
                 foreach (var move in AllPossibleMoves)
                 {
                     Board newBoard = SourceBoard.Clone();
@@ -294,8 +293,6 @@ namespace ChessServer.GameLogic
                     }
                 }
             }
-            
-        
         }
 
         private void KingKnightStep(Board board, Figure f, char x, int y)
@@ -409,8 +406,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
-
+            }
         }
 
         private void West(Board board, char i, int j, Figure f)
@@ -497,6 +493,47 @@ namespace ChessServer.GameLogic
             }
         }
 
+        public bool IsPat
+        {
+            get
+            {
+                if (WhitePossibleMoves.Count() == 0 && !IsCheckWhite || BlackPossibleMoves.Count() == 0 && !IsCheckBlack)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool IsDraw
+        {
+            get
+            {
+                int rangerFiguresWhite = 0;
+                int rangerFiguresBlack = 0;
+                foreach (var element in SourceBoard.Cells)
+                {
+                    if (element.GetType() == typeof(FigureBishop) || element.GetType() == typeof(FigureKnight) ||
+                        element.GetType() == typeof(FigureQueen) || element.GetType() == typeof(FigureRook))
+                    {
+                        if (element.Side == Side.WHITE)
+                        {
+                            rangerFiguresWhite++;
+                        }
+                        else
+                        {
+                            rangerFiguresBlack++;
+                        }
+                    }
+                }
+                if (rangerFiguresBlack < 2 && rangerFiguresWhite < 2)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         public bool IsCheckWhite
         {
             get
@@ -577,7 +614,6 @@ namespace ChessServer.GameLogic
             {
                 CastlingTest(board, king, rook, rows, rookX);
             }
-
         }
 
         private void CastlingTest(Board board, Figure king, Figure rook, int rows, char rookX)
@@ -649,8 +685,6 @@ namespace ChessServer.GameLogic
                     moves[moves.Count - 1].To == c && moves[moves.Count - 1].From ==
                     c[0].ToString(CultureInfo.InvariantCulture) + rowFrom && pawnY == rows)
                     Attackers[c[0] - 'a', rowTo - 1].Add(pawn);
-
-
             }
         }
 

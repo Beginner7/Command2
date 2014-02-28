@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Protocol;
+﻿using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
 using Newtonsoft.Json;
@@ -10,35 +9,35 @@ namespace ChessServer.Commands
     {
         public override string Name { get { return "acceptpeace"; } }
 
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
             var workRequest = JsonConvert.DeserializeObject<PeaceRequest>(request);
             var workResponse = new SurrenderResponse();
-            if (games[workRequest.GameID].Act == Act.WaitingOpponent)
+            if (Server.Games[workRequest.GameID].Act == Act.WaitingOpponent)
             {
                 workResponse.Status = Statuses.NoUser;
             }
             else
             {
-                if (workRequest.From == games[workRequest.GameID].PlayerWhite.Name)
+                if (workRequest.From == Server.Games[workRequest.GameID].PlayerWhite.Name)
                 {
                     User geted;
-                    if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))
+                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerBlack.Name, out geted))
                     {
                         geted.Messages.Add(MessageSender.OpponentAcceptedPeace());
                     }
-                    workResponse.Status = Statuses.OK;
+                    workResponse.Status = Statuses.Ok;
                 }
-                if (workRequest.From == games[workRequest.GameID].PlayerBlack.Name)
+                if (workRequest.From == Server.Games[workRequest.GameID].PlayerBlack.Name)
                 {
                     User geted;
-                    if (users.TryGetValue(games[workRequest.GameID].PlayerWhite.Name, out geted))
+                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerWhite.Name, out geted))
                     {
                         geted.Messages.Add(MessageSender.OpponentAcceptedPeace());
                     }
-                    workResponse.Status = Statuses.OK;
+                    workResponse.Status = Statuses.Ok;
                 }
-                games[workRequest.GameID].Act = Act.Peace;
+                Server.Games[workRequest.GameID].Act = Act.Peace;
             }
             return workResponse;
         }

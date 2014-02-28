@@ -10,7 +10,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("gs", "Отобразить состояния игры"); } }
         public override int ArgsNeed { get { return 0; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.IsInGame())
             {
@@ -62,7 +62,6 @@ namespace ChessConsole.Commands
                     Console.WriteLine("Now " + ((response.Turn == Side.BLACK) ? "black's" : "white's") + " turn");
                 }
             }
-            return true;
         }
     }
 }

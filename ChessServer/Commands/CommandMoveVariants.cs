@@ -21,12 +21,12 @@ namespace ChessServer.Commands
                 return MoveVariantsRequest.command;
             }
         }
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
             var moveVariantsRequest = JsonConvert.DeserializeObject<MoveVariantsRequest>(request);
             var moveVariantsResponse = new MoveVariantsResponse();
 
-            Game game = games[moveVariantsRequest.GameID];
+            Game game = Server.Games[moveVariantsRequest.GameID];
             
             var map = new AttackMap(game.Moves);
             if (map.SourceBoard[moveVariantsRequest.Cell].Side == game.Turn)
@@ -37,7 +37,7 @@ namespace ChessServer.Commands
             {
                 moveVariantsResponse.Cells = new List<string>();
             }
-            moveVariantsResponse.Status = Statuses.OK;
+            moveVariantsResponse.Status = Statuses.Ok;
             return moveVariantsResponse;
         }
     }
