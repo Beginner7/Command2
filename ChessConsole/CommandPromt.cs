@@ -9,17 +9,18 @@ namespace ChessConsole
 {
     public static class CommandPromt
     {
+        private static bool isStuffDone;
         public static bool IsContinue = true;
 
         public static void CommandProcess()
         {
             while (IsContinue)
             {
+                isStuffDone = false;
                 Console.Write("> ");
                 var commandInput = Console.ReadLine();
                 if (CurrentUser.NeedPeaseAnswer)
                 {
-                    Console.WriteLine("You argee? (yes/no): ");
                     if (!string.IsNullOrWhiteSpace(commandInput))
                     {
                         switch (commandInput.ToLower())
@@ -60,13 +61,14 @@ namespace ChessConsole
                                 break;
                             default:
                                 Console.WriteLine("Wrong answer!");
+                                Console.WriteLine("You argee? (yes/no):");
                                 break;
                         }
                     }
+                    isStuffDone = true;
                 }
-                if (CurrentUser.NeedPawnPromotion && !CurrentUser.NeedPeaseAnswer)
+                if (!isStuffDone && CurrentUser.NeedPawnPromotion && !CurrentUser.NeedPeaseAnswer)
                 {
-                    Console.WriteLine("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancle): ");
                     if (!string.IsNullOrWhiteSpace(commandInput))
                     {
                         if (commandInput.Length == 1 && "rnbqc".IndexOf(commandInput.ToLower()) >= 0)
@@ -115,10 +117,12 @@ namespace ChessConsole
                         else
                         {
                             Console.WriteLine("Wrong choise!");
+                            Console.WriteLine("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancle):");
                         }
                     }
+                    isStuffDone = true;
                 }
-                if (!(CurrentUser.NeedPawnPromotion || CurrentUser.NeedPeaseAnswer))
+                if (!(isStuffDone || CurrentUser.NeedPawnPromotion || CurrentUser.NeedPeaseAnswer))
                 {
                     while (commandInput.IndexOf("  ") >= 0)
                     {
@@ -136,7 +140,7 @@ namespace ChessConsole
                     if (!String.IsNullOrWhiteSpace(commandInput))
                     {
                         var commandWords = commandInput.Split(' ');
-                        var isStuffDone = false;
+                        var isKnownCommand = false;
                         foreach (var element in CommandFactory.Instance.AllCommands)
                         {
                             if (!String.IsNullOrWhiteSpace(commandWords[0]))
@@ -144,11 +148,11 @@ namespace ChessConsole
                                 if (commandWords[0].ToLower() == element.Help.Name)
                                 {
                                     element.DoWork(commandWords.Skip(1));
-                                    isStuffDone = true;
+                                    isKnownCommand = true;
                                 }
                             }
                         }
-                        if (!isStuffDone)
+                        if (!isKnownCommand)
                         {
                             Console.WriteLine("Unknown command: '" + commandWords[0] + '\'');
                         }
