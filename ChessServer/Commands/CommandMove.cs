@@ -44,6 +44,12 @@ namespace ChessServer.Commands
                 workResponse.Status = Statuses.GameNotFound;
             }
 
+            if (whitePlayer == null || blackPlayer == null)
+            {
+                workResponse.Status = Statuses.NotAuthorized;
+                return workResponse;
+            }
+
             if (currentGame.Act == Act.WaitingOpponent)
             {
                 workResponse.Status = Statuses.NoUser;

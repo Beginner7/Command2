@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Caching;
+using System.Web.Mvc;
 
 namespace ChestClient.Controllers
 {
@@ -8,7 +9,7 @@ namespace ChestClient.Controllers
         {
             ViewBag.Message = "";
 
-            return View();
+            return RedirectToAction("Free","Game");
         }
 
         public ActionResult About()

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Globalization;
+using Newtonsoft.Json;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
@@ -12,6 +14,7 @@ namespace ChessServer
     {
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
+        private static int _userNumber = 1;
 
         static Server()
         {
@@ -69,6 +72,16 @@ namespace ChessServer
                 }
             }
             return JsonConvert.SerializeObject(new Response { RequestCommand = req.Command, Status = Statuses.Unknown });
+        }
+
+        public static User CreateRandomNewUser()
+        {
+            User user;
+            do
+            {              
+                user = new User {Name = Consts.GUEST_PREFIX + _userNumber++};
+            } while (!Users.TryAdd(user.Name,user));
+            return user;
         }
     }
 }

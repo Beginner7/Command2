@@ -14,14 +14,11 @@
         <table id="menucontainer">
             <tr>
                 <td class="spacer">&nbsp;</td>
-                <td class="header">Шахматы</td>
+                <td class="header">@Html.ActionLink("Шахматы", "Index", "Home")</td>
                 <td class="spacer">&nbsp;</td>
                 <td class="menu">
                     <ul id="menu">
-                        <!--<li>@Html.ActionLink("Вход", "Login", "User")</li>-->
-                        <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
                         <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                        <li>@Html.ActionLink("Свободная игра", "Free", "Game")</li>
                     </ul>
                 </td>
             </tr>

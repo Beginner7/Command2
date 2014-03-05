@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Security;
 using ChestClient.Models;
 using Protocol.GameObjects;
 using Protocol;
@@ -44,12 +45,17 @@ namespace ChestClient.Controllers
 
         public ActionResult Free()
         {
-            return Request.IsAuthenticated ? View() : View("NoAccess");
+            return View();
         }
 
         public ActionResult StartFree()
         {
-            var requestCreateGame = new CreateGameRequest {NewPlayer = new User {Name = User.Identity.Name}};
+            User newPlayer = null;
+            if (Request.IsAuthenticated)
+            {
+                newPlayer = new User { Name = User.Identity.Name };
+            }
+            var requestCreateGame = new CreateGameRequest { NewPlayer = newPlayer };
             var responseCreateGame = ServerProvider.MakeRequest<CreateGameResponse>(requestCreateGame);
             
             int? gameId = null;
@@ -57,10 +63,11 @@ namespace ChestClient.Controllers
             {
 
                 gameId = responseCreateGame.ID;
+                FormsAuthentication.SetAuthCookie(responseCreateGame.FirstPlayer.Name, false);
                 var requestJoinGame = new JoinGameRequest
                 {
                     GameID = gameId.Value,
-                    NewPlayer = requestCreateGame.NewPlayer
+                    NewPlayer = responseCreateGame.FirstPlayer
                 };
                 var responseJoinGame = ServerProvider.MakeRequest(requestJoinGame);
                 if (responseJoinGame.Status != Statuses.Ok)
@@ -90,6 +97,9 @@ namespace ChestClient.Controllers
                     break;
                 case Statuses.NoUser:
                     ret = "No opponent yet."; 
+                    break;
+                case Statuses.NotAuthorized:
+                    ret = "You not authorized."; 
                     break;
                 case Statuses.OpponentTurn:
                     ret = "Now is opponent turn.";

@@ -2,6 +2,8 @@
 {
     public static class Consts
     {
+        public const string GUEST_PREFIX = "#GUEST";
+
 #if (DEBUG)
         public  const string DOMAIN = "http://localhost:2964/";
 #else
@@ -9,6 +11,7 @@
 #endif
     }
     
+   
     public enum Side
     {
         NONE,

@@ -13,6 +13,7 @@
         GameCancled,
         GameIsRunning,
         WrongMove,
-        WrongMoveNotation
+        WrongMoveNotation,
+        NotAuthorized
     }
 }

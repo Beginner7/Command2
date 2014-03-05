@@ -11,12 +11,21 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
             var workResponse = new CreateGameResponse();
+            if (workRequest.NewPlayer == null)
+            {
+                workRequest.NewPlayer = Server.CreateRandomNewUser();
+            }
+            if (!Server.Users.ContainsKey(workRequest.NewPlayer.Name))
+            {
+                Server.Users.TryAdd(workRequest.NewPlayer.Name, workRequest.NewPlayer);
+            }
             var game = new Game(workRequest.NewPlayer) {Act = Act.WaitingOpponent};
 
             if (Server.Games.TryAdd(game.Id, game))
             {
                 workResponse.ID = game.Id;
                 workResponse.Status = Statuses.Ok;
+                workResponse.FirstPlayer = workRequest.NewPlayer;
             }
             else
                 workResponse.Status = Statuses.ErrorCreateGame;
