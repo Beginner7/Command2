@@ -125,6 +125,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\figure\BB.png" />
+    <Content Include="Content\figure\BW.png" />
+    <Content Include="Content\figure\KB.png" />
+    <Content Include="Content\figure\KW.png" />
+    <Content Include="Content\figure\NB.png" />
+    <Content Include="Content\figure\NW.png" />
+    <Content Include="Content\figure\PB.png" />
+    <Content Include="Content\figure\PW.png" />
+    <Content Include="Content\figure\QB.png" />
+    <Content Include="Content\figure\QW.png" />
+    <Content Include="Content\figure\RB.png" />
+    <Content Include="Content\figure\RW.png" />
     <Content Include="Content\img\footer.jpg" />
     <Content Include="Content\img\Header.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
