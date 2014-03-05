@@ -552,13 +552,6 @@ namespace ChessServer.GameLogic
             char kingX = board.ReturnPosition(king).Item1;
             int kingY = board.ReturnPosition(king).Item2;
 
-            //List<char> cell = new List<char>();
-            //if (bishopX == 'a')
-            //    cell = new List<char> { 'b', 'c', 'd' };
-            //else if (bishopX == 'h')
-            //    cell = new List<char> { 'f', 'g' };
-
-
             if (moves.Count != 0)
                 foreach (Move move in moves)
                 {
@@ -567,7 +560,7 @@ namespace ChessServer.GameLogic
                         foreach (Move move2 in moves)
                             if (!move2.From.Contains(kingX + kingY.ToString(CultureInfo.InvariantCulture)))
                             {
-                                CastlingTest(board, king, rook, rows, rookX);
+                                CastlingFunc(board, king, rook, rows, rookX);
                             }
                             else
                                 return;
@@ -577,12 +570,12 @@ namespace ChessServer.GameLogic
                 }
             else
             {
-                CastlingTest(board, king, rook, rows, rookX);
+                CastlingFunc(board, king, rook, rows, rookX);
             }
 
         }
 
-        private void CastlingTest(Board board, Figure king, Figure rook, int rows, char rookX)
+        private void CastlingFunc(Board board, Figure king, Figure rook, int rows, char rookX)
         {
             if (rookX == 'a')
             {
@@ -590,9 +583,7 @@ namespace ChessServer.GameLogic
                     board["c" + rows].GetType() == typeof(FigureNone) &&
                     board["d" + rows].GetType() == typeof(FigureNone) &&
                     IsColorFigureAttack(this["c" + rows], king.Side) &&
-                    // Attackers['c' - 'a', rows - 1]
                     IsColorFigureAttack(this["d" + rows], king.Side))
-                //   Attackers['d' - 'a', rows - 1].Contains(new Figure(side)))
                 {
                     Attackers['c' - 'a', rows - 1].Add(king);
                     Attackers['d' - 'a', rows - 1].Add(rook);
