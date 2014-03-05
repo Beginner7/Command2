@@ -42,6 +42,7 @@ namespace ChessServer.Commands
             if (currentGame == null)
             {
                 workResponse.Status = Statuses.GameNotFound;
+                return workResponse;
             }
 
             if (whitePlayer == null || blackPlayer == null)
@@ -70,7 +71,7 @@ namespace ChessServer.Commands
             }
 
             var moves = currentGame.Moves;
-            var attackMap = new GameLogic.AttackMap(moves);
+            var attackMap = new AttackMap(moves);
             
             if (attackMap.SourceBoard[workRequest.From].Side != userSide || !attackMap[workRequest.To].Contains(attackMap.SourceBoard[workRequest.From]))
             {
