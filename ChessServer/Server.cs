@@ -65,7 +65,7 @@ namespace ChessServer
             {
                 if (req.Command == element.Name)
                 {
-                    return JsonConvert.SerializeObject(element.DoWork(request, ref Users, ref Games));
+                    return JsonConvert.SerializeObject(element.DoWork(request));
                 }
             }
             return JsonConvert.SerializeObject(new Response { RequestCommand = req.Command, Status = Statuses.Unknown });

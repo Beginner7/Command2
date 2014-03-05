@@ -8,7 +8,8 @@
        }
        public string From;
        public string To;
-       public User Player;
-       public int GameID;
-    }
+       public string Player;
+       public int GameId;
+       public string InWhom;
+   }
 }

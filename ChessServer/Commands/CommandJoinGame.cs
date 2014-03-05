@@ -10,51 +10,51 @@ namespace ChessServer.Commands
     public class CommandJoinGame : CommandBase
     {
         public override string Name { get { return "joingame"; } }
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
             var workRequest = JsonConvert.DeserializeObject<JoinGameRequest>(request);
             var workResponse = new JoinGameResponse();
-            if (games[workRequest.GameID].Act == Act.Cancled)
+            if (!Server.Games.Keys.ToArray().Contains(workRequest.GameID))
+            {
+                workResponse.Status = Statuses.GameNotFound;
+                return workResponse;
+            }
+
+            if (Server.Games[workRequest.GameID].Act == Act.Cancled)
             {
                 workResponse.Status = Statuses.GameCancled;
                 return workResponse;
             }
-            if (games.Keys.ToArray().Contains(workRequest.GameID))
+
+            if (Server.Games[workRequest.GameID].PlayerBlack == null)
             {
-                if (games[workRequest.GameID].PlayerBlack == null)
+                Server.Games[workRequest.GameID].Act = Act.InProgress;
+                Server.Games[workRequest.GameID].PlayerBlack = workRequest.NewPlayer;
+                Server.Games[workRequest.GameID].PlayerWhite.Messages.Add(MessageSender.OpponentJoinedGame());
+                User geted;
+                if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerWhite.Name, out geted))
                 {
-                    games[workRequest.GameID].Act = Act.InProgress;
-                    games[workRequest.GameID].PlayerBlack = workRequest.NewPlayer;
-                    games[workRequest.GameID].PlayerWhite.Messages.Add(MessageSender.OpponentJoinedGame());
-                    User geted;
-                    if (users.TryGetValue(games[workRequest.GameID].PlayerWhite.Name, out geted))
-                    {
-                        geted.Messages.Add(MessageSender.OpponentJoinedGame());
-                    }
-                    workResponse.Status = Statuses.OK;
+                    geted.Messages.Add(MessageSender.OpponentJoinedGame());
                 }
-                else
-                {
-                    if (games[workRequest.GameID].PlayerWhite == null)
-                    {
-                        games[workRequest.GameID].Act = Act.InProgress;
-                        games[workRequest.GameID].PlayerWhite = workRequest.NewPlayer;
-                        User geted;
-                        if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))
-                        {
-                            geted.Messages.Add(MessageSender.OpponentJoinedGame());
-                        }
-                        workResponse.Status = Statuses.OK;
-                    }
-                    else
-                    {
-                        workResponse.Status = Statuses.GameIsRunning;
-                    }
-                }
+                workResponse.Status = Statuses.Ok;
             }
             else
             {
-                workResponse.Status = Statuses.GameNotFound;
+                if (Server.Games[workRequest.GameID].PlayerWhite == null)
+                {
+                    Server.Games[workRequest.GameID].Act = Act.InProgress;
+                    Server.Games[workRequest.GameID].PlayerWhite = workRequest.NewPlayer;
+                    User geted;
+                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerBlack.Name, out geted))
+                    {
+                        geted.Messages.Add(MessageSender.OpponentJoinedGame());
+                    }
+                    workResponse.Status = Statuses.Ok;
+                }
+                else
+                {
+                    workResponse.Status = Statuses.GameIsRunning;
+                }
             }
             return workResponse;
         }

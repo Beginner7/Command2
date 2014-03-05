@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Protocol;
-using Newtonsoft.Json;
 
 namespace ChessServer.Commands
 {
     public class CommandGamelist : CommandBase
     {
         public override string Name { get { return "gamelist"; } }
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
-            var workRequest = JsonConvert.DeserializeObject<GameListRequest>(request);
-            var workResponse = new GameListResponse();
-            workResponse.Games = games.Keys.ToArray();
-            workResponse.Status = Statuses.OK;
+            var workResponse = new GameListResponse {Games = Server.Games.Keys.ToArray(), Status = Statuses.Ok};
             return workResponse;
         }
     }

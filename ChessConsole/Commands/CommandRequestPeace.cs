@@ -10,7 +10,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("peace", "Предложить оппоненту перемирие"); } }
         public override int ArgsNeed { get { return 0; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.IsInGame())
             {
@@ -20,12 +20,11 @@ namespace ChessConsole.Commands
                     request.From = CurrentUser.Name;
                     request.GameID = CurrentUser.CurrentGame.Value;
                     var response = ServerProvider.MakeRequest(request);
-                    Console.WriteLine(response.Status == Statuses.OK
-                        ? "Peace request sanded to opponent."
+                    Console.WriteLine(response.Status == Statuses.Ok
+                        ? "Peace request sended to opponent."
                         : response.Status.ToString());
                 }
             }
-            return true;
         }
     }
 }

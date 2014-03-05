@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Protocol;
 using Protocol.Transport;
 using Protocol.GameObjects;
@@ -12,75 +9,153 @@ namespace ChessConsole
 {
     public static class CommandPromt
     {
-        private static bool isContinue = true;
+        private static bool isStuffDone;
+        public static bool IsContinue = true;
+
         public static void CommandProcess()
         {
-            while (isContinue)
+            while (IsContinue)
             {
-                Console.Write('>');
-                string commandInput = Console.ReadLine();
+                isStuffDone = false;
+                Console.Write("> ");
+                var commandInput = Console.ReadLine();
                 if (CurrentUser.NeedPeaseAnswer)
                 {
-                    bool IsStuffDone = false;
-                    do
+                    if (!string.IsNullOrWhiteSpace(commandInput))
                     {
-                        if (commandInput.ToLower() == "yes")
+                        switch (commandInput.ToLower())
                         {
-                            var request = new AcceptPeaceRequest();
-                            request.From = CurrentUser.Name;
-                            request.GameID = CurrentUser.CurrentGame.Value;
-                            var response = ServerProvider.MakeRequest<AcceptPeaceResponse>(request);
-                            if (response.Status == Statuses.OK)
-                            {
-                                Console.WriteLine("You accept peace. War is over.");
-                                CurrentUser.CurrentGame = null;
-                            }
-                            CurrentUser.NeedPeaseAnswer = false;
-                            IsStuffDone = true;
-                        }
-                        else
-                        {
-                            if (commandInput.ToLower() == "no")
-                            {
-                                var request = new DeclinePeaceRequest();
-                                request.From = CurrentUser.Name;
-                                request.GameID = CurrentUser.CurrentGame.Value;
-                                var response = ServerProvider.MakeRequest<DeclinePeaceResponse>(request);
-                                CurrentUser.NeedPeaseAnswer = false;
-                                IsStuffDone = true;
-                                if (response.Status == Statuses.OK)
+                            case "yes":
+                                if (Utils.IsInGame())
                                 {
-                                    Console.WriteLine("You decline peace. NO MERCY!");
-                                    CurrentUser.CurrentGame = null;
+                                    var request = new AcceptPeaceRequest
+                                    {
+                                        From = CurrentUser.Name,
+                                        GameID = CurrentUser.CurrentGame.Value
+                                    };
+                                    var response = ServerProvider.MakeRequest<AcceptPeaceResponse>(request);
+                                    if (response.Status == Statuses.Ok)
+                                    {
+                                        Console.WriteLine("You accept peace.");
+                                        CurrentUser.NeedPeaseAnswer = false;
+                                        CurrentUser.NeedPawnPromotion = false;
+                                        CurrentUser.CurrentGame = null;
+                                    }
                                 }
+                                break;
+                            case "no":
+                                if (Utils.IsInGame())
+                                {
+                                    var request = new DeclinePeaceRequest
+                                    {
+                                        From = CurrentUser.Name,
+                                        GameID = CurrentUser.CurrentGame.Value
+                                    };
+                                    var response = ServerProvider.MakeRequest<DeclinePeaceResponse>(request);
+                                    if (response.Status == Statuses.Ok)
+                                    {
+                                        Console.WriteLine("You decline peace.");
+                                        CurrentUser.NeedPeaseAnswer = false;
+                                    }
+                                }
+                                break;
+                            default:
+                                Console.WriteLine("Wrong answer!");
+                                Console.WriteLine("You argee? (yes/no):");
+                                break;
+                        }
+                    }
+                    isStuffDone = true;
+                }
+                if (!isStuffDone && CurrentUser.NeedPawnPromotion && !CurrentUser.NeedPeaseAnswer)
+                {
+                    if (!string.IsNullOrWhiteSpace(commandInput))
+                    {
+                        if (commandInput.Length == 1 && "rnbqc".IndexOf(commandInput.ToLower()) >= 0)
+                        {
+                            if (commandInput == "c")
+                            {
+                                Console.WriteLine("Okay then.");
+                                CurrentUser.NeedPawnPromotion = false;
                             }
                             else
                             {
-                                Console.WriteLine("Wrong answer!");
-                                Console.Write("You accept it? (Yes/No): ");
+                                if (Utils.IsInGame())
+                                {
+                                    var request = new MoveRequest
+                                    {
+                                        From = CurrentUser.LastMove.From,
+                                        To = CurrentUser.LastMove.To,
+                                        InWhom = commandInput[0].ToString(),
+                                        Player = CurrentUser.Name,
+                                        GameId = CurrentUser.CurrentGame.Value
+                                    };
+                                    var response = ServerProvider.MakeRequest(request);
+                                    switch (response.Status)
+                                    {
+                                        case Statuses.Ok:
+                                            Console.WriteLine("Move done.");
+                                            CurrentUser.LastMove = new Move
+                                            {
+                                                From = request.From,
+                                                InWhom = null,
+                                                Player = CurrentUser.Name,
+                                                To = request.From
+                                            };
+                                            CurrentUser.NeedPawnPromotion = false;
+                                            break;
+                                        case Statuses.WrongMove:
+                                            Console.WriteLine("Wrong move.");
+                                            break;
+                                        default:
+                                            Console.WriteLine("Wrong status.");
+                                            break;
+                                    }
+                                }
                             }
                         }
-                    }
-                    while (!IsStuffDone);
-                }
-                else
-                {
-                    var commandWords = commandInput.Split(' ');
-                    bool IsStuffDone = false;
-                    foreach (var element in CommandFactory.Instance.AllCommands)
-                    {
-                        if (!String.IsNullOrWhiteSpace(commandWords[0]))
+                        else
                         {
-                            if (commandWords[0].ToLower() == element.Help.Name)
-                            {
-                                isContinue = element.DoWork(commandWords.Skip(1));
-                                IsStuffDone = true;
-                            }
+                            Console.WriteLine("Wrong choise!");
+                            Console.WriteLine("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancle):");
                         }
                     }
-                    if (!IsStuffDone)
+                    isStuffDone = true;
+                }
+                if (!(isStuffDone || CurrentUser.NeedPawnPromotion || CurrentUser.NeedPeaseAnswer))
+                {
+                    while (commandInput.IndexOf("  ") >= 0)
                     {
-                        Console.WriteLine("Unknown command: '" + commandWords[0] + '\'');
+                        commandInput = commandInput.Replace("  ", " ");
+                    }
+                    if (commandInput[0] == ' ')
+                    {
+                        commandInput = commandInput.Substring(1);
+                    }
+                    if (commandInput[commandInput.Length - 1] == ' ')
+                    {
+                        commandInput = commandInput.Substring(0, commandInput.Length - 1);
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(commandInput))
+                    {
+                        var commandWords = commandInput.Split(' ');
+                        var isKnownCommand = false;
+                        foreach (var element in CommandFactory.Instance.AllCommands)
+                        {
+                            if (!String.IsNullOrWhiteSpace(commandWords[0]))
+                            {
+                                if (commandWords[0].ToLower() == element.Help.Name)
+                                {
+                                    element.DoWork(commandWords.Skip(1));
+                                    isKnownCommand = true;
+                                }
+                            }
+                        }
+                        if (!isKnownCommand)
+                        {
+                            Console.WriteLine("Unknown command: '" + commandWords[0] + '\'');
+                        }
                     }
                 }
             }

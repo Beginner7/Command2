@@ -4,6 +4,13 @@ namespace ChessConsole
 {
     public static class Utils
     {
+        public static void Print(string toPrint)
+        {
+            Console.CursorLeft = 0;
+            Console.WriteLine(toPrint);
+            Console.Write("> ");
+        }
+
         public static bool IsInGame()
         {
             if (CurrentUser.CurrentGame == null)

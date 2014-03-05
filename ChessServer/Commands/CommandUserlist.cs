@@ -12,12 +12,12 @@ namespace ChessServer.Commands
     public class CommandUserlist : CommandBase
     {
         public override string Name { get { return "userlist"; } }
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
             var userListRequest = JsonConvert.DeserializeObject<UserListRequest>(request);
             var userListResponse = new UserListResponse();
-            userListResponse.Users = users.Keys.ToArray();
-            userListResponse.Status = Statuses.OK;
+            userListResponse.Users = Server.Users.Keys.ToArray();
+            userListResponse.Status = Statuses.Ok;
             return userListResponse;
         }
     }

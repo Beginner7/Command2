@@ -12,12 +12,12 @@ namespace ChessServer.Commands
     public class CommandMovelist : CommandBase
     {
         public override string Name { get { return "movelist"; } }
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
             var workRequest = JsonConvert.DeserializeObject<MoveListRequest>(request);
             var workResponse = new MoveListResponse();
-            workResponse.Moves = games[workRequest.Game].Moves;
-            workResponse.Status = Statuses.OK;
+            workResponse.Moves = Server.Games[workRequest.Game].Moves;
+            workResponse.Status = Statuses.Ok;
             return workResponse;
         }
     }

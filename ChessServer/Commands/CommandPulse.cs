@@ -12,14 +12,14 @@ namespace ChessServer.Commands
     public class CommandPulse : CommandBase
     {
         public override string Name { get { return "pulse"; } }
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
             var workRequest = JsonConvert.DeserializeObject<PulseRequest>(request);
             var workResponse = new PulseResponse();
             User geted;
-            if (users.TryGetValue(workRequest.From, out geted))
+            if (Server.Users.TryGetValue(workRequest.From, out geted))
             {
-                workResponse.Status = Statuses.OK;
+                workResponse.Status = Statuses.Ok;
                 geted.Lostbeats = 0;
                 if (geted.Messages.Capacity != 0)
                 {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Protocol;
+﻿using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
 using Newtonsoft.Json;
@@ -10,36 +9,36 @@ namespace ChessServer.Commands
     {
         public override string Name { get { return "disconnect"; } }
 
-        public override Response DoWork(string request, ref ConcurrentDictionary<string, User> users, ref ConcurrentDictionary<int, Game> games)
+        public override Response DoWork(string request)
         {
             var workRequest = JsonConvert.DeserializeObject<DisconnectRequest>(request);
             var workResponse = new DisconnectResponse();
-            if (games[workRequest.GameID].Act == Act.WaitingOpponent)
+            if (Server.Games[workRequest.GameID].Act == Act.WaitingOpponent)
             {
-                games[workRequest.GameID].Act = Act.Cancled;
-                workResponse.Status = Statuses.OK;
+                Server.Games[workRequest.GameID].Act = Act.Cancled;
+                workResponse.Status = Statuses.Ok;
             }
             else
             {
-                if (workRequest.User == games[workRequest.GameID].PlayerWhite.Name)
+                if (workRequest.User == Server.Games[workRequest.GameID].PlayerWhite.Name)
                 {
-                    games[workRequest.GameID].Act = Act.AbandonedByWhite;
+                    Server.Games[workRequest.GameID].Act = Act.AbandonedByWhite;
                     User geted;
-                    if (users.TryGetValue(games[workRequest.GameID].PlayerBlack.Name, out geted))
+                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerBlack.Name, out geted))
                     {
                         geted.Messages.Add(MessageSender.OpponentAbandonedGame());
                     }
-                    workResponse.Status = Statuses.OK;
+                    workResponse.Status = Statuses.Ok;
                 }
-                if (workRequest.User == games[workRequest.GameID].PlayerBlack.Name)
+                if (workRequest.User == Server.Games[workRequest.GameID].PlayerBlack.Name)
                 {
-                    games[workRequest.GameID].Act = Act.AbandonedByBlack;
+                    Server.Games[workRequest.GameID].Act = Act.AbandonedByBlack;
                     User geted;
-                    if (users.TryGetValue(games[workRequest.GameID].PlayerWhite.Name, out geted))
+                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerWhite.Name, out geted))
                     {
                         geted.Messages.Add(MessageSender.OpponentAbandonedGame());
                     }
-                    workResponse.Status = Statuses.OK;
+                    workResponse.Status = Statuses.Ok;
                 }
             }
             return workResponse;

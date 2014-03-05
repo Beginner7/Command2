@@ -15,9 +15,9 @@ namespace ChessConsole.Commands
         {
             var request = new MoveListRequest {Game = CurrentUser.CurrentGame.Value};
             var response = ServerProvider.MakeRequest<MoveListResponse>(request);
-            return response.Moves;
+            return response.Status == Statuses.Ok ? response.Moves : null;
         }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
@@ -26,11 +26,10 @@ namespace ChessConsole.Commands
                     Console.WriteLine("Moves from game \"" + CurrentUser.CurrentGame + "\":");
                     foreach (var element in GetList())
                     {
-                        Console.WriteLine("{0}: {1}-{2}", element.Player.Name, element.From, element.To);
+                        Console.WriteLine("{0}: {1}-{2}", element.Player, element.From, element.To);
                     }
                 }
             }
-            return true;
         }
     }
 }

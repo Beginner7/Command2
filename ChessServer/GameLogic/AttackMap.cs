@@ -10,7 +10,7 @@ namespace ChessServer.GameLogic
     {
         private readonly string _whiteKing;
         private readonly string _blackKing;
-        public Board SourceBoard {get; private set;}
+        public Board SourceBoard { get; private set; }
         public List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         private readonly Dictionary<Figure, string> _figuresPosition = new Dictionary<Figure, string>();
 
@@ -46,7 +46,7 @@ namespace ChessServer.GameLogic
                     Attackers[i, j] = new List<Figure>();
                 }
             }
-            for (char currentCellX = 'a'; currentCellX <= 'h' ; currentCellX++)
+            for (char currentCellX = 'a'; currentCellX <= 'h'; currentCellX++)
             {
                 for (int currentCellY = 1; currentCellY <= Board.BoardSize; currentCellY++)
                 {
@@ -56,11 +56,11 @@ namespace ChessServer.GameLogic
                     {
                         continue;
                     }
-                       
+
 
                     if (currentFigure.GetType() == typeof(FigurePawn))
                     {
-                        if (currentCellY + 1 <= Board.BoardSize && currentCellY - 1 >= 1 )
+                        if (currentCellY + 1 <= Board.BoardSize && currentCellY - 1 >= 1)
                         {
                             int cellY;
                             if (currentFigure.Side == Side.WHITE)
@@ -76,7 +76,7 @@ namespace ChessServer.GameLogic
                                     {
                                         cellY += 1;
                                         figure = SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + cellY];
-                                        if (figure.GetType() == typeof(FigureNone)) 
+                                        if (figure.GetType() == typeof(FigureNone))
                                             Attackers[currentCellX - 'a', cellY - 1].Add(currentFigure);
                                     }
                                 }
@@ -86,7 +86,7 @@ namespace ChessServer.GameLogic
                                 if (cellX <= 'h')
                                 {
                                     figure = SourceBoard[cellX.ToString(CultureInfo.InvariantCulture) + cellY];
-                                    if (figure.GetType() != typeof (FigureNone) && figure.Side != currentFigure.Side)
+                                    if (figure.GetType() != typeof(FigureNone) && figure.Side != currentFigure.Side)
                                         Attackers[cellX - 'a', cellY - 1].Add(currentFigure);
                                 }
                                 cellX = (char)(currentCellX - 1);
@@ -133,7 +133,7 @@ namespace ChessServer.GameLogic
                                         Attackers[cellX - 'a', cellY - 1].Add(currentFigure);
                                 }
                             }
-                            
+
                         }
                         PassedPawn(moves, SourceBoard, currentFigure);
                         continue;
@@ -296,8 +296,8 @@ namespace ChessServer.GameLogic
                     }
                 }
             }
-            
-        
+
+
         }
 
         private void KingKnightStep(Board board, Figure currentFigure, char x, int y)
@@ -331,7 +331,7 @@ namespace ChessServer.GameLogic
                     }
                     break;
                 }
-            }            
+            }
 
         }
 
@@ -358,7 +358,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
 
         }
 
@@ -385,7 +385,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
         }
 
         private void NorthEast(Board board, char i, int currentCell, Figure currentFigure)
@@ -411,7 +411,7 @@ namespace ChessServer.GameLogic
                 {
                     break;
                 }
-            }            
+            }
 
         }
 
@@ -510,7 +510,7 @@ namespace ChessServer.GameLogic
                 return false;
             }
         }
-        
+
         public bool IsCheckBlack
         {
             get
@@ -632,13 +632,13 @@ namespace ChessServer.GameLogic
 
             var cell = new List<string>();
             if (pawnX != 'a')
-                cell.Add(((char) (pawnX - 1)).ToString(CultureInfo.InvariantCulture) + rows);
+                cell.Add(((char)(pawnX - 1)).ToString(CultureInfo.InvariantCulture) + rows);
             if (pawnX != 'h')
-                cell.Add(((char) (pawnX + 1)).ToString(CultureInfo.InvariantCulture) + rows);
+                cell.Add(((char)(pawnX + 1)).ToString(CultureInfo.InvariantCulture) + rows);
 
             foreach (var c in cell)
             {
-                if (board[c].GetType() == typeof (FigurePawn) && board[c].Side != pawn.Side &&
+                if (board[c].GetType() == typeof(FigurePawn) && board[c].Side != pawn.Side &&
                     moves[moves.Count - 1].To == c && moves[moves.Count - 1].From ==
                     c[0].ToString(CultureInfo.InvariantCulture) + rowFrom && pawnY == rows)
                     Attackers[c[0] - 'a', rowTo - 1].Add(pawn);
@@ -659,7 +659,7 @@ namespace ChessServer.GameLogic
                         var currentCell = i.ToString(CultureInfo.InvariantCulture) + j;
                         foreach (var figure in this[currentCell])
                         {
-                            var move = new Move {From = _figuresPosition[figure], To = currentCell};
+                            var move = new Move { From = _figuresPosition[figure], To = currentCell };
                             moves.Add(move);
                         }
                     }
@@ -715,7 +715,7 @@ namespace ChessServer.GameLogic
 
         public bool IsMateWhite
         {
-            get 
+            get
             {
                 return WhitePossibleMoves.Count() == 0 && IsCheckWhite;
             }
@@ -729,6 +729,47 @@ namespace ChessServer.GameLogic
             }
         }
 
+        public bool IsPat
+        {
+            get
+            {
+                if (WhitePossibleMoves.Count() == 0 && !IsCheckWhite || BlackPossibleMoves.Count() == 0 && !IsCheckBlack)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool IsDraw
+        {
+            get
+            {
+                int rangerFiguresWhite = 0;
+                int rangerFiguresBlack = 0;
+                foreach (var element in SourceBoard.Cells)
+                {
+                    if (element.GetType() == typeof(FigureBishop) || element.GetType() == typeof(FigureKnight) ||
+                        element.GetType() == typeof(FigureQueen) || element.GetType() == typeof(FigureRook))
+                    {
+                        if (element.Side == Side.WHITE)
+                        {
+                            rangerFiguresWhite++;
+                        }
+                        else
+                        {
+                            rangerFiguresBlack++;
+                        }
+                    }
+                }
+                if (rangerFiguresBlack < 2 && rangerFiguresWhite < 2)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         public List<string> MoveVariants(string cell)
         {
             var moveVariants = new List<string>();
@@ -737,7 +778,7 @@ namespace ChessServer.GameLogic
                 for (int j = 0; j < Board.BoardSize; j++)
                 {
                     if (Attackers[i, j].Contains(SourceBoard[cell]))
-                        moveVariants.Add((char) ('a' + i) + (j + 1).ToString(CultureInfo.InvariantCulture));
+                        moveVariants.Add((char)('a' + i) + (j + 1).ToString(CultureInfo.InvariantCulture));
                 }
             }
             return moveVariants;

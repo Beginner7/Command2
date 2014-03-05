@@ -10,7 +10,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("cg", "Создать игру"); } }
         public override int ArgsNeed { get { return 0; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
@@ -18,10 +18,10 @@ namespace ChessConsole.Commands
                 {
                     var request = new CreateGameRequest {NewPlayer = new User {Name = CurrentUser.Name}};
                     var response = ServerProvider.MakeRequest<CreateGameResponse>(request);
-                    if (response.Status == Statuses.OK)
+                    if (response.Status == Statuses.Ok)
                     {
                         Console.WriteLine("You create game. ID: " + response.ID);
-                        CurrentUser.CurrentGame = (int?)response.ID;
+                        CurrentUser.CurrentGame = response.ID;
                     }
                     else
                     {
@@ -29,7 +29,6 @@ namespace ChessConsole.Commands
                     }
                 }
             }
-            return true;
         }
     }
 }

@@ -17,6 +17,16 @@
             return new Message(null, MessageType.Pat);
         }
 
+        public static Message CheckToOpponent()
+        {
+            return new Message(null, MessageType.CheckToOpponent);
+        }
+
+        public static Message CheckToYou()
+        {
+            return new Message(null, MessageType.CheckToYou);
+        }
+
         public static Message OpponentSurrendered()
         {
             return new Message(null, MessageType.OpponentSurrendered);

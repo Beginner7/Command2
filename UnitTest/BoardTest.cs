@@ -96,13 +96,13 @@ namespace UnitTest
         {
             //a - arange
             var board = new Board();
-            var pawnWhite = new FigurePawn(Side.WHITE);
-            board["d7"] = pawnWhite;
+            board["d7"] = new FigurePawn(Side.WHITE);
 
             //a - act
             AttackMap map = new AttackMap(new List<Move>(), board);
             board.DoMove("d7", "d8", FigureQueen.SYMBOL.ToString(CultureInfo.InvariantCulture));
 
+            //a - assert
             Assert.AreEqual(typeof(FigureQueen), board["d8"].GetType());
         }
 

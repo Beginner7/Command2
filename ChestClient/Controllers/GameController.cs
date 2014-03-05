@@ -53,7 +53,7 @@ namespace ChestClient.Controllers
             var responseCreateGame = ServerProvider.MakeRequest<CreateGameResponse>(requestCreateGame);
             
             int? gameId = null;
-            if (responseCreateGame.Status == Statuses.OK)
+            if (responseCreateGame.Status == Statuses.Ok)
             {
 
                 gameId = responseCreateGame.ID;
@@ -63,7 +63,7 @@ namespace ChestClient.Controllers
                     NewPlayer = requestCreateGame.NewPlayer
                 };
                 var responseJoinGame = ServerProvider.MakeRequest(requestJoinGame);
-                if (responseJoinGame.Status != Statuses.OK)
+                if (responseJoinGame.Status != Statuses.Ok)
                 {
                     gameId = null;
                 }
@@ -78,14 +78,14 @@ namespace ChestClient.Controllers
             {
                 From = Request.Params["From"],
                 To = Request.Params["To"],
-                Player = new User {Name = User.Identity.Name},
-                GameID = int.Parse(Request.Params["GameID"])
+                Player = User.Identity.Name,
+                GameId = int.Parse(Request.Params["GameID"])
             };
             var response = ServerProvider.MakeRequest(command);
             string ret;
             switch (response.Status)
             {
-                case Statuses.OK:
+                case Statuses.Ok:
                     ret = "";
                     break;
                 case Statuses.NoUser:

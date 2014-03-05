@@ -13,69 +13,77 @@ namespace ChessConsole
                 switch (element.Type)
                 {
                     case MessageType.OpponentSurrendered:
-                        Console.WriteLine("Opponent Surrendered");
+                        Utils.Print("Opponent Surrendered");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.YouLoose:
-                        Console.WriteLine("Check and Mate! You loose.");
+                        Utils.Print("Check and Mate! You loose.");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.YouWin:
-                        Console.WriteLine("Check and Mate! You win!");
+                        Utils.Print("Check and Mate! You win!");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.Pat:
-                        Console.WriteLine("Pat! Game is over.");
+                        Utils.Print("Pat! Game is over.");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.GameDraw:
-                        Console.WriteLine("Game draw.");
+                        Utils.Print("Game draw.");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.OpponentAcceptedPeace:
-                        Console.WriteLine("Opponent accepted peace. Game is over.");
+                        Utils.Print("Opponent accepted peace. Game is over.");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.OpponentDeclinedPeace:
-                        Console.WriteLine("Opponent decline peace.");
+                        Utils.Print("Opponent declined peace.");
                         break;
 
                     case MessageType.OpponentRequestPeace:
-                        Console.WriteLine("Opponent request peace.");
-                        Console.Write("You accept it? (Yes/No): ");
+                        Utils.Print("Opponent request peace.");
+                        Utils.Print("You argee? (yes/no):");
                         CurrentUser.NeedPeaseAnswer = true;
                         break;
 
                     case MessageType.OpponentJoinedGame:
-                        Console.WriteLine("Opponent joined the game.");
+                        Utils.Print("Opponent joined the game.");
+                        break;
+
+                    case MessageType.CheckToOpponent:
+                        Utils.Print("You make Check.");
+                        break;
+
+                    case MessageType.CheckToYou:
+                        Utils.Print("You have Check!");
                         break;
 
                     case MessageType.OpponentAbandonedGame:
-                        Console.WriteLine("Opponent abandoned the game.");
+                        Utils.Print("Opponent abandoned the game.");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.OpponentLostConnection:
-                        Console.WriteLine("Opponent lost connection.");
+                        Utils.Print("Opponent lost connection.");
                         CurrentUser.CurrentGame = null;
                         break;
 
                     case MessageType.ChatMessage:
-                        Console.WriteLine(element.Text);
+                        Utils.Print(element.Text);
                         break;
 
                     case MessageType.OpponentMove:
-                        Console.WriteLine("Opponent make move: " + element.Text);
+                        Utils.Print("Opponent make move: " + element.Text);
                         break;
 
                     default:
-                        Console.WriteLine("Unexpected message.");
+                        Utils.Print("Unexpected message type.");
                         break;
                 }
             }

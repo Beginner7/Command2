@@ -7,7 +7,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("exit", "Выйти"); } }
         public override int ArgsNeed { get { return 0; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
@@ -15,10 +15,9 @@ namespace ChessConsole.Commands
                 {
                     var commandLogout = new CommandLogout();
                     commandLogout.DoWork(args);
-                    return false;
+                    CommandPromt.IsContinue = false;
                 }
             }
-            return true;
         }
     }
 }

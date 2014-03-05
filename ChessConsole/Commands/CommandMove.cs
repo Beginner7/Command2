@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Protocol;
+using Protocol.GameObjects;
 using Protocol.Transport;
 
 namespace ChessConsole.Commands
@@ -10,24 +11,44 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("move", "Сделать ход", "<start cell> <target cell>"); } }
         public override int ArgsNeed { get { return 2; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
                 if (Utils.IsInGame())
                 {
-                    var command = new MoveRequest
+                    var request = new MoveRequest
                     {
                         From = args.ToArray()[0],
                         To = args.ToArray()[1],
-                        Player = new User {Name = CurrentUser.Name},
-                        GameID = CurrentUser.CurrentGame.Value
+                        InWhom = null,
+                        Player = CurrentUser.Name,
+                        GameId = CurrentUser.CurrentGame.Value
                     };
-                    var response = ServerProvider.MakeRequest(command);
+                    var response = ServerProvider.MakeRequest(request);
                     switch (response.Status)
                     {
-                        case Statuses.OK:
+                        case Statuses.Ok:
                             Console.WriteLine("Move done.");
+                            CurrentUser.LastMove = new Move
+                            {
+                                From = request.From,
+                                InWhom = null,
+                                Player = CurrentUser.Name,
+                                To = request.To
+                            };
+                            break;
+                        case Statuses.NeedPawnPromotion:
+                            Utils.Print("This pawn need promotion!");
+                            Utils.Print("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancle):");
+                            CurrentUser.LastMove = new Move
+                            {
+                                From = request.From,
+                                InWhom = null,
+                                Player = CurrentUser.Name,
+                                To = request.To
+                            };
+                            CurrentUser.NeedPawnPromotion = true;
                             break;
                         case Statuses.NoUser:
                             Console.WriteLine("No opponent yet.");
@@ -47,7 +68,6 @@ namespace ChessConsole.Commands
                     }
                 }
             }
-            return true;
         }
     }
 }

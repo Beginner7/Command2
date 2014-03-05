@@ -10,7 +10,7 @@ namespace ChessConsole.Commands
     {
         public override CommandHelpLabel Help { get { return new CommandHelpLabel("login", "Вход а аккаунт", "<user name>"); } }
         public override int ArgsNeed { get { return 1; } }
-        public override bool DoWork(IEnumerable<string> args)
+        public override void DoWork(IEnumerable<string> args)
         {
             if (Utils.CheckArgs(ArgsNeed, args.Count()))
             {
@@ -18,7 +18,7 @@ namespace ChessConsole.Commands
                 {
                     var request = new AddUserRequest {UserName = args.ToArray()[0]};
                     var response = ServerProvider.MakeRequest(request);
-                    if (response.Status == Statuses.OK)
+                    if (response.Status == Statuses.Ok)
                     {
                         CurrentUser.Name = args.ToArray()[0];
                         CurrentUser.StartPulse();
@@ -32,7 +32,6 @@ namespace ChessConsole.Commands
                     }
                 }
             }
-            return true;
         }
     }
 }
