@@ -285,8 +285,9 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>set buildbin="$(SolutionDir)\ChessConsole\bin\$(ConfigurationName)\"
-set content="$(ProjectDir)\Content\client\"
+    <PostBuildEvent>set buildbin="$(SolutionDir)ChessConsole\bin\$(ConfigurationName)\"
+set content="$(ProjectDir)Content\client\"
+md %25content%25
 
 copy /y %25buildbin%25"ChessConsole.exe" %25content%25
 copy /y %25buildbin%25"Newtonsoft.Json.dll" %25content%25
