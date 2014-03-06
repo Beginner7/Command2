@@ -289,12 +289,9 @@
 set content="$(ProjectDir)Content\client\"
 md %25content%25
 
-copy /y %25buildbin%25"ChessConsole.exe" %25content%25
+copy /y %25buildbin%25"ChessConsole.exe" %25content%25"PlayChess.exe"
 copy /y %25buildbin%25"Newtonsoft.Json.dll" %25content%25
-copy /y %25buildbin%25"Protocol.dll" %25content%25
-
-del /Q %25content%25"PlayChess.exe"
-ren %25content%25"ChessConsole.exe" "PlayChess.exe"</PostBuildEvent>
+copy /y %25buildbin%25"Protocol.dll" %25content%25</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
