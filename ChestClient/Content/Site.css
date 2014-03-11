@@ -100,9 +100,9 @@ header h1, #header h1 {
  
 #footer {
     width: 100%;
-    /*position:absolute;
+    position:absolute;
     bottom:0;
-    clear:both;*/
+    clear:both;
     text-align:right;
 
 }
@@ -133,24 +133,24 @@ ul#menu li a {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
-    background-color: #c0c0c0;
-    background-color: rgba(192, 192, 192, 0.76);
+    background-color: #af1818;
+    /*background-color: rgba(192, 192, 192, 0.76);*/
     
-    color: #000;
+    color: #fff;
     -webkit-border-radius: 10px 10px 0 0;
     -moz-border-radius: 10px 10px 0 0;
     border-radius: 10px 10px 0 0;
 }
 
 ul#menu li a:hover {
-    background-color: #82785c;
-    background-color: rgba(130, 120, 92, 0.5);
+    background-color: #af1818;
+    /*background-color: rgba(130, 120, 92, 0.5);*/
     text-decoration: none;
 }
 
 ul#menu li a:active {
-    background-color: #696969;
-    background-color: rgba(105, 105, 105, 0.76);
+    background-color: #af1818;
+    /*background-color: rgba(105, 105, 105, 0.76);*/
     text-decoration: none;
 }
 
@@ -280,22 +280,22 @@ div#title {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
-    background-color: #c0c0c0;
-    background-color: rgba(192, 192, 192, 0.76);
+    background-color: #af1818;
+    /*background-color: rgba(192, 192, 192, 0.76);*/
     
-    color: black;
+    color: white;
     -webkit-border-radius: 0 0 10px 10px;
     -moz-border-radius: 0 0 10px 10px;
     border-radius: 0 0 10px 10px;
 }
 
 #logindisplay a:visited {
-    color: black;
+    color: white;
     text-decoration: underline;
 }
 
 #logindisplay a:hover {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 
