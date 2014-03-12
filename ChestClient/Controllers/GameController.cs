@@ -116,5 +116,15 @@ namespace ChestClient.Controllers
             }
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Index2()
+        {
+            return View();
+        }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
     }
 }

@@ -240,6 +240,8 @@
     <Content Include="Views\Game\Free.cshtml" />
     <Content Include="Views\Game\NoAccess.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
+    <Content Include="Views\Game\Index.cshtml" />
+    <Content Include="Views\Game\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

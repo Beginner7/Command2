@@ -6,36 +6,57 @@
 
     
 <script src="@Url.Content("~/Scripts/GameUI.js")" type="text/javascript"></script>
+<table>
+    <tr>
+        <td>
+            <table id="board">
 
-    <table id="board">
-
-        @for (int i = 0; i < 9; i++)
-        {
-            <tr>
-                @for (int j = 0; j < 9; j++)
+                @for (int i = 0; i < 9; i++)
                 {
-                    if (j == 0 && i == 0)
-                    {
-                    <td> </td>
-                    }
-                    else if (j == 0)
-                    {
-                    <td>@(9-i) </td>
-                    }
-                    else if (i == 0)
-                    {
-                    <td>@((char)('A' + j - 1)) </td>
-                    }
-                    else if ((i + j) % 2 == 0)
-                    {
-                    <td bgcolor="FFFFFF" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
-                    }
-                    else
-                    {
-                    <td bgcolor="000000" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
-                    }
+                    <tr>
+                        @for (int j = 0; j < 9; j++)
+                        {
+                            if (j == 0 && i == 0)
+                            {
+                                <td> </td>
+                            }
+                            else if (j == 0)
+                            {
+                                <td>@(9-i) </td>
+                            }
+                            else if (i == 0)
+                            {
+                                <td>@((char)('A' + j - 1)) </td>
+                            }
+                            else if ((i + j) % 2 == 0)
+                            {
+                                <td bgcolor="FFFFFF" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
+                            }
+                            else
+                            {
+                                <td bgcolor="000000" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
+                            }
+                        }
+                    </tr>
                 }
-            </tr>
-        }
-    </table>
-    
+            </table>
+        </td>
+        <td>
+            <h4>Статус игры:</h4>
+            <div id="gamestatus"></div>
+            <h4>Чей ход:</h4>
+            <div id="turn"></div>
+            <h4>Игрок за белых:</h4>
+            <div id="playerwhite"></div>
+            <h4>Игрок за черных:</h4>
+            <div id="playerblack"></div>
+            <h4>Съеденные белые:</h4>
+            <div id="whiteout"></div>
+            <h4>Съеденные черные:</h4>
+            <div id="blackout"></div>
+            <h4>Список ходов:</h4>
+            <div id="moveslist"></div>
+        </td>
+    </tr>
+</table>
+
