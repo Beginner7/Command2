@@ -1,5 +1,6 @@
 ﻿@using Protocol.Transport
-@if(Request.IsAuthenticated && !User.Identity.Name.StartsWith(Consts.GUEST_PREFIX)) {
+@if (Request.IsAuthenticated && !User.Identity.Name.StartsWith(Consts.GUEST_PREFIX))
+{
     <a>Добро пожаловать, @User.Identity.Name</a>
     @Html.ActionLink("Выход", "LogOff", "Account");
 }
