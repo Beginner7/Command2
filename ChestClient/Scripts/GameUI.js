@@ -20,8 +20,12 @@ $(document).ready(function () {
 function FigurePosition() {
     $.get("/Game/Status", { gameID: $.gameID }, function (data) {
         $("#board td[id]").html("");
-        for (var s in data) {
+        for (var s in data.DataBoard) {
             $("#" + s).html("<img src = \"/Content/figure/" + data[s] + ".png\" width = 40 height = 40/>");
+        }
+        for (var s in data.DataStatus)
+        {
+            
         }
     });
 }
