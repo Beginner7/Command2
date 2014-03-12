@@ -1,5 +1,6 @@
 ﻿$.gameID = null;
 $.cellFrom = null;
+$.InWhom = null;
 
 $(document).ready(function () {
     var window;
@@ -28,8 +29,16 @@ function FigurePosition() {
 
 function cellClick(cellId) {
     if ($("#" + cellId).hasClass("selected")) {
-        $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID }, function (data) {
+        if (($.InWhom == null) && (cellId.charAt(1) == "8") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PW.png") != -1)) {
+            $("#dialogWhitePromotion").dialog();
+            $.InWhom = "Q";
+        }
+        if (($.InWhom == null) && (cellId.charAt(1) == "1") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PB.png") != -1)) {
+            $("#dialogBlackPromotion").dialog();
+            $.InWhom = "Q";
+        }
 
+        $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom}, function (data) {
             if (data)
                 alert(data);
             else {

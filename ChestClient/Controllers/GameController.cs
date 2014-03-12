@@ -86,13 +86,17 @@ namespace ChestClient.Controllers
                 From = Request.Params["From"],
                 To = Request.Params["To"],
                 Player = User.Identity.Name,
-                GameId = int.Parse(Request.Params["GameID"])
+                GameId = int.Parse(Request.Params["GameID"]),
+                InWhom = Request.Params["InWhom"],
             };
             var response = ServerProvider.MakeRequest(command);
             string ret;
             switch (response.Status)
             {
                 case Statuses.Ok:
+                    ret = "";
+                    break;
+                case Statuses.NeedPawnPromotion:
                     ret = "";
                     break;
                 case Statuses.NoUser:
