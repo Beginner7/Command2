@@ -139,7 +139,6 @@
     <Content Include="Content\figure\RW.png" />
     <Content Include="Content\img\footer.jpg" />
     <Content Include="Content\img\Header.jpg" />
-    <Content Include="Content\img\Sign.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -195,6 +194,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Content\client\ChessClient.zip" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\GameUI.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
@@ -289,13 +289,8 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>set buildbin="$(SolutionDir)ChessConsole\bin\$(ConfigurationName)\"
-set content="$(ProjectDir)Content\client\"
-md %25content%25
-
-copy /y %25buildbin%25"ChessConsole.exe" %25content%25"PlayChess.exe"
-copy /y %25buildbin%25"Newtonsoft.Json.dll" %25content%25
-copy /y %25buildbin%25"Protocol.dll" %25content%25</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
