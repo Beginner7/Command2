@@ -6,9 +6,21 @@
 
     
 <script src="@Url.Content("~/Scripts/GameUI.js")" type="text/javascript"></script>
+
+   
 <table>
     <tr>
         <td>
+                <h4>Съеденные белыми:</h4>
+                <div id="whiteout"></div>
+                <h4>Съеденные черными:</h4>
+                <div id="blackout"></div>
+   
+        </td>
+        <td>
+            
+            
+                
             <table id="board">
 
                 @for (int i = 0; i < 9; i++)
@@ -37,26 +49,35 @@
                                 <td bgcolor="000000" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
                             }
                         }
+      
                     </tr>
+                  
                 }
+                
+                <td>
+                   
+                </td>
             </table>
+            
         </td>
         <td>
-            <h4>Статус игры:</h4>
-            <div id="gamestatus"></div>
-            <h4>Чей ход:</h4>
-            <div id="turn"></div>
-            <h4>Игрок за белых:</h4>
-            <div id="playerwhite"></div>
-            <h4>Игрок за черных:</h4>
-            <div id="playerblack"></div>
-            <h4>Съеденные белые:</h4>
-            <div id="whiteout"></div>
-            <h4>Съеденные черные:</h4>
-            <div id="blackout"></div>
-            <h4>Список ходов:</h4>
-            <div id="moveslist"></div>
+           
+           
+           
+            <td>
+                <h4>Статус игры:</h4>
+                    <div id="gamestatus"></div>
+                    <h6>Чей ход:</h6>
+                    <div id="turn"></div>
+                    <h6>Игрок за белых:</h6>
+                    <div id="playerwhite"></div>
+                    <h6>Игрок за черных:</h6>
+                    <div id="playerblack"></div>
+                    <h4>Список ходов:</h4>
+                    <div id="moveslist"></div>
+            </td>
         </td>
-    </tr>
+    </td>
 </table>
+
 
