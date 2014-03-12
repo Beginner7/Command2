@@ -5,6 +5,7 @@ using ChestClient.Models;
 using Protocol.GameObjects;
 using Protocol;
 using Protocol.Transport;
+using Protocol.Transport.Messages;
 
 namespace ChestClient.Controllers
 {
@@ -13,6 +14,8 @@ namespace ChestClient.Controllers
         //
         // GET: /Game/
         private static readonly Dictionary<int, GameModel> Games = new Dictionary<int, GameModel>();
+
+        public List<Message> Messages = new List<Message>();
    
         public ActionResult List()
         {
@@ -25,10 +28,12 @@ namespace ChestClient.Controllers
             board.InitialPosition();
             var request = new MoveListRequest {Game = int.Parse(Request.Params["gameID"])};
             var response = ServerProvider.MakeRequest<MoveListResponse>(request);
+            var request2 = new GameStatRequest {gameID = int.Parse(Request.Params["gameID"])};
+            var response2 = ServerProvider.MakeRequest<GameStatResponse>(request2);
 
             board.ApplyMoves(response.Moves);
             
-            return Json(board.ShowBoardToWeb(), JsonRequestBehavior.AllowGet);
+            return Json(new {DataBoard = board.ShowBoardToWeb(), DataStatus = response2.Act, DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn}, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult MoveVariants()
@@ -90,6 +95,7 @@ namespace ChestClient.Controllers
                 InWhom = Request.Params["InWhom"],
             };
             var response = ServerProvider.MakeRequest(command);
+            Messages = response.Messages;
             string ret;
             switch (response.Status)
             {
@@ -120,5 +126,16 @@ namespace ChestClient.Controllers
             }
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Index2()
+        {
+            return View();
+        }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
     }
 }
