@@ -123,71 +123,15 @@ namespace ChestClient.Controllers
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ResultOfMove()
+        public ActionResult Index2()
         {
-            foreach (var element in Messages)
-                    {
-                        switch (element.Type)
-                        {
-                            case MessageType.OpponentSurrendered:
-                                return Json("Opponent Surrendered", JsonRequestBehavior.AllowGet);
-                                // CurrentUser.CurrentGame = null;
-
-                            case MessageType.YouLoose:
-                                return Json("Check and Mate! You loose.", JsonRequestBehavior.AllowGet);
-                                // CurrentUser.CurrentGame = null;
-
-                            case MessageType.YouWin:
-                                return Json("Check and Mate! You win!", JsonRequestBehavior.AllowGet);
-                                // CurrentUser.CurrentGame = null;
-
-                            case MessageType.Pat:
-                                return Json("Pat! Game is over.", JsonRequestBehavior.AllowGet);
-                                // CurrentUser.CurrentGame = null;
-
-                            case MessageType.GameDraw:
-                                return Json("Game draw.", JsonRequestBehavior.AllowGet);
-                                // CurrentUser.CurrentGame = null;
-
-                            case MessageType.OpponentAcceptedPeace:
-                                return Json("Opponent accepted peace. Game is over.", JsonRequestBehavior.AllowGet);
-                                // CurrentUser.CurrentGame = null;
-
-                            case MessageType.OpponentDeclinedPeace:
-                                return Json("Opponent declined peace.", JsonRequestBehavior.AllowGet);
-
-                            case MessageType.OpponentRequestPeace:
-                                return Json("Opponent request peace. \\\n " + "You argee? (yes/no):", JsonRequestBehavior.AllowGet);
-                               // CurrentUser.NeedPeaseAnswer = true;
-
-                            case MessageType.OpponentJoinedGame:
-                                return Json("Opponent joined the game.", JsonRequestBehavior.AllowGet);
-
-                            case MessageType.CheckToOpponent:
-                                 return Json("You make Check.", JsonRequestBehavior.AllowGet);
-
-                            case MessageType.CheckToYou:
-                                return Json("You have Check!", JsonRequestBehavior.AllowGet);
-
-                            case MessageType.OpponentAbandonedGame:
-                                return Json("Opponent abandoned the game.", JsonRequestBehavior.AllowGet);
-                               // CurrentUser.CurrentGame = null;
-
-                            case MessageType.OpponentLostConnection:
-                                return Json("Opponent lost connection.", JsonRequestBehavior.AllowGet);
-                               // CurrentUser.CurrentGame = null;
-
-                            case MessageType.ChatMessage:
-                                return Json(element.Text, JsonRequestBehavior.AllowGet);
-
-                            case MessageType.OpponentMove:
-                                return Json("Opponent make move: " + element.Text, JsonRequestBehavior.AllowGet);
-
-                            default:
-                                return Json("Unexpected message type.", JsonRequestBehavior.AllowGet);
-                        }
-                    }
-            return Json("Unexpected message type.", JsonRequestBehavior.AllowGet);
+            return View();
         }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
     }
 }
