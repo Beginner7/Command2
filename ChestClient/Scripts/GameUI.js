@@ -21,12 +21,28 @@ function FigurePosition() {
     $.get("/Game/Status", { gameID: $.gameID }, function (data) {
         $("#board td[id]").html("");
         for (var s in data.DataBoard) {
-            $("#" + s).html("<img src = \"/Content/figure/" + data[s] + ".png\" width = 40 height = 40/>");
+            $("#" + s).html("<img src = \"/Content/figure/" + data.DataBoard[s] + ".png\" width = 40 height = 40/>");
         }
-        for (var s in data.DataStatus)
-        {
-            
+        $("#playerwhite").html(data.DataWhitePlayer);
+        $("#playerblack").html(data.DataBlackPlayer);
+        if (data.DataTurn == 1) {
+            $("#turn").html("<font size=\"5\" color=\"#330000\"> Черных </font>");
+        } else {
+            $("#turn").html("<font size=\"5\" color=\"ccff99\"> Белых </font>");
         }
+        var move = "";
+        if (data.DataTurn == 1) {
+            for (var s2 in data.DataMoves) {
+                move = move + "<font size=\"5\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
+                $("#moveslist").html(move);
+            }
+        } else {
+            for (var s2 in data.DataMoves) {
+                move = move + "<font size=\"5\" color=\"#ccff99\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
+                $("#moveslist").html(move);
+            }
+        }
+        $("#gamestatus").html(data.DataStatus);
     });
 }
 

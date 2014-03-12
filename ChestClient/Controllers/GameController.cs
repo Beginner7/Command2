@@ -26,14 +26,54 @@ namespace ChestClient.Controllers
         {
             var board = new Board();
             board.InitialPosition();
+            string res;
             var request = new MoveListRequest {Game = int.Parse(Request.Params["gameID"])};
             var response = ServerProvider.MakeRequest<MoveListResponse>(request);
             var request2 = new GameStatRequest {gameID = int.Parse(Request.Params["gameID"])};
             var response2 = ServerProvider.MakeRequest<GameStatResponse>(request2);
 
             board.ApplyMoves(response.Moves);
+
+            switch (response2.Act)
+            {
+                case Act.AbandonedByWhite:
+                    res = ("Was abandoned by White");
+                    break;
+
+                case Act.AbandonedByBlack:
+                    res = ("Was abandoned by Black");
+                    break;
+
+                case Act.Cancled:
+                    res = ("Was cancled");
+                    break;
+
+                case Act.WaitingOpponent:
+                    res = ("Waiting for 2nd player");
+                    break;
+
+                case Act.Pat:
+                    res = ("Finished with pat");
+                    break;
+
+                case Act.WhiteWon:
+                    res = ("Won by White");
+                    break;
+
+                case Act.BlackWon:
+                    res = ("Won by Black");
+                    break;
+
+                case Act.InProgress:
+                    res = ("Now in progress");
+                    break;
+
+                default:
+                    res = ("Unexpected act");
+                    break;
+            }
             
-            return Json(new {DataBoard = board.ShowBoardToWeb(), DataStatus = response2.Act, DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn}, JsonRequestBehavior.AllowGet);
+            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMoves = response.Moves, DataStatus = res, DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn}, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult MoveVariants()
@@ -94,7 +134,6 @@ namespace ChestClient.Controllers
                 GameId = int.Parse(Request.Params["GameID"])
             };
             var response = ServerProvider.MakeRequest(command);
-            Messages = response.Messages;
             string ret;
             switch (response.Status)
             {
