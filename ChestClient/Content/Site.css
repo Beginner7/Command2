@@ -96,8 +96,118 @@ header h1, #header h1 {
     background-size:100%;
 }
 
+.ui-button .ui-icon.white-queen-icon {
+    background-image: url(/Content/figure/QW.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
 
- 
+.ui-button .ui-icon.white-rook-icon {
+    background-image: url(/Content/figure/RW.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+.ui-button .ui-icon.white-bishop-icon {
+    background-image: url(/Content/figure/BW.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+.ui-button .ui-icon.white-knight-icon {
+    background-image: url(/Content/figure/NW.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+.ui-button .ui-icon.black-queen-icon {
+    background-image: url(/Content/figure/QB.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+.ui-button .ui-icon.black-rook-icon {
+    background-image: url(/Content/figure/RB.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+.ui-button .ui-icon.black-bishop-icon {
+    background-image: url(/Content/figure/BB.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+.ui-button .ui-icon.black-knight-icon {
+    background-image: url(/Content/figure/NB.png);
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+#whiteQueenButton {
+    width: 100px;
+    height: 100px;
+}
+
+#whiteRookButton {
+    width: 100px;
+    height: 100px;
+}
+
+#whiteBishopButton {
+    width: 100px;
+    height: 100px;
+}
+
+#whiteKnightButton {
+    width: 100px;
+    height: 100px;
+}
+
+#blackQueenButton {
+    width: 100px;
+    height: 100px;
+}
+
+#blackRookButton {
+    width: 100px;
+    height: 100px;
+}
+
+#blackBishopButton {
+    width: 100px;
+    height: 100px;
+}
+
+#blackKnightButton {
+    width: 100px;
+    height: 100px;
+}
+
 #footer {
     width: 100%;
     position:absolute;

@@ -22,7 +22,7 @@ function FigurePosition() {
     $.get("/Game/Status", { gameID: $.gameID }, function (data) {
         $("#board td[id]").html("");
         for (var s in data.DataBoard) {
-            $("#" + s).html("<img src = \"/Content/figure/" + data.DataBoard[s] + ".png\" width = 40 height = 40/>");
+            $("#" + s).html("<img src = \"/Content/figure/" + data.DataBoard[s] + ".png\" width = 50 height = 50/>");
         }
         $("#playerwhite").html(data.DataWhitePlayer);
         $("#playerblack").html(data.DataBlackPlayer);
@@ -50,23 +50,131 @@ function FigurePosition() {
 function cellClick(cellId) {
     if ($("#" + cellId).hasClass("selected")) {
         if (($.InWhom == null) && (cellId.charAt(1) == "8") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PW.png") != -1)) {
-            $("#dialogWhitePromotion").dialog();
-            $.InWhom = "Q";
+            $("#dialogWhitePromotion").dialog({
+                resizable: false,
+                width: 450,
+                closeOnEscape: true,
+                modal: true,
+                close: function () {
+                    $("#textArea").val("");
+                    $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
+                        if (data)
+                            alert(data);
+                        else {
+                            $("#board td[id]").removeClass("selected");
+                            FigurePosition();
+                        }
+                    });
+                    $.InWhom = null;
+                }
+            });
+            $('#whiteQueenButton').button({
+                text: false,
+                icons: {
+                    primary: 'white-queen-icon'
+                }
+            }).click(function () {
+                $.InWhom = "Q";
+                $("#dialogWhitePromotion").dialog("close");
+            });
+            $('#whiteRookButton').button({
+                text: false,
+                icons: {
+                    primary: 'white-rook-icon'
+                }
+            }).click(function () {
+                $.InWhom = "R";
+                $("#dialogWhitePromotion").dialog("close");
+            });
+            $('#whiteBishopButton').button({
+                text: false,
+                icons: {
+                    primary: 'white-bishop-icon'
+                }
+            }).click(function () {
+                $.InWhom = "B";
+                $("#dialogWhitePromotion").dialog("close");
+            });
+            $('#whiteKnightButton').button({
+                text: false,
+                icons: {
+                    primary: 'white-knight-icon'
+                }
+            }).click(function () {
+                $.InWhom = "N";
+                $("#dialogWhitePromotion").dialog("close");
+            });
         }
-        if (($.InWhom == null) && (cellId.charAt(1) == "1") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PB.png") != -1)) {
-            $("#dialogBlackPromotion").dialog();
-            $.InWhom = "Q";
-        }
-
-        $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom}, function (data) {
-            if (data)
-                alert(data);
-            else {
-                $("#board td[id]").removeClass("selected");
-                FigurePosition();
+        else
+        {
+            if (($.InWhom == null) && (cellId.charAt(1) == "1") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PB.png") != -1)) {
+                $("#dialogBlackPromotion").dialog({
+                    resizable: false,
+                    width: 450,
+                    closeOnEscape: true,
+                    modal: true,
+                    close: function () {
+                        $("#textArea").val("");
+                        $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
+                            if (data)
+                                alert(data);
+                            else {
+                                $("#board td[id]").removeClass("selected");
+                                FigurePosition();
+                            }
+                        });
+                        $.InWhom = null;
+                    }
+                });
+                $('#blackQueenButton').button({
+                    text: false,
+                    icons: {
+                        primary: 'black-queen-icon'
+                    }
+                }).click(function () {
+                    $.InWhom = "Q";
+                    $("#dialogBlackPromotion").dialog("close");
+                });
+                $('#blackRookButton').button({
+                    text: false,
+                    icons: {
+                        primary: 'black-rook-icon'
+                    }
+                }).click(function () {
+                    $.InWhom = "R";
+                    $("#dialogBlackPromotion").dialog("close");
+                });
+                $('#blackBishopButton').button({
+                    text: false,
+                    icons: {
+                        primary: 'black-bishop-icon'
+                    }
+                }).click(function () {
+                    $.InWhom = "B";
+                    $("#dialogBlackPromotion").dialog("close");
+                });
+                $('#blackKnightButton').button({
+                    text: false,
+                    icons: {
+                        primary: 'black-knight-icon'
+                    }
+                }).click(function () {
+                    $.InWhom = "N";
+                    $("#dialogBlackPromotion").dialog("close");
+                });
             }
-
-        });
+            else
+            {
+                $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID }, function (data) {
+                    if (data)
+                        alert(data);
+                    else {
+                        $("#board td[id]").removeClass("selected");
+                        FigurePosition();
+                    }
+                });
+            }
+        }
     } else if ($("#" + cellId + " img").length) {
         $.cellFrom = cellId;
         $.get("/Game/MoveVariants", { cell: cellId, gameID: $.gameID }, function(data) {

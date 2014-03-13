@@ -9,7 +9,7 @@
 <table>
     <tr>
         <td>
-            <table id="board">
+            <table width="568" id="board">
 
                 @for (int i = 0; i < 9; i++)
                 {
@@ -30,11 +30,11 @@
                             }
                             else if ((i + j) % 2 == 0)
                             {
-                                <td bgcolor="FFFFFF" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
+                                <td height="55" bgcolor="FFFFFF" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
                             }
                             else
                             {
-                                <td bgcolor="000000" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
+                                <td height="55" bgcolor="000000" id = @(((char)('a' + j - 1)).ToString() + (9 - i).ToString())> </td>
                             }
                         }
                     </tr>
@@ -62,15 +62,15 @@
 </table>
 
 <div id="dialogWhitePromotion" title="Превращение пешки" style="display: none;">
-    <img src="/Content/figure/QW.png" alt="Pawn" width="40" height="40" />
-    <img src="/Content/figure/RW.png" alt="Pawn" width="40" height="40" />
-    <img src="/Content/figure/BW.png" alt="Pawn" width="40" height="40" />
-    <img src="/Content/figure/KW.png" alt="Pawn" width="40" height="40" />
+    <button id="whiteQueenButton">Queen</button>
+    <button id="whiteRookButton">Rook</button>
+    <button id="whiteBishopButton">Bishop</button>
+    <button id="whiteKnightButton">Knight</button>
 </div>
 
 <div id="dialogBlackPromotion" title="Превращение пешки" style="display: none;">
-    <img src="/Content/figure/QB.png" alt="Pawn" width="40" height="40" />
-    <img src="/Content/figure/RB.png" alt="Pawn" width="40" height="40" />
-    <img src="/Content/figure/BB.png" alt="Pawn" width="40" height="40" />
-    <img src="/Content/figure/KB.png" alt="Pawn" width="40" height="40" />
+    <button id="blackQueenButton">Queen</button>
+    <button id="blackRookButton">Rook</button>
+    <button id="blackBishopButton">Bishop</button>
+    <button id="blackKnightButton">Knight</button>
 </div>
