@@ -73,7 +73,9 @@ namespace ChestClient.Controllers
                     break;
             }
             
-            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMoves = response.Moves, DataStatus = res, DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn}, JsonRequestBehavior.AllowGet);
+            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMoves = response.Moves, DataStatus = res,
+                DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn,
+                EatedWhites = response2.EatedWhites, EatedBlacks = response2.EatedBlacks}, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult MoveVariants()

@@ -9,5 +9,7 @@ namespace Protocol
         public string PlayerBlack;
         public Side Turn;
         public Act Act;
+        public string EatedWhites;
+        public string EatedBlacks;
     }
 }

@@ -28,7 +28,7 @@ namespace ChessServer
         {
             foreach (var element in Users)
             {
-                if (element.Value.Lostbeats > 10)
+                if (!element.Value.Name.StartsWith(Consts.GUEST_PREFIX) && element.Value.Lostbeats > 10)
                 {
                     foreach (var elementGame in Games)
                     {

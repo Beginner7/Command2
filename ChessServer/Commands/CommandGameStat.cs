@@ -9,7 +9,8 @@ namespace ChessServer.Commands
         public override Response DoWork(string request)
         {
             var workRequest = JsonConvert.DeserializeObject<GameStatRequest>(request);
-            var workResponse = new GameStatResponse {ID = workRequest.gameID, Act = Server.Games[workRequest.gameID].Act};
+            var workResponse = new GameStatResponse {ID = workRequest.gameID, Act = Server.Games[workRequest.gameID].Act,
+            EatedWhites = Server.Games[workRequest.gameID].EatedWhites, EatedBlacks = Server.Games[workRequest.gameID].EatedBlacks};
             if (Server.Games[workRequest.gameID].PlayerBlack != null)
             {
                 workResponse.PlayerBlack = Server.Games[workRequest.gameID].PlayerBlack.Name;

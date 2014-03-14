@@ -72,7 +72,7 @@ namespace ChessServer.Commands
 
             var moves = currentGame.Moves;
             var attackMap = new AttackMap(moves);
-            
+
             if (attackMap.SourceBoard[workRequest.From].Side != userSide || !attackMap[workRequest.To].Contains(attackMap.SourceBoard[workRequest.From]))
             {
                 workResponse.Status = Statuses.WrongMove;
@@ -133,6 +133,17 @@ namespace ChessServer.Commands
                 blackPlayer.Messages.Add(MessageSender.GameDraw());
             }
 
+            if (attackMap.SourceBoard[workRequest.To].GetType() != typeof(FigureNone))
+            {
+                if (attackMap.SourceBoard[workRequest.To].Side == Side.WHITE)
+                {
+                    currentGame.EatedWhites += attackMap.SourceBoard[workRequest.To].Symbol;
+                }
+                else
+                {
+                    currentGame.EatedBlacks += attackMap.SourceBoard[workRequest.To].Symbol;
+                }
+            }
             moves.Add(new Move { From = workRequest.From, To = workRequest.To, Player = workRequest.Player, InWhom = workRequest.InWhom });
 
             if (Server.Games[workRequest.GameId].Turn == Side.WHITE)

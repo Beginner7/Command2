@@ -31,6 +31,17 @@ function FigurePosition() {
         } else {
             $("#turn").html("<font size=\"5\" color=\"ccff99\"> Белых </font>");
         }
+        var eatedwhites = "";
+        for (var i = 0; i < data.EatedWhites.length; i++)
+        {
+            eatedwhites += "<img src = \"/Content/figure/" + data.EatedWhites.charAt(i) + "W.png\" width = 24 height = 24/>";
+        }
+        var eatedblacks = "";
+        for (var i = 0; i < data.EatedBlacks.length; i++) {
+            eatedblacks += "<img src = \"/Content/figure/" + data.EatedBlacks.charAt(i) + "B.png\" width = 24 height = 24/>";
+        }
+        $("#whitemorgue").html(eatedwhites);
+        $("#blackmorgue").html(eatedblacks);
         var move = "";
         if (data.DataTurn == 1) {
             for (var s2 in data.DataMoves) {
@@ -55,6 +66,7 @@ function cellClick(cellId) {
                 width: 450,
                 closeOnEscape: true,
                 modal: true,
+                open: function (event, ui) { $(".ui-dialog-titlebar-close").hide(); $(".ui-widget-overlay").css('background', 'black') },
                 close: function () {
                     $("#textArea").val("");
                     $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
@@ -67,6 +79,10 @@ function cellClick(cellId) {
                     });
                     $.InWhom = null;
                 }
+            });
+            $(".ui-widget-overlay").click(function () {
+                $.InWhom = null;
+                $("#dialogWhitePromotion").dialog("close");
             });
             $('#whiteQueenButton').button({
                 text: false,
@@ -113,6 +129,7 @@ function cellClick(cellId) {
                     width: 450,
                     closeOnEscape: true,
                     modal: true,
+                    open: function (event, ui) { $(".ui-dialog-titlebar-close").hide(); },
                     close: function () {
                         $("#textArea").val("");
                         $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
@@ -125,6 +142,10 @@ function cellClick(cellId) {
                         });
                         $.InWhom = null;
                     }
+                });
+                $(".ui-widget-overlay").click(function () {
+                    $.InWhom = null;
+                    $("#dialogBlackPromotion").dialog("close");
                 });
                 $('#blackQueenButton').button({
                     text: false,

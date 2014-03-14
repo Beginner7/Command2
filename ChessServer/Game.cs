@@ -18,7 +18,8 @@ namespace ChessServer
         public DateTime TimeStartGame; //время начала игры
         public List<Move> Moves = new List<Move>();
         public static int GameIdSeq = 0;
-
+        public string EatedWhites = "";
+        public string EatedBlacks = "";
 
         public Game(User user)
         {
