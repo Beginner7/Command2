@@ -139,6 +139,7 @@
     <Content Include="Content\figure\RW.png" />
     <Content Include="Content\img\footer.jpg" />
     <Content Include="Content\img\Header.jpg" />
+    <Content Include="Content\img\Надпись.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
