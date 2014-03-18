@@ -93,6 +93,7 @@ namespace ChessServer.Commands
             {
                 if (fakeAttackMap.IsMateBlack)
                 {
+                    currentGame.Act = Act.WhiteWon;
                     blackPlayer.Messages.Add(MessageSender.YouLoose());
                     whitePlayer.Messages.Add(MessageSender.YouWin());
                 }
@@ -113,7 +114,6 @@ namespace ChessServer.Commands
                 }
                 else
                 {
-                    currentGame.Act = Act.WhiteWon;
                     whitePlayer.Messages.Add(MessageSender.CheckToYou());
                     blackPlayer.Messages.Add(MessageSender.CheckToOpponent());
                 }

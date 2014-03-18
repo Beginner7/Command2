@@ -29,7 +29,7 @@ function FigurePosition() {
         if (data.DataTurn == 1) {
             $("#turn").html("<font size=\"5\" color=\"#330000\"> Черных </font>");
         } else {
-            $("#turn").html("<font size=\"5\" color=\"ccff99\"> Белых </font>");
+            $("#turn").html("<font size=\"5\" color=\"#E9967A\"> Белых </font>");
         }
         var eatedwhites = "";
         for (var i = 0; i < data.EatedWhites.length; i++)
@@ -43,18 +43,40 @@ function FigurePosition() {
         $("#whitemorgue").html(eatedwhites);
         $("#blackmorgue").html(eatedblacks);
         var move = "";
-        if (data.DataTurn == 1) {
             for (var s2 in data.DataMoves) {
                 move = move + "<font size=\"5\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
                 $("#moveslist").html(move);
             }
-        } else {
-            for (var s2 in data.DataMoves) {
-                move = move + "<font size=\"5\" color=\"#ccff99\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
-                $("#moveslist").html(move);
-            }
+        $("#gamestatus").html(data.DataTextStatus);
+        if (data.DataStatus.WhiteWon || data.DataStatus.BlackWon || data.DataStatus.Pat) {
+            $("#gameStatus").dialog({
+                resizable: false,
+                width: 450,
+                closeOnEscape: true,
+                modal: true,
+                open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+                close: function() {
+                    $("#textArea").val("");
+                    $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
+                        if (data)
+                            alert(data);
+                        else {
+                            $("#board td[id]").removeClass("selected");
+                            FigurePosition();
+                        }
+                    });
+                    $.InWhom = null;
+                }
+            });
+            $(".ui-widget-overlay").click(function () {
+                $.InWhom = null;
+                $("#gameStatus").dialog("close");
+            });
+            $("#gameStatus2").text({
+                text: data.DataTextStatus,
+            });
         }
-        $("#gamestatus").html(data.DataStatus);
+
     });
 }
 
