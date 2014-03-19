@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttackersRequest.cs" />
+    <Compile Include="AttackersResponse.cs" />
     <Compile Include="ChatResponse.cs" />
     <Compile Include="DeleteUserRequest.cs" />
     <Compile Include="AddUserRequest.cs" />

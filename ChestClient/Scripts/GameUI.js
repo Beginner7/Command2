@@ -26,12 +26,13 @@ function FigurePosition() {
         $("#playerwhite").html(data.DataWhitePlayer);
         $("#playerblack").html(data.DataBlackPlayer);
         if (data.DataTurn == 1) {
-            $("#turn").html("<font size=\"5\" color=\"#330000\"> Черных </font>");
+            $("#turn").html("<font size=\"3\" color=\"#330000\"> Черных </font>");
         } else {
-            $("#turn").html("<font size=\"5\" color=\"#E9967A\"> Белых </font>");
+            $("#turn").html("<font size=\"3\" color=\"#E9967A\"> Белых </font>");
         }
         var eatedwhites = "";
         for (i = 0; i < data.EatedWhites.length; i++) {
+            
             eatedwhites += "<img src = \"/Content/figure/" + data.EatedWhites.charAt(i) + "W.png\" width = 24 height = 24/>";
         }
         var eatedblacks = "";
@@ -42,10 +43,9 @@ function FigurePosition() {
         $("#blackmorgue").html(eatedblacks);
         var move = "";
         for (var s2 in data.DataMoves) {
-            move = move + "<font size=\"5\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
+            move = move + "<font size=\"4\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
             $("#moveslist").html(move);
         }
-        $("#gamestatus").html(data.DataTextStatus);
         if (data.DataTextStatus.indexOf("Won by White") > -1) {
             $("#dialogWhiteWon").dialog({
                 resizable: false,

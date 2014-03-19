@@ -126,6 +126,17 @@ namespace ChessServer.Commands
                 blackPlayer.Messages.Add(MessageSender.Pat());
             }
 
+            if (attackMap.IsCheckWhite)
+            {
+                currentGame.Act = Act.WhiteCheck;
+            }
+
+            if (attackMap.IsCheckBlack)
+            {
+                currentGame.Act = Act.BlackCheck;
+            }
+
+
             if (!(attackMap.IsCheck || attackMap.IsPat) && fakeAttackMap.IsDraw)
             {
                 currentGame.Act = Act.Draw;

@@ -9,7 +9,17 @@ namespace ChessServer.GameLogic
     public class AttackMap
     {
         private readonly string _whiteKing;
+        public string WhiteKing
+        {
+            get { return _whiteKing; }
+        }
+
         private readonly string _blackKing;
+        public string BlackKing
+        {
+            get { return _blackKing; }
+        }
+
         public Board SourceBoard { get; private set; }
         public List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         private readonly Dictionary<Figure, string> _figuresPosition = new Dictionary<Figure, string>();
@@ -680,7 +690,7 @@ namespace ChessServer.GameLogic
         {
             get
             {
-                return WhitePossibleMoves.Count() == 0 && !IsCheckWhite;
+                return !WhitePossibleMoves.Any() && !IsCheckWhite;
             }
         }
 
@@ -696,7 +706,7 @@ namespace ChessServer.GameLogic
         {
             get
             {
-                return BlackPossibleMoves.Count() == 0 && !IsCheckBlack;
+                return !BlackPossibleMoves.Any() && !IsCheckBlack;
             }
         }
 

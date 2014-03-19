@@ -30,6 +30,8 @@
         BlackWon,
         Pat,
         Draw,
-        Peace
+        Peace,
+        WhiteCheck,
+        BlackCheck
     }
 }

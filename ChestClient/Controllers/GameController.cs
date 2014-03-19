@@ -90,6 +90,22 @@ namespace ChestClient.Controllers
             return Json(response.Cells, JsonRequestBehavior.AllowGet);
         }
 
+        public void KingUnderAttack()
+        {
+            var board = new Board();
+            board.InitialPosition();
+
+            var request = new AttackersRequest { Game = int.Parse(Request.Params["gameID"]) };
+            var response = ServerProvider.MakeRequest<AttackersResponse>(request);
+
+            var request2 = new GameStatRequest { gameID = int.Parse(Request.Params["gameID"]) };
+            var response2 = ServerProvider.MakeRequest<GameStatResponse>(request2);
+
+            if (response2.Act == Act.BlackCheck)
+            {
+            }
+        }
+
         public ActionResult Free()
         {
             return View();
