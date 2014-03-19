@@ -14,6 +14,7 @@ namespace ChessConsole
         public static bool NeedPeaseAnswer = false;
         public static bool NeedPawnPromotion = false;
         public static Move LastMove = null;
+        public static bool Searching = false;
 
         public static void StartPulse()
         {

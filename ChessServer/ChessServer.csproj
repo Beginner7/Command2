@@ -66,6 +66,8 @@
     <Compile Include="Commands\CommandPeace.cs" />
     <Compile Include="Commands\CommandAcceptPeace.cs" />
     <Compile Include="Commands\CommandDeclinePeace.cs" />
+    <Compile Include="Commands\CommandPlay.cs" />
+    <Compile Include="Commands\CommandStop.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameLogic\AttackMap.cs" />
     <Compile Include="Server.cs" />

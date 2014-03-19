@@ -25,14 +25,31 @@ namespace ChessServer
         {
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;
-            var _rnd = new Random();
-            if (_rnd.Next(0, 2) == 0)
+            var rnd = new Random();
+            if (rnd.Next(2) == 0)
             {
                 PlayerWhite = user;
             }
             else
             {
                 PlayerBlack = user;
+            }
+        }
+
+        public Game(User user1, User user2)
+        {
+            Interlocked.Increment(ref GameIdSeq);
+            Id = GameIdSeq;
+            var rnd = new Random();
+            if (rnd.Next(2) == 0)
+            {
+                PlayerWhite = user1;
+                PlayerBlack = user2;
+            }
+            else
+            {
+                PlayerWhite = user2;
+                PlayerBlack = user1;
             }
         }
     }

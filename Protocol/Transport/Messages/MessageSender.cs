@@ -62,6 +62,11 @@
             return new Message(null, MessageType.OpponentAbandonedGame);
         }
 
+        public static Message GameIsReady(int gameId)
+        {
+            return new Message(gameId.ToString(), MessageType.GameIsReady);
+        }
+
         public static Message OpponentJoinedGame()
         {
             return new Message(null, MessageType.OpponentJoinedGame);

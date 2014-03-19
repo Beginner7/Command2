@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Linq;
 using Newtonsoft.Json;
 using Protocol;
 using Protocol.Transport;
@@ -14,6 +13,7 @@ namespace ChessServer
     {
         public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
+        public static ConcurrentDictionary<string, User> PlayersQue = new ConcurrentDictionary<string, User>();
         private static int _userNumber = 1;
 
         static Server()
@@ -22,6 +22,27 @@ namespace ChessServer
             timer.Elapsed += PulseChecker;
             timer.Start();
             timer.Interval = 5000;
+
+            var matchMakingTimer = new Timer();
+            matchMakingTimer.Elapsed += MatchMaking;
+            matchMakingTimer.Start();
+            matchMakingTimer.Interval = 10000;
+        }
+
+        private static void MatchMaking(object source, ElapsedEventArgs e)
+        {
+            if (PlayersQue.Count < 2) return;
+            var players = PlayersQue.Values.ToArray();
+            for (var i = 0; i < PlayersQue.Count/2; i++)
+            {
+                var game = new Game(players[i*2], players[i*2 + 1]) {Act = Act.InProgress};
+                if (!Games.TryAdd(game.Id, game)) continue;
+                User dummy;
+                PlayersQue.TryRemove(players[i*2].Name, out dummy);
+                PlayersQue.TryRemove(players[i*2 + 1].Name, out dummy);
+                players[i*2].Messages.Add(MessageSender.GameIsReady(game.Id));
+                players[i*2 + 1].Messages.Add(MessageSender.GameIsReady(game.Id));
+            }
         }
 
         private static void PulseChecker(object source, ElapsedEventArgs e)
