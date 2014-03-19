@@ -46,6 +46,12 @@ namespace ChessConsole
                         Utils.Print("Opponent declined peace.");
                         break;
 
+                    case MessageType.GameIsReady:
+                        Utils.Print("Game found, ID: " + element.Text);
+                        CurrentUser.Searching = false;
+                        CurrentUser.CurrentGame = Convert.ToInt32(element.Text);
+                        break;
+
                     case MessageType.OpponentRequestPeace:
                         Utils.Print("Opponent request peace.");
                         Utils.Print("You argee? (yes/no):");

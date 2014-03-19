@@ -16,6 +16,7 @@
         Pat,
         GameDraw,
         CheckToOpponent,
-        CheckToYou
+        CheckToYou,
+        GameIsReady
     }
 }

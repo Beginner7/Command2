@@ -102,6 +102,10 @@
     <Compile Include="DeclinePeaceResponse.cs" />
     <Compile Include="MoveVariantsRequest.cs" />
     <Compile Include="MoveVariantsResponse.cs" />
+    <Compile Include="PlayRequest.cs" />
+    <Compile Include="PlayResponse.cs" />
+    <Compile Include="StopRequest.cs" />
+    <Compile Include="StopResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
