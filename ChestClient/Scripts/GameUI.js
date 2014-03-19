@@ -3,10 +3,9 @@ $.cellFrom = null;
 $.InWhom = null;
 
 $(document).ready(function () {
-    var window;
     $("#board td[id]").click(function (eventObject) {
         cellClick(eventObject.currentTarget.id);
-        
+
     });
     $.get("/Game/StartFree", function (data) {
         if (data == null)
@@ -32,8 +31,7 @@ function FigurePosition() {
             $("#turn").html("<font size=\"5\" color=\"#E9967A\"> Белых </font>");
         }
         var eatedwhites = "";
-        for (var i = 0; i < data.EatedWhites.length; i++)
-        {
+        for (i = 0; i < data.EatedWhites.length; i++) {
             eatedwhites += "<img src = \"/Content/figure/" + data.EatedWhites.charAt(i) + "W.png\" width = 24 height = 24/>";
         }
         var eatedblacks = "";
@@ -43,40 +41,41 @@ function FigurePosition() {
         $("#whitemorgue").html(eatedwhites);
         $("#blackmorgue").html(eatedblacks);
         var move = "";
-            for (var s2 in data.DataMoves) {
-                move = move + "<font size=\"5\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
-                $("#moveslist").html(move);
-            }
+        for (var s2 in data.DataMoves) {
+            move = move + "<font size=\"5\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
+            $("#moveslist").html(move);
+        }
         $("#gamestatus").html(data.DataTextStatus);
-        if (data.DataStatus.WhiteWon || data.DataStatus.BlackWon || data.DataStatus.Pat) {
-            $("#gameStatus").dialog({
+        if (data.DataTextStatus.indexOf("Won by White") > -1) {
+            $("#dialogWhiteWon").dialog({
                 resizable: false,
                 width: 450,
                 closeOnEscape: true,
                 modal: true,
-                open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
-                close: function() {
-                    $("#textArea").val("");
-                    $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
-                        if (data)
-                            alert(data);
-                        else {
-                            $("#board td[id]").removeClass("selected");
-                            FigurePosition();
-                        }
-                    });
-                    $.InWhom = null;
-                }
+                open: function () {
+                    $(".ui-dialog-titlebar-close").hide();
+                    $(".ui-widget-overlay").css('background', 'black');
+                },
             });
             $(".ui-widget-overlay").click(function () {
-                $.InWhom = null;
-                $("#gameStatus").dialog("close");
-            });
-            $("#gameStatus2").text({
-                text: data.DataTextStatus,
+                $("#dialogWhiteWon").dialog("close");
             });
         }
-
+        if (data.DataTextStatus.indexOf("Won by Black") > -1) {
+            $("#dialogBlackWon").dialog({
+                resizable: false,
+                width: 450,
+                closeOnEscape: true,
+                modal: true,
+                open: function () {
+                    $(".ui-dialog-titlebar-close").hide();
+                    $(".ui-widget-overlay").css('background', 'black');
+                },
+            });
+            $(".ui-widget-overlay").click(function () {
+                $("#dialogBlackWon").dialog("close");
+            });
+        }
     });
 }
 
@@ -88,7 +87,9 @@ function cellClick(cellId) {
                 width: 450,
                 closeOnEscape: true,
                 modal: true,
-                open: function (event, ui) { $(".ui-dialog-titlebar-close").hide(); $(".ui-widget-overlay").css('background', 'black') },
+                open: function () { $(".ui-dialog-titlebar-close").hide();
+                    $(".ui-widget-overlay").css('background', 'black');
+                },
                 close: function () {
                     $("#textArea").val("");
                     $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
@@ -143,15 +144,14 @@ function cellClick(cellId) {
                 $("#dialogWhitePromotion").dialog("close");
             });
         }
-        else
-        {
+        else {
             if (($.InWhom == null) && (cellId.charAt(1) == "1") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PB.png") != -1)) {
                 $("#dialogBlackPromotion").dialog({
                     resizable: false,
                     width: 450,
                     closeOnEscape: true,
                     modal: true,
-                    open: function (event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+                    open: function () { $(".ui-dialog-titlebar-close").hide(); },
                     close: function () {
                         $("#textArea").val("");
                         $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID, InWhom: $.InWhom }, function (data) {
@@ -206,8 +206,7 @@ function cellClick(cellId) {
                     $("#dialogBlackPromotion").dialog("close");
                 });
             }
-            else
-            {
+            else {
                 $.get("/Game/DoMove", { From: $.cellFrom, To: cellId, gameID: $.gameID }, function (data) {
                     if (data)
                         alert(data);
@@ -220,7 +219,7 @@ function cellClick(cellId) {
         }
     } else if ($("#" + cellId + " img").length) {
         $.cellFrom = cellId;
-        $.get("/Game/MoveVariants", { cell: cellId, gameID: $.gameID }, function(data) {
+        $.get("/Game/MoveVariants", { cell: cellId, gameID: $.gameID }, function (data) {
             $("#board td[id]").removeClass("selected");
             for (var s in data) {
                 $("#" + data[s]).addClass("selected");
