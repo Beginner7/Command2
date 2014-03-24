@@ -11,6 +11,13 @@ html,body{
     color: #000;
 }
 
+.homelink {
+    background: url('../Content/img/Sign.png') no-repeat center right; 
+    display: block; 
+    height: 70px; 
+    width: 270px;
+}
+
 .wrap {
     position:relative;
 	
