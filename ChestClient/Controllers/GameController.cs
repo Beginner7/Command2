@@ -64,6 +64,14 @@ namespace ChestClient.Controllers
                     res = ("Won by Black");
                     break;
 
+                case Act.BlackCheck:
+                    res = ("Check Black");
+                    break;
+
+                case Act.WhiteCheck:
+                    res = ("Check White");
+                    break;
+
                 case Act.InProgress:
                     res = ("Now in progress");
                     break;

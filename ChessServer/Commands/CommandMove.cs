@@ -99,9 +99,13 @@ namespace ChessServer.Commands
                 }
                 else
                 {
+                    currentGame.Act = Act.BlackCheck;
                     blackPlayer.Messages.Add(MessageSender.CheckToYou());
                     whitePlayer.Messages.Add(MessageSender.CheckToOpponent());
                 }
+            } else if (currentGame.Act == Act.BlackCheck)
+            {
+                currentGame.Act = Act.InProgress;
             }
 
             if (fakeAttackMap.IsCheckWhite)
@@ -114,9 +118,14 @@ namespace ChessServer.Commands
                 }
                 else
                 {
+                    currentGame.Act = Act.WhiteCheck;
                     whitePlayer.Messages.Add(MessageSender.CheckToYou());
                     blackPlayer.Messages.Add(MessageSender.CheckToOpponent());
                 }
+            }
+            else if (currentGame.Act == Act.WhiteCheck)
+            {
+                currentGame.Act = Act.InProgress;
             }
 
             if (fakeAttackMap.IsPat)
@@ -125,17 +134,6 @@ namespace ChessServer.Commands
                 whitePlayer.Messages.Add(MessageSender.Pat());
                 blackPlayer.Messages.Add(MessageSender.Pat());
             }
-
-            if (attackMap.IsCheckWhite)
-            {
-                currentGame.Act = Act.WhiteCheck;
-            }
-
-            if (attackMap.IsCheckBlack)
-            {
-                currentGame.Act = Act.BlackCheck;
-            }
-
 
             if (!(attackMap.IsCheck || attackMap.IsPat) && fakeAttackMap.IsDraw)
             {

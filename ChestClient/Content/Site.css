@@ -434,6 +434,10 @@ table#board  {
     border: 4px solid red !important;
 }
 
+#board td.check {
+    border: 4px solid #00FF7F !important;
+}
+
 
 #board td[id] {
     border: 4px solid black;
