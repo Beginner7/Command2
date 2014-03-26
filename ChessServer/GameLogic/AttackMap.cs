@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Protocol.GameObjects;
@@ -274,7 +275,7 @@ namespace ChessServer.GameLogic
                             if (IsColorFigureAttack(this[kingX + kingY.ToString(CultureInfo.InvariantCulture)], side))
                                 if (SourceBoard["a" + kingY].GetType() == typeof(FigureRook))
                                     Castling(moves, SourceBoard, currentFigure, SourceBoard["a" + kingY]);
-                                else if (SourceBoard["h" + kingY].GetType() == typeof(FigureRook))
+                                if (SourceBoard["h" + kingY].GetType() == typeof(FigureRook))
                                     Castling(moves, SourceBoard, currentFigure, SourceBoard["h" + kingY]);
                         }
                         if (currentFigure.Side == Side.WHITE)
@@ -556,7 +557,7 @@ namespace ChessServer.GameLogic
                 rows = 1;
             else if (king.Side == Side.BLACK)
                 rows = 8;
-
+           
             char rookX = board.ReturnPosition(rook).Item1;
             int rookY = board.ReturnPosition(rook).Item2;
             char kingX = board.ReturnPosition(king).Item1;
@@ -582,8 +583,9 @@ namespace ChessServer.GameLogic
             {
                 CastlingFunc(board, king, rook, rows, rookX);
             }
+        
 
-        }
+    }
 
         private void CastlingFunc(Board board, Figure king, Figure rook, int rows, char rookX)
         {
@@ -596,7 +598,7 @@ namespace ChessServer.GameLogic
                     IsColorFigureAttack(this["d" + rows], king.Side))
                 {
                     Attackers['c' - 'a', rows - 1].Add(king);
-                    Attackers['d' - 'a', rows - 1].Add(rook);
+                    //Attackers['d' - 'a', rows - 1].Add(rook);
                 }
             }
             else if (rookX == 'h')
@@ -607,7 +609,7 @@ namespace ChessServer.GameLogic
                     IsColorFigureAttack(this["g" + rows], king.Side))
                 {
                     Attackers['g' - 'a', rows - 1].Add(king);
-                    Attackers['f' - 'a', rows - 1].Add(rook);
+                    //Attackers['f' - 'a', rows - 1].Add(rook);
                 }
             }
         }
