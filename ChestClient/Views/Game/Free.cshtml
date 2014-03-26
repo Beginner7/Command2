@@ -8,13 +8,9 @@
 <script src="@Url.Content("~/Scripts/GameUI.js")" type="text/javascript"></script>
 <table>
     <tr>
-        <td>
-            <td colspan="2">
-            <h4 align="center">Съеденные белые:</h4>
-            <div id="whitemorgue" align="center"></div>
-        
-            <h4 align="center">Съеденные черные:</h4>
-            <div id="blackmorgue" align="center"></div>
+        <td width="150" >
+                <h3 >Список ходов:</h3>
+            <div id="moveslist" style="height: 510px; overflow-y: scroll; display: block;"></div>
      
         </td>
          
@@ -52,7 +48,7 @@
                 }
             </table>
         </td>
-        <td>
+        <td width="180" border="0">
             <h1 align="center" >Статус игры</h1>
             <h4 size="10px"></h4>
             <h3>Чей ход:</h3>
@@ -61,9 +57,13 @@
             <div id="playerwhite"></div>
             <h3>Игрок за черных:</h3>
             <div id="playerblack"></div>
-
-            <h3 >Список ходов:</h3>
-            <div id="moveslist" style="height: 280px; overflow-y: scroll; display: block;"></div>
+            
+           
+            <h4 align="center">Съеденные белые:</h4>
+            <div id="whitemorgue" align="center"></div>
+        
+            <h4 align="center">Съеденные черные:</h4>
+                <div id="blackmorgue" align="center"></div>
 
         </td>
     </tr>

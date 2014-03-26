@@ -316,7 +316,7 @@ input[type="submit"] {
 ----------------------------------------------------------*/
 
 table {
-    border: solid 1px #e8eef4;
+    border: solid 0 #e8eef4;
     border-collapse: collapse;
 }
 
