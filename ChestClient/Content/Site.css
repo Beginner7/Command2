@@ -175,6 +175,11 @@ header h1, #header h1 {
     margin-top: -50px;
 }
 
+#blackCancel {
+    width: 100px;
+    height: 100px;
+}
+
 #whiteQueenButton {
     width: 100px;
     height: 100px;

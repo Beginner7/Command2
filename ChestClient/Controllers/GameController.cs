@@ -108,7 +108,8 @@ namespace ChestClient.Controllers
 
         public ActionResult Free()
         {
-            return View();
+            ViewBag.Title = "Свободная игра";
+            return View("Game");
         }
 
         public ActionResult StartFree()
@@ -191,7 +192,9 @@ namespace ChestClient.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View("FindGame");
+            //ViewBag.Title = "Игра";
+            //return View("Game");
         }
 
     }

@@ -112,6 +112,7 @@
     <Compile Include="Controllers\InformationController.cs" />
     <Compile Include="Controllers\StatisticController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\PlayController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -206,6 +207,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\FindGame.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -238,12 +240,13 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Server.ashx" />
     <Content Include="Views\Account\Profile.cshtml" />
-    <Content Include="Views\Game\Free.cshtml" />
+    <Content Include="Views\Game\Game.cshtml" />
     <Content Include="Views\Game\NoAccess.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
     <Content Include="Views\Game\Index2.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Information\Index.cshtml" />
+    <Content Include="Views\Game\FindGame.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
