@@ -167,6 +167,25 @@ namespace Protocol.GameObjects
                         IsNeedPawnPromotion = true;
                     }
                 }
+                if (Cells[GetCoords(to).Item1, GetCoords(to).Item2].GetType() == typeof (FigureKing) &&
+                    Math.Abs(GetCoords(to).Item1 - GetCoords(from).Item1) == 2)
+                {
+                    int cellRookToX;
+                    int cellRookFromX;
+                    if (GetCoords(to).Item1 < GetCoords(from).Item1)
+                    {
+                        cellRookToX = 'd' - 'a';
+                        cellRookFromX = 'a' - 'a';
+                        
+                    }
+                    else
+                    {
+                        cellRookToX = 'f' - 'a';
+                        cellRookFromX = 'h' - 'a';
+                    }
+                    Cells[cellRookToX, GetCoords(to).Item2] = Cells[cellRookFromX, GetCoords(from).Item2];
+                    Cells[cellRookFromX, GetCoords(from).Item2] = new FigureNone(Side.NONE);
+                }
             }
             else
             {
@@ -235,7 +254,7 @@ namespace Protocol.GameObjects
                 for (int j = 1; j <= BoardSize; j++)
                 {
                     if (this[i + j.ToString(CultureInfo.InvariantCulture)] == figure)
-                        return new Tuple<char, int>(i, j);
+                        return  new Tuple<char, int>(i, j);
                 }
             }
             throw new Exception("Figure not found");

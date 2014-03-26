@@ -15,6 +15,27 @@ namespace UnitTest
     public class AttackMapTest
     {
         /// <summary>
+        ///длинная рокировка (черные): на поле король и 2 ладьи
+        /// </summary>
+        [TestMethod]
+        public void LongCastlingBlackTest5()
+        {
+            //a - arange
+            var board = new Board();
+            var king = new FigureKing(Side.BLACK);
+            var rook1 = new FigureRook(Side.BLACK);
+            var rook2 = new FigureRook(Side.BLACK);
+
+            board["e8"] = king;
+            board["a8"] = rook1;
+            board["h8"] = rook2;
+            //a - act
+            var map = new AttackMap(new List<Move>(), board);
+            //a - assert
+            Assert.IsTrue(map["c8"].Contains(king));
+            Assert.IsTrue(map["g8"].Contains(king));
+        }
+        /// <summary>
         ///длинная рокировка (черные): на поле король и ладья, которая уже ходила
         /// </summary>
         [TestMethod]

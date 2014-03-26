@@ -20,7 +20,14 @@ $(document).ready(function () {
 function FigurePosition() {
     $.get("/Game/Status", { gameID: $.gameID }, function (data) {
         $("#board td[id]").html("");
+        $("#board td[id]").removeClass("check");
         for (var s in data.DataBoard) {
+            if (data.DataTextStatus.indexOf("Check Black") > -1 && data.DataBoard[s] == "KB") {
+                $("#" + s).addClass("check");
+            }
+            if (data.DataTextStatus.indexOf("Check White") > -1 && data.DataBoard[s] == "KW") {
+                $("#" + s).addClass("check");
+            }
             $("#" + s).html("<img src = \"/Content/figure/" + data.DataBoard[s] + ".png\" width = 50 height = 50/>");
         }
         $("#playerwhite").html(data.DataWhitePlayer);
@@ -46,6 +53,7 @@ function FigurePosition() {
             move = move + "<font size=\"4\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
             $("#moveslist").html(move);
         }
+
         if (data.DataTextStatus.indexOf("Won by White") > -1) {
             $("#dialogWhiteWon").dialog({
                 resizable: false,
@@ -53,7 +61,6 @@ function FigurePosition() {
                 closeOnEscape: true,
                 modal: true,
                 open: function () {
-                    $(".ui-dialog-titlebar-close").hide();
                     $(".ui-widget-overlay").css('background', 'black');
                 },
             });
@@ -68,7 +75,6 @@ function FigurePosition() {
                 closeOnEscape: true,
                 modal: true,
                 open: function () {
-                    $(".ui-dialog-titlebar-close").hide();
                     $(".ui-widget-overlay").css('background', 'black');
                 },
             });

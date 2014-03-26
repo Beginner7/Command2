@@ -19,6 +19,7 @@ namespace ChessConsole
                 isStuffDone = false;
                 Console.Write("> ");
                 var commandInput = Console.ReadLine();
+                
                 if (CurrentUser.NeedPeaseAnswer)
                 {
                     if (!string.IsNullOrWhiteSpace(commandInput))
@@ -136,7 +137,6 @@ namespace ChessConsole
                     {
                         commandInput = commandInput.Substring(0, commandInput.Length - 1);
                     }
-
                     if (!String.IsNullOrWhiteSpace(commandInput))
                     {
                         var commandWords = commandInput.Split(' ');
