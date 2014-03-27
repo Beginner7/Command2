@@ -6,7 +6,10 @@
                 alert(data.Ret);
             if (data.Messages.length > 0) {
                 for (var s in data.Messages) {
-                    alert(data.Messages[s].Type);
+                    if (data.Messages[s].Type == 15)
+                    {
+                        window.location.replace("/Game/Real?gameID=" + data.Messages[s].Text);
+                    }
                 }
             }
         });

@@ -40,7 +40,7 @@ namespace ChessConsole.Commands
                             break;
                         case Statuses.NeedPawnPromotion:
                             Utils.Print("This pawn need promotion!");
-                            Utils.Print("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancle):");
+                            Utils.Print("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancel):");
                             CurrentUser.LastMove = new Move
                             {
                                 From = request.From,

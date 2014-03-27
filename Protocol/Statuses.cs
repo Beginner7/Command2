@@ -10,7 +10,7 @@
         ErrorCreateGame,
         GameNotFound,
         OpponentTurn,
-        GameCancled,
+        GameCanceld,
         GameIsRunning,
         WrongMove,
         WrongMoveNotation,

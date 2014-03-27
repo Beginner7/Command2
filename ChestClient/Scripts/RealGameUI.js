@@ -3,17 +3,31 @@ $.cellFrom = null;
 $.InWhom = null;
 
 $(document).ready(function () {
+    setInterval(function () { pulseTimer(); }, 1000);
+    function pulseTimer() {
+        $.get("/Play/PulseRequest", {}, function (data) {
+            if (data.Ret)
+                alert(data.Ret);
+            if (data.Messages.length > 0) {
+                for (var s in data.Messages) {
+                    if (data.Messages[s].Type == 4) {
+                        FigurePosition();
+                    }
+                }
+            }
+        });
+    }
     $("#board td[id]").click(function (eventObject) {
         cellClick(eventObject.currentTarget.id);
     });
-    $.get("/Game/StartFree", function (data) {
-        if (data == null)
-            alert("НЕ удалось создать игру");
-        else {
-            $.gameID = data;
-            FigurePosition();
-        }
-    });
+    if (document.URL.indexOf("?gameID=")) {
+        $.gameID = document.URL.substr(document.URL.lastIndexOf("?gameID=") + 8, document.URL.length);
+        FigurePosition();
+    }
+    else
+    {
+        alert("Wrong URL");
+    }
 });
 
 function FigurePosition() {
@@ -38,7 +52,7 @@ function FigurePosition() {
         }
         var eatedwhites = "";
         for (i = 0; i < data.EatedWhites.length; i++) {
-            
+
             eatedwhites += "<img src = \"/Content/figure/" + data.EatedWhites.charAt(i) + "W.png\" width = 24 height = 24/>";
         }
         var eatedblacks = "";
@@ -92,7 +106,8 @@ function cellClick(cellId) {
                 width: 450,
                 closeOnEscape: true,
                 modal: true,
-                open: function () { $(".ui-dialog-titlebar-close").hide();
+                open: function () {
+                    $(".ui-dialog-titlebar-close").hide();
                     $(".ui-widget-overlay").css('background', 'black');
                 },
                 close: function () {

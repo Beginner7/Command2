@@ -26,7 +26,7 @@ namespace ChessServer
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;
             var rnd = new Random();
-            if (rnd.Next(2) == 0)
+            if (rnd.Next(100) < 50)
             {
                 PlayerWhite = user;
             }
@@ -41,7 +41,7 @@ namespace ChessServer
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;
             var rnd = new Random();
-            if (rnd.Next(2) == 0)
+            if (rnd.Next(100) < 50)
             {
                 PlayerWhite = user1;
                 PlayerBlack = user2;

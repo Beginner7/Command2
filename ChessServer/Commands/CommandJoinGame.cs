@@ -20,9 +20,9 @@ namespace ChessServer.Commands
                 return workResponse;
             }
 
-            if (Server.Games[workRequest.GameID].Act == Act.Cancled)
+            if (Server.Games[workRequest.GameID].Act == Act.Canceld)
             {
-                workResponse.Status = Statuses.GameCancled;
+                workResponse.Status = Statuses.GameCanceld;
                 return workResponse;
             }
 

@@ -118,7 +118,7 @@ namespace ChessConsole
                         else
                         {
                             Console.WriteLine("Wrong choise!");
-                            Console.WriteLine("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancle):");
+                            Console.WriteLine("Your choise? (r - rook, n - knight, b - bishop, q - queen, c - cancel):");
                         }
                     }
                     isStuffDone = true;

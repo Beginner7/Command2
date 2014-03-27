@@ -29,8 +29,8 @@ namespace ChessConsole.Commands
                             Console.WriteLine("Was abandoned by Black");
                             break;
 
-                        case Act.Cancled:
-                            Console.WriteLine("Was cancled");
+                        case Act.Canceld:
+                            Console.WriteLine("Was canceld");
                             break;
 
                         case Act.WaitingOpponent:

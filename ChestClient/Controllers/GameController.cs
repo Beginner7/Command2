@@ -44,8 +44,8 @@ namespace ChestClient.Controllers
                     res = ("Was abandoned by Black");
                     break;
 
-                case Act.Cancled:
-                    res = ("Was cancled");
+                case Act.Canceld:
+                    res = ("Was canceld");
                     break;
 
                 case Act.WaitingOpponent:
@@ -201,9 +201,11 @@ namespace ChestClient.Controllers
         public ActionResult Index()
         {
             return View("FindGame");
-            //ViewBag.Title = "Игра";
-            //return View("Game");
         }
 
+        public ActionResult Real(string gameID)
+        {
+            return View("Real");
+        }
     }
 }

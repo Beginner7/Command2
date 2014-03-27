@@ -15,7 +15,7 @@ namespace ChessServer.Commands
             var workResponse = new DisconnectResponse();
             if (Server.Games[workRequest.GameID].Act == Act.WaitingOpponent)
             {
-                Server.Games[workRequest.GameID].Act = Act.Cancled;
+                Server.Games[workRequest.GameID].Act = Act.Canceld;
                 workResponse.Status = Statuses.Ok;
             }
             else

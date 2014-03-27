@@ -40,9 +40,9 @@ namespace ChessConsole.Commands
                             {
                                 Console.WriteLine("Game does not not exist.");
                             }
-                            if (response.Status == Statuses.GameCancled)
+                            if (response.Status == Statuses.GameCanceld)
                             {
-                                Console.WriteLine("Game was cancled by initiator.");
+                                Console.WriteLine("Game was canceled by initiator.");
                             }
                         }
                     }

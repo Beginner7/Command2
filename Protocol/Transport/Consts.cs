@@ -22,7 +22,7 @@
     public enum Act
     {
         WaitingOpponent,
-        Cancled,
+        Canceld,
         InProgress,
         AbandonedByWhite,
         AbandonedByBlack,
