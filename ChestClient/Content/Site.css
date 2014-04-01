@@ -440,9 +440,12 @@ table#board  {
 }
 
 #board td.check {
-    border: 4px solid #00FF7F !important;
+    border: 4px solid #8FBC8F !important;
 }
 
+#board td.move {
+    border: 4px solid #CDC9A5 !important;
+}
 
 #board td[id] {
     border: 4px solid black;

@@ -20,9 +20,13 @@ function FigurePosition() {
     $.get("/Game/Status", { gameID: $.gameID }, function (data) {
         $("#board td[id]").html("");
         $("#board td[id]").removeClass("check");
+        $("#board td[id]").removeClass("move");
         for (var s in data.DataBoard) {
             if (data.DataTextStatus.indexOf("Check Black") > -1 && data.DataBoard[s] == "KB") {
                 $("#" + s).addClass("check");
+            }
+            if (data.DataTextStatus.indexOf("Now in progress")) {
+                $("#" + s).addClass("move");
             }
             if (data.DataTextStatus.indexOf("Check White") > -1 && data.DataBoard[s] == "KW") {
                 $("#" + s).addClass("check");

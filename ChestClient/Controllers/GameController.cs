@@ -86,6 +86,7 @@ namespace ChestClient.Controllers
                 EatedWhites = response2.EatedWhites, EatedBlacks = response2.EatedBlacks}, JsonRequestBehavior.AllowGet);
         }
 
+
         public ActionResult MoveVariants()
         {
             var board = new Board();
