@@ -3,9 +3,6 @@ $.cellFrom = null;
 $.InWhom = null;
 
 $(document).ready(function () {
-    $("#board td[id]").click(function (eventObject) {
-        cellClick(eventObject.currentTarget.id);
-    });
     $.get("/Game/StartFree", function (data) {
         if (data == null)
             alert("НЕ удалось создать игру");
@@ -13,6 +10,9 @@ $(document).ready(function () {
             $.gameID = data;
             FigurePosition();
         }
+    });
+    $("#board td[id]").click(function (eventObject) {
+        cellClick(eventObject.currentTarget.id);
     });
 });
 
@@ -228,8 +228,10 @@ function cellClick(cellId) {
         }
     } else if ($("#" + cellId + " img").length) {
         $.cellFrom = cellId;
+        $("#" + cellId).addClass("spinner");
         $.get("/Game/MoveVariants", { cell: cellId, gameID: $.gameID }, function (data) {
             $("#board td[id]").removeClass("selected");
+            $("#board td[id]").removeClass("spinner");
             for (var s in data) {
                 $("#" + data[s]).addClass("selected");
             }

@@ -26,7 +26,7 @@ namespace ChessServer.Commands
             var moveVariantsRequest = JsonConvert.DeserializeObject<MoveVariantsRequest>(request);
             var moveVariantsResponse = new MoveVariantsResponse();
 
-            Game game = Server.Games[moveVariantsRequest.GameID];
+            var game = Server.Games[moveVariantsRequest.GameID];
             
             var map = new AttackMap(game.Moves);
             if (map.SourceBoard[moveVariantsRequest.Cell].Side == game.Turn)

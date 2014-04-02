@@ -785,9 +785,9 @@ namespace ChessServer.GameLogic
         public List<string> MoveVariants(string cell)
         {
             var moveVariants = new List<string>();
-            for (int i = 0; i < Board.BoardSize; i++)
+            for (var i = 0; i < Board.BoardSize; i++)
             {
-                for (int j = 0; j < Board.BoardSize; j++)
+                for (var j = 0; j < Board.BoardSize; j++)
                 {
                     if (Attackers[i, j].Contains(SourceBoard[cell]))
                         moveVariants.Add((char)('a' + i) + (j + 1).ToString(CultureInfo.InvariantCulture));
