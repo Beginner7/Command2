@@ -3,9 +3,6 @@ $.cellFrom = null;
 $.InWhom = null;
 
 $(document).ready(function () {
-    $("#board td[id]").click(function (eventObject) {
-        cellClick(eventObject.currentTarget.id);
-    });
     $.get("/Game/StartFree", function (data) {
         if (data == null)
             alert("НЕ удалось создать игру");
@@ -14,12 +11,41 @@ $(document).ready(function () {
             FigurePosition();
         }
     });
+    $("#board td[id]").click(function (eventObject) {
+        cellClick(eventObject.currentTarget.id);
+    });
 });
 
 function FigurePosition() {
     $.get("/Game/Status", { gameID: $.gameID }, function (data) {
         $("#board td[id]").html("");
+        $("#board td[id]").removeClass("spinner");
         $("#board td[id]").removeClass("check");
+        ///////////////////////////////////////////////////
+        /*
+        if (data.DataMoves.length > 0) {
+            var from = data.DataMoves[data.DataMoves.length - 1].From;
+            var to = data.DataMoves[data.DataMoves.length - 1].To;
+            var hor = from.charCodeAt(0) - to.charCodeAt(0);
+            var ver = from.charCodeAt(1) - to.charCodeAt(1);
+            while (ver != 0 || hor != 0) {
+                $("#" + String.fromCharCode(to.charCodeAt(0) + hor) + String.fromCharCode(to.charCodeAt(1) + ver)).addClass("spinner");
+                if (hor > 0) {
+                    hor--;
+                }
+                if (hor < 0) {
+                    hor++;
+                }
+                if (ver > 0) {
+                    ver--;
+                }
+                if (ver < 0) {
+                    ver++;
+                }
+            }
+        }
+        */
+        /////////////////////////////////////////////
         $("#board td[id]").removeClass("move");
         for (var s in data.DataBoard) {
             if (data.DataTextStatus.indexOf("Check Black") > -1 && data.DataBoard[s] == "KB") {
@@ -100,6 +126,7 @@ function FigurePosition() {
 
 function cellClick(cellId) {
     if ($("#" + cellId).hasClass("selected")) {
+        $("#" + cellId).addClass("spinner");
         if (($.InWhom == null) && (cellId.charAt(1) == "8") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PW.png") != -1)) {
             $("#dialogWhitePromotion").dialog({
                 resizable: false,
@@ -238,8 +265,10 @@ function cellClick(cellId) {
         }
     } else if ($("#" + cellId + " img").length) {
         $.cellFrom = cellId;
+        $("#" + cellId).addClass("spinner");
         $.get("/Game/MoveVariants", { cell: cellId, gameID: $.gameID }, function (data) {
             $("#board td[id]").removeClass("selected");
+            $("#board td[id]").removeClass("spinner");
             for (var s in data) {
                 $("#" + data[s]).addClass("selected");
             }
