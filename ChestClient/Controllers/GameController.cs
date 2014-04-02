@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Web.Mvc;
 using System.Web.Security;
 using ChestClient.Models;
@@ -86,33 +89,11 @@ namespace ChestClient.Controllers
                 EatedWhites = response2.EatedWhites, EatedBlacks = response2.EatedBlacks}, JsonRequestBehavior.AllowGet);
         }
 
-
         public ActionResult MoveVariants()
         {
-            var board = new Board();
-            board.InitialPosition();
-
             var request = new MoveVariantsRequest { Cell = Request.Params["cell"], GameID = int.Parse(Request.Params["gameID"]) };
             var response = ServerProvider.MakeRequest<MoveVariantsResponse>(request);
-                        
-            //request.Params["cell"];
             return Json(response.Cells, JsonRequestBehavior.AllowGet);
-        }
-
-        public void KingUnderAttack()
-        {
-            var board = new Board();
-            board.InitialPosition();
-
-            var request = new AttackersRequest { Game = int.Parse(Request.Params["gameID"]) };
-            var response = ServerProvider.MakeRequest<AttackersResponse>(request);
-
-            var request2 = new GameStatRequest { gameID = int.Parse(Request.Params["gameID"]) };
-            var response2 = ServerProvider.MakeRequest<GameStatResponse>(request2);
-
-            if (response2.Act == Act.BlackCheck)
-            {
-            }
         }
 
         public ActionResult Free()
@@ -134,7 +115,6 @@ namespace ChestClient.Controllers
             int? gameId = null;
             if (responseCreateGame.Status == Statuses.Ok)
             {
-
                 gameId = responseCreateGame.ID;
                 FormsAuthentication.SetAuthCookie(responseCreateGame.FirstPlayer.Name, false);
                 var requestJoinGame = new JoinGameRequest
