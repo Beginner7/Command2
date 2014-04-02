@@ -51,9 +51,19 @@ function FigurePosition() {
         }
         $("#whitemorgue").html(eatedwhites);
         $("#blackmorgue").html(eatedblacks);
+
         var move = "";
-        for (var s2 in data.DataMoves) {
-            move = move + "<font size=\"4\" color=\"#330000\">" + data.DataMoves[s2].From + "  " + data.DataMoves[s2].To + "</font> <br>";
+        var moves = [];
+        for (var s2 in data.DataMove) {
+            var x = Math.floor(s2 / 2);
+            if (s2 % 2 == 0) {
+                moves[x] = { move1: data.DataMove[s2] };
+            } else {
+                moves[x].move2 = data.DataMove[s2];
+            }
+        }
+        for (var s3 in moves) {
+            move = move + "<font size=\"4\" color=\"#330000\">" + (s3 * 1 + 1) + ". " + moves[s3].move1.From + "—" + moves[s3].move1.To + (moves[s3].move2 ? "     " + moves[s3].move2.From + "—" + moves[s3].move2.To : "") + "</font> </br>";
             $("#moveslist").html(move);
         }
 

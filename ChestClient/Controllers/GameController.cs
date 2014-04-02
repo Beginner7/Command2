@@ -33,6 +33,8 @@ namespace ChestClient.Controllers
             var response2 = ServerProvider.MakeRequest<GameStatResponse>(request2);
 
             board.ApplyMoves(response.Moves);
+            var j = -1;
+            j++;
 
             switch (response2.Act)
             {
@@ -80,8 +82,7 @@ namespace ChestClient.Controllers
                     res = ("Unexpected act");
                     break;
             }
-            
-            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMoves = response.Moves, DataStatus = response2.Act, DataTextStatus = res,
+            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMove = response.Moves, DataStatus = response2.Act, DataTextStatus = res,
                 DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn,
                 EatedWhites = response2.EatedWhites, EatedBlacks = response2.EatedBlacks}, JsonRequestBehavior.AllowGet);
         }
