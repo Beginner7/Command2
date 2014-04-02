@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace ChessServer
 {
-    public class Game
+    public class GameObject
     {
         public Act Act;
         public readonly int Id;
@@ -21,7 +21,7 @@ namespace ChessServer
         public string EatedWhites = "";
         public string EatedBlacks = "";
 
-        public Game(User user)
+        public GameObject(User user)
         {
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;
@@ -36,7 +36,7 @@ namespace ChessServer
             }
         }
 
-        public Game(User user1, User user2)
+        public GameObject(User user1, User user2)
         {
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;

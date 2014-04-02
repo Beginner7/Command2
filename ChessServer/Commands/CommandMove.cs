@@ -12,7 +12,7 @@ namespace ChessServer.Commands
     {
         public override string Name { get { return "move"; } }
 
-        private string SideUser(Side side, Game game)
+        private string SideUser(Side side, GameObject game)
         {
             if (side == Side.WHITE)
             {
@@ -36,7 +36,7 @@ namespace ChessServer.Commands
             Server.Users.TryGetValue(Server.Games[workRequest.GameId].PlayerWhite.Name, out whitePlayer);
             User blackPlayer;
             Server.Users.TryGetValue(Server.Games[workRequest.GameId].PlayerBlack.Name, out blackPlayer);
-            Game currentGame;
+            GameObject currentGame;
             Server.Games.TryGetValue(workRequest.GameId, out currentGame);
 
             if (currentGame == null)

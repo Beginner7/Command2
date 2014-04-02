@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Protocol;
 using Protocol.Transport;
@@ -11,9 +12,10 @@ namespace ChessServer
 {
     public class Server
     {
-        public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
-        public static ConcurrentDictionary<int, Game> Games = new ConcurrentDictionary<int, Game>();
+        private static chessEntities _chess = new chessEntities();
+        public static ConcurrentDictionary<int, GameObject> Games = new ConcurrentDictionary<int, GameObject>();
         public static ConcurrentDictionary<string, User> PlayersQue = new ConcurrentDictionary<string, User>();
+        public static ConcurrentDictionary<int,List<Message>> Messages = new ConcurrentDictionary<int, List<Message>>();
         private static int _userNumber = 1;
 
         static Server()
@@ -35,7 +37,7 @@ namespace ChessServer
             var players = PlayersQue.Values.ToArray();
             for (var i = 0; i < PlayersQue.Count/2; i++)
             {
-                var game = new Game(players[i*2], players[i*2 + 1]) {Act = Act.InProgress};
+                var game = new GameObject(players[i*2], players[i*2 + 1]) {Act = Act.InProgress};
                 if (!Games.TryAdd(game.Id, game)) continue;
                 User dummy;
                 PlayersQue.TryRemove(players[i*2].Name, out dummy);
@@ -47,20 +49,19 @@ namespace ChessServer
 
         private static void PulseChecker(object source, ElapsedEventArgs e)
         {
-            foreach (var element in Users)
+            foreach (var element in _chess.users.Where(user => user.lostbeats == 0))
             {
-                if (!element.Value.Name.StartsWith(Consts.GUEST_PREFIX) && element.Value.Lostbeats > 10)
+                if (!element.name.StartsWith(Consts.GUEST_PREFIX))
                 {
                     foreach (var elementGame in Games)
                     {
-                        if ((elementGame.Value.PlayerWhite.Name == element.Key))
+                        if ((elementGame.Value.PlayerWhite.id == element.id))
                         {
-                            User geted;
-                            if (Users.TryGetValue(elementGame.Value.PlayerBlack.Name, out geted))
-                            {
-                                geted.Messages.Add(MessageSender.OpponentLostConnection());
-                                elementGame.Value.Act = Act.AbandonedByWhite;
-                            }
+
+                            Messages.GetOrAdd(elementGame.Value.PlayerBlack.id, i => new List<Message>())
+                                .Add(MessageSender.OpponentLostConnection());
+                            elementGame.Value.Act = Act.AbandonedByWhite;
+
                         }
                         if ((elementGame.Value.PlayerWhite.Name == element.Key))
                         {

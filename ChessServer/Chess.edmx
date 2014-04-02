@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище chessModel" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="Хранилище chessModelContainer">
+          <EntitySet Name="game" EntityType="Хранилище chessModel.game" store:Type="Tables" Schema="chess" />
+          <EntitySet Name="move" EntityType="Хранилище chessModel.move" store:Type="Tables" Schema="chess" />
+          <EntitySet Name="user" EntityType="Хранилище chessModel.user" store:Type="Tables" Schema="chess" />
+          <AssociationSet Name="game1" Association="Хранилище chessModel.game1">
+            <End Role="game" EntitySet="game" />
+            <End Role="move" EntitySet="move" />
+          </AssociationSet>
+          <AssociationSet Name="player" Association="Хранилище chessModel.player">
+            <End Role="user" EntitySet="user" />
+            <End Role="move" EntitySet="move" />
+          </AssociationSet>
+          <AssociationSet Name="playerBlack" Association="Хранилище chessModel.playerBlack">
+            <End Role="user" EntitySet="user" />
+            <End Role="game" EntitySet="game" />
+          </AssociationSet>
+          <AssociationSet Name="playerWhite" Association="Хранилище chessModel.playerWhite">
+            <End Role="user" EntitySet="user" />
+            <End Role="game" EntitySet="game" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="game">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="playerWhite" Type="int" />
+          <Property Name="playerBlack" Type="int" />
+          <Property Name="timeCreateGame" Type="datetime" Nullable="false" />
+          <Property Name="timeStartGame" Type="datetime" />
+          <Property Name="act" Type="int" Nullable="false" />
+          <Property Name="turn" Type="int" Nullable="false" />
+          <Property Name="eatedWhites" Type="varchar" Nullable="false" MaxLength="16" />
+          <Property Name="eatedBlacks" Type="varchar" Nullable="false" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="move">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="game" Type="int" Nullable="false" />
+          <Property Name="player" Type="int" Nullable="false" />
+          <Property Name="from" Type="varchar" Nullable="false" MaxLength="2" />
+          <Property Name="to" Type="varchar" Nullable="false" MaxLength="2" />
+          <Property Name="inWhom" Type="varchar" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="lostbeats" Type="int" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="game1">
+          <End Role="game" Type="Хранилище chessModel.game" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="move" Type="Хранилище chessModel.move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="move">
+              <PropertyRef Name="game" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="player">
+          <End Role="user" Type="Хранилище chessModel.user" Multiplicity="1" />
+          <End Role="move" Type="Хранилище chessModel.move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="move">
+              <PropertyRef Name="player" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="playerBlack">
+          <End Role="user" Type="Хранилище chessModel.user" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="game" Type="Хранилище chessModel.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="playerBlack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="playerWhite">
+          <End Role="user" Type="Хранилище chessModel.user" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="game" Type="Хранилище chessModel.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="playerWhite" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="chessModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="chessEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="games" EntityType="chessModel.game" />
+          <EntitySet Name="moves" EntityType="chessModel.move" />
+          <EntitySet Name="users" EntityType="chessModel.user" />
+          <AssociationSet Name="game1" Association="chessModel.game1">
+            <End Role="game" EntitySet="games" />
+            <End Role="move" EntitySet="moves" />
+          </AssociationSet>
+          <AssociationSet Name="playerBlack" Association="chessModel.playerBlack">
+            <End Role="user" EntitySet="users" />
+            <End Role="game" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="playerWhite" Association="chessModel.playerWhite">
+            <End Role="user" EntitySet="users" />
+            <End Role="game" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="player" Association="chessModel.player">
+            <End Role="user" EntitySet="users" />
+            <End Role="move" EntitySet="moves" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="game">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="playerWhite" Type="Int32" />
+          <Property Name="playerBlack" Type="Int32" />
+          <Property Name="timeCreateGame" Type="DateTime" Nullable="false" />
+          <Property Name="timeStartGame" Type="DateTime" />
+          <Property Name="act" Type="Int32" Nullable="false" />
+          <Property Name="turn" Type="Int32" Nullable="false" />
+          <Property Name="eatedWhites" Type="String" Nullable="false" MaxLength="16" Unicode="false" FixedLength="false" />
+          <Property Name="eatedBlacks" Type="String" Nullable="false" MaxLength="16" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="moves" Relationship="chessModel.game1" FromRole="game" ToRole="move" />
+          <NavigationProperty Name="userBlack" Relationship="chessModel.playerBlack" FromRole="game" ToRole="user" />
+          <NavigationProperty Name="userWhite" Relationship="chessModel.playerWhite" FromRole="game" ToRole="user" />
+        </EntityType>
+        <EntityType Name="move">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="game" Type="Int32" Nullable="false" />
+          <Property Name="player" Type="Int32" Nullable="false" />
+          <Property Name="from" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="false" />
+          <Property Name="to" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="false" />
+          <Property Name="inWhom" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="gameObject" Relationship="chessModel.game1" FromRole="move" ToRole="game" />
+          <NavigationProperty Name="user" Relationship="chessModel.player" FromRole="move" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="lostbeats" Type="Int32" Nullable="false" />
+          <Property Type="Boolean" Name="active" Nullable="false" />
+        </EntityType>
+        <Association Name="game1">
+          <End Role="game" Type="chessModel.game" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="move" Type="chessModel.move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="move">
+              <PropertyRef Name="game" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="playerBlack">
+          <End Role="user" Type="chessModel.user" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="game" Type="chessModel.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="playerBlack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="playerWhite">
+          <End Role="user" Type="chessModel.user" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="game" Type="chessModel.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="playerWhite" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="player">
+          <End Role="user" Type="chessModel.user" Multiplicity="1" />
+          <End Role="move" Type="chessModel.move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="move">
+              <PropertyRef Name="player" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище chessModelContainer" CdmEntityContainer="chessEntities">
+          <EntitySetMapping Name="games">
+            <EntityTypeMapping TypeName="chessModel.game">
+              <MappingFragment StoreEntitySet="game">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="playerWhite" ColumnName="playerWhite" />
+                <ScalarProperty Name="playerBlack" ColumnName="playerBlack" />
+                <ScalarProperty Name="timeCreateGame" ColumnName="timeCreateGame" />
+                <ScalarProperty Name="timeStartGame" ColumnName="timeStartGame" />
+                <ScalarProperty Name="act" ColumnName="act" />
+                <ScalarProperty Name="turn" ColumnName="turn" />
+                <ScalarProperty Name="eatedWhites" ColumnName="eatedWhites" />
+                <ScalarProperty Name="eatedBlacks" ColumnName="eatedBlacks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="moves">
+            <EntityTypeMapping TypeName="chessModel.move">
+              <MappingFragment StoreEntitySet="move">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="game" ColumnName="game" />
+                <ScalarProperty Name="player" ColumnName="player" />
+                <ScalarProperty Name="from" ColumnName="from" />
+                <ScalarProperty Name="to" ColumnName="to" />
+                <ScalarProperty Name="inWhom" ColumnName="inWhom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="chessModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lostbeats" ColumnName="lostbeats" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

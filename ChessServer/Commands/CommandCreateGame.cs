@@ -19,7 +19,7 @@ namespace ChessServer.Commands
             {
                 Server.Users.TryAdd(workRequest.NewPlayer.Name, workRequest.NewPlayer);
             }
-            var game = new Game(workRequest.NewPlayer) {Act = Act.WaitingOpponent};
+            var game = new GameObject(workRequest.NewPlayer) {Act = Act.WaitingOpponent};
 
             if (Server.Games.TryAdd(game.Id, game))
             {

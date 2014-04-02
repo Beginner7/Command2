@@ -10,7 +10,7 @@ namespace UnitTest
         [TestMethod]
         public void GameIdNotZero()
         {
-            var game1 = new Game(null);
+            var game1 = new GameObject(null);
             Assert.AreNotEqual(0, game1.Id);
         }
 
@@ -20,8 +20,8 @@ namespace UnitTest
             //a - arange
             //a - act
 
-            var game1 = new Game(null);
-            var game2 = new Game(null);
+            var game1 = new GameObject(null);
+            var game2 = new GameObject(null);
 
             //a - assert
             Assert.AreNotEqual(game1.Id, game2.Id);
@@ -33,7 +33,7 @@ namespace UnitTest
             //a - arange
             //a - act
             var user = new User();
-            var game = new Game(user);
+            var game = new GameObject(user);
             //a - assert
             Assert.IsTrue(game.PlayerBlack != null || game.PlayerWhite != null);
         }
