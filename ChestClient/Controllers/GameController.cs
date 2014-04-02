@@ -206,7 +206,7 @@ namespace ChestClient.Controllers
 
         public ActionResult Real(string gameID)
         {
-            return View("Real");
+            return View("Game");
         }
     }
 }

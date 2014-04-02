@@ -42,19 +42,26 @@
                 <h4>Поиск по именам</h4>
                 <input name="nomer2" value="" size="20" type="text" id="search"/>
                 
-
+                
             </td>
             <td>
                 
                 <div id="main">
                     @RenderBody()
                 </div>
+               
+                
             </td>
+             
         </tr>
+        
 
     </table>
    
-   
+    <ul id="standoff" >
+            <h4>@Html.ActionLink("Сдаться","Break","Standoff")&nbsp;&nbsp;&nbsp;@Html.ActionLink("Предложить ничью","Draw","Standoff")</h4>
+             
+    </ul>
     
     <div id="footer">
         Copyright © Command2 2014 &nbsp;<br />

@@ -321,20 +321,20 @@ input[type="submit"] {
 ----------------------------------------------------------*/
 
 table {
-    border: solid 0 #e8eef4;
+    border: solid 0 #ffffff;
     border-collapse: collapse;
 }
 
 table td {
     padding: 5px;
-    border: solid 1px #e8eef4;
+    border: solid 1px #ffffff;
 }
 
 table th {
     padding: 6px 5px;
     text-align: left;
-    background-color: #e8eef4;
-    border: solid 1px #e8eef4;
+    background-color: #ffffff;
+    border: solid 1px #ffffff;
 }
 
 /* MISC  
@@ -570,4 +570,23 @@ table#board  {
     color:white;
     text-decoration:none;
 
+}
+#standoff {
+    font-size: 1.1em;
+    text-align: center;
+    margin: 0;
+}
+
+#standoff a {
+    margin-left:0;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    background-color: #A9A9A9;
+    
+    color: black;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
 }
