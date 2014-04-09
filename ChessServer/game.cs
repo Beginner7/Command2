@@ -14,23 +14,14 @@ namespace ChessServer
     
     public partial class game
     {
-        public game()
-        {
-            this.moves = new HashSet<move>();
-        }
-    
         public int id { get; set; }
-        public Nullable<int> playerWhite { get; set; }
-        public Nullable<int> playerBlack { get; set; }
+        public string playerWhite { get; set; }
+        public string playerBlack { get; set; }
         public System.DateTime timeCreateGame { get; set; }
         public Nullable<System.DateTime> timeStartGame { get; set; }
         public int act { get; set; }
         public int turn { get; set; }
         public string eatedWhites { get; set; }
         public string eatedBlacks { get; set; }
-    
-        public virtual ICollection<move> moves { get; set; }
-        public virtual user userBlack { get; set; }
-        public virtual user userWhite { get; set; }
     }
 }

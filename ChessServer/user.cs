@@ -14,9 +14,6 @@ namespace ChessServer
     
     public partial class user
     {
-        public int id { get; set; }
         public string name { get; set; }
-        public int lostbeats { get; set; }
-        public bool active { get; set; }
     }
 }

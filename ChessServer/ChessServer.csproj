@@ -79,8 +79,6 @@
     <Compile Include="Commands\CommandMoveVariants.cs" />
     <Compile Include="Commands\CommandUserlist.cs" />
     <Compile Include="Commands\CommandPulse.cs" />
-    <Compile Include="Commands\CommandDisconnect.cs" />
-    <Compile Include="Commands\CommandDeleteUser.cs" />
     <Compile Include="Commands\CommandAddUser.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\CommandFactory.cs" />

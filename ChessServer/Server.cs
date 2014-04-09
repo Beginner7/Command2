@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using Newtonsoft.Json;
 using Protocol;
@@ -12,10 +14,11 @@ namespace ChessServer
 {
     public class Server
     {
-        private static chessEntities _chess = new chessEntities();
+        internal static chessEntities _chess = new chessEntities();
         public static ConcurrentDictionary<int, GameObject> Games = new ConcurrentDictionary<int, GameObject>();
-        public static ConcurrentDictionary<string, User> PlayersQue = new ConcurrentDictionary<string, User>();
-        public static ConcurrentDictionary<int,List<Message>> Messages = new ConcurrentDictionary<int, List<Message>>();
+        public static ConcurrentDictionary<string, user> PlayersQue = new ConcurrentDictionary<string, user>();
+        public static ConcurrentDictionary<string,List<Message>> Messages = new ConcurrentDictionary<string, List<Message>>();
+        public static ConcurrentDictionary<string, int> LostBeats = new ConcurrentDictionary<string, int>();
         private static int _userNumber = 1;
 
         static Server()
@@ -39,46 +42,38 @@ namespace ChessServer
             {
                 var game = new GameObject(players[i*2], players[i*2 + 1]) {Act = Act.InProgress};
                 if (!Games.TryAdd(game.Id, game)) continue;
-                User dummy;
-                PlayersQue.TryRemove(players[i*2].Name, out dummy);
-                PlayersQue.TryRemove(players[i*2 + 1].Name, out dummy);
-                players[i*2].Messages.Add(MessageSender.GameIsReady(game.Id));
-                players[i*2 + 1].Messages.Add(MessageSender.GameIsReady(game.Id));
+                user dummy;
+                PlayersQue.TryRemove(players[i*2].name, out dummy);
+                PlayersQue.TryRemove(players[i*2 + 1].name, out dummy);
+                Messages.GetOrAdd(players[i * 2].name, k => new List<Message>()).Add(MessageSender.GameIsReady(game.Id));
+                Messages.GetOrAdd(players[i * 2 + 1].name, k => new List<Message>()).Add(MessageSender.GameIsReady(game.Id));
             }
         }
 
         private static void PulseChecker(object source, ElapsedEventArgs e)
         {
-            foreach (var element in _chess.users.Where(user => user.lostbeats == 0))
+            const int MAX_LOSTBEATS = 10;
+            foreach (var u in LostBeats)
             {
-                if (!element.name.StartsWith(Consts.GUEST_PREFIX))
+                LostBeats[u.Key]++;
+            }
+            foreach (var elementGame in Games)
+            {
+                if (elementGame.Value.PlayerWhite != null 
+                    && LostBeats.GetOrAdd(elementGame.Value.PlayerWhite.name, name => 0) >= MAX_LOSTBEATS)
                 {
-                    foreach (var elementGame in Games)
-                    {
-                        if ((elementGame.Value.PlayerWhite.id == element.id))
-                        {
-
-                            Messages.GetOrAdd(elementGame.Value.PlayerBlack.id, i => new List<Message>())
-                                .Add(MessageSender.OpponentLostConnection());
-                            elementGame.Value.Act = Act.AbandonedByWhite;
-
-                        }
-                        if ((elementGame.Value.PlayerWhite.Name == element.Key))
-                        {
-                            User geted;
-                            if (Users.TryGetValue(elementGame.Value.PlayerWhite.Name, out geted))
-                            {
-                                geted.Messages.Add(MessageSender.OpponentLostConnection());
-                                elementGame.Value.Act = Act.AbandonedByBlack;
-                            }
-                        }
-                    }
-                    User removed;
-                    Users.TryRemove(element.Value.Name, out removed);
+                    if (elementGame.Value.PlayerBlack != null)
+                        Messages.GetOrAdd(elementGame.Value.PlayerBlack.name, i => new List<Message>())
+                            .Add(MessageSender.OpponentLostConnection());
+                    elementGame.Value.Act = Act.AbandonedByWhite;
                 }
-                else
+                if (elementGame.Value.PlayerBlack != null
+                    && LostBeats.GetOrAdd(elementGame.Value.PlayerBlack.name, name => 0) >= MAX_LOSTBEATS)
                 {
-                    element.Value.Lostbeats++;
+                    if (elementGame.Value.PlayerWhite != null)
+                        Messages.GetOrAdd(elementGame.Value.PlayerWhite.name, i => new List<Message>())
+                            .Add(MessageSender.OpponentLostConnection());
+                    elementGame.Value.Act = Act.AbandonedByBlack;
                 }
             }
         }
@@ -96,13 +91,33 @@ namespace ChessServer
             return JsonConvert.SerializeObject(new Response { RequestCommand = req.Command, Status = Statuses.Unknown });
         }
 
-        public static User CreateRandomNewUser()
+        public static user CreateRandomNewUser()
         {
-            User user;
+            user user = null;
+            bool success = true;
             do
-            {              
-                user = new User {Name = Consts.GUEST_PREFIX + _userNumber++};
-            } while (!Users.TryAdd(user.Name,user));
+            {
+                if (user != null)
+                {
+                    _chess.users.Remove(user);
+                }
+                user = new user {name = Consts.GUEST_PREFIX + _userNumber++};
+                _chess.users.Add(user);
+                try
+                {
+                    _chess.SaveChanges();
+                    success = true;
+                }
+                catch (EntityException)
+                {
+                    success = false;
+                }
+                catch (DbUpdateException)
+                {
+                    success = false;
+                }
+            } while (!success);
+            LostBeats.TryAdd(user.name, 0);
             return user;
         }
     }

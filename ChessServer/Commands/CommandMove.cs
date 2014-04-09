@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ChessServer.GameLogic;
 using Protocol;
 using Protocol.Transport;
@@ -16,12 +17,12 @@ namespace ChessServer.Commands
         {
             if (side == Side.WHITE)
             {
-                return game.PlayerWhite.Name;
+                return game.PlayerWhite.name;
             }
 
             if (side == Side.BLACK)
             {
-                return game.PlayerBlack.Name;
+                return game.PlayerBlack.name;
             }
 
             return null;
@@ -32,10 +33,10 @@ namespace ChessServer.Commands
             var workRequest = JsonConvert.DeserializeObject<MoveRequest>(request);
             var workResponse = new MoveResponse();
 
-            User whitePlayer;
-            Server.Users.TryGetValue(Server.Games[workRequest.GameId].PlayerWhite.Name, out whitePlayer);
-            User blackPlayer;
-            Server.Users.TryGetValue(Server.Games[workRequest.GameId].PlayerBlack.Name, out blackPlayer);
+            user whitePlayer = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameId].PlayerWhite.name)
+                .FirstOrDefault();
+            user blackPlayer = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameId].PlayerBlack.name)
+                .FirstOrDefault();
             GameObject currentGame;
             Server.Games.TryGetValue(workRequest.GameId, out currentGame);
 
@@ -94,14 +95,14 @@ namespace ChessServer.Commands
                 if (fakeAttackMap.IsMateBlack)
                 {
                     currentGame.Act = Act.WhiteWon;
-                    blackPlayer.Messages.Add(MessageSender.YouLoose());
-                    whitePlayer.Messages.Add(MessageSender.YouWin());
+                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.YouLoose());
+                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.YouWin());
                 }
                 else
                 {
                     currentGame.Act = Act.BlackCheck;
-                    blackPlayer.Messages.Add(MessageSender.CheckToYou());
-                    whitePlayer.Messages.Add(MessageSender.CheckToOpponent());
+                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.CheckToYou());
+                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.CheckToOpponent());
                 }
             } else if (currentGame.Act == Act.BlackCheck)
             {
@@ -113,14 +114,14 @@ namespace ChessServer.Commands
                 if (fakeAttackMap.IsMateWhite)
                 {
                     currentGame.Act = Act.BlackWon;
-                    whitePlayer.Messages.Add(MessageSender.YouLoose());
-                    blackPlayer.Messages.Add(MessageSender.YouWin());
+                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.YouWin());
+                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.YouLoose());
                 }
                 else
                 {
                     currentGame.Act = Act.WhiteCheck;
-                    whitePlayer.Messages.Add(MessageSender.CheckToYou());
-                    blackPlayer.Messages.Add(MessageSender.CheckToOpponent());
+                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.CheckToOpponent());
+                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.CheckToYou());
                 }
             }
             else if (currentGame.Act == Act.WhiteCheck)
@@ -131,15 +132,15 @@ namespace ChessServer.Commands
             if (fakeAttackMap.IsPat)
             {
                 currentGame.Act = Act.Pat;
-                whitePlayer.Messages.Add(MessageSender.Pat());
-                blackPlayer.Messages.Add(MessageSender.Pat());
+                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.Pat());
+                Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.Pat());
             }
 
             if (!(attackMap.IsCheck || attackMap.IsPat) && fakeAttackMap.IsDraw)
             {
                 currentGame.Act = Act.Draw;
-                whitePlayer.Messages.Add(MessageSender.GameDraw());
-                blackPlayer.Messages.Add(MessageSender.GameDraw());
+                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.GameDraw());
+                Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.GameDraw());
             }
 
             if (attackMap.SourceBoard[workRequest.To].GetType() != typeof(FigureNone))
@@ -158,12 +159,12 @@ namespace ChessServer.Commands
             if (Server.Games[workRequest.GameId].Turn == Side.WHITE)
             {
                 Server.Games[workRequest.GameId].Turn = Side.BLACK;
-                blackPlayer.Messages.Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
+                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
             }
             else
             {
                 Server.Games[workRequest.GameId].Turn = Side.WHITE;
-                whitePlayer.Messages.Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
+                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
             }
 
             workResponse.Status = Statuses.Ok;

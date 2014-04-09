@@ -11,26 +11,9 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<PlayRequest>(request);
             var workResponse = new PlayResponse();
-            User user;
-            Server.Users.TryGetValue(workRequest.UserName, out user);
-            if (!Server.PlayersQue.ContainsKey(workRequest.UserName))
-            {
-                workResponse.Status = Statuses.NoUser;
-                return workResponse;
-            }
-            if (user != null)
-            {
-                if (Server.PlayersQue.TryRemove(workRequest.UserName, out user))
-                {
-                    workResponse.Status = Statuses.Ok;
-                    return workResponse;
-                }
-            }
-            else
-            {
-                workResponse.Status = Statuses.NoUser;
-                return workResponse;
-            }
+            user user;
+            workResponse.Status = Server.PlayersQue.TryRemove(workRequest.UserName, out user) ? Statuses.Ok : Statuses.NoUser;
+
             return workResponse;
         }
     }

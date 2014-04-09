@@ -1,4 +1,5 @@
-﻿using Protocol;
+﻿using System;
+using Protocol;
 using Newtonsoft.Json;
 
 namespace ChessServer.Commands
@@ -10,7 +11,17 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<AddUserRequest>(request);
             var workResponse = new AddUserResponse();
-            workResponse.Status = Server.Users.TryAdd(workRequest.UserName, new User { Name = workRequest.UserName }) ? Statuses.Ok : Statuses.DuplicateUser;
+            var user = new user {name = workRequest.UserName};
+            Server._chess.users.Add(user);
+            workResponse.Status = Statuses.Ok;
+            try
+            {
+                Server._chess.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                workResponse.Status = Statuses.DuplicateUser;
+            }
             return workResponse;
         }
     }

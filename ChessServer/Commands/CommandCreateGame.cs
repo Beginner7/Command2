@@ -1,4 +1,8 @@
-﻿using Protocol;
+﻿using System;
+using System.Configuration;
+using System.Linq;
+using System.Net.Mime;
+using Protocol;
 using Protocol.Transport;
 using Newtonsoft.Json;
 
@@ -11,15 +15,22 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<CreateGameRequest>(request);
             var workResponse = new CreateGameResponse();
+            user user;
             if (workRequest.NewPlayer == null)
             {
-                workRequest.NewPlayer = Server.CreateRandomNewUser();
+                user = Server.CreateRandomNewUser();
+                workRequest.NewPlayer = new User {Name = user.name};
             }
-            if (!Server.Users.ContainsKey(workRequest.NewPlayer.Name))
+            else
             {
-                Server.Users.TryAdd(workRequest.NewPlayer.Name, workRequest.NewPlayer);
+                user = Server._chess.users.Where(u => u.name == workRequest.NewPlayer.Name).FirstOrDefault();
             }
-            var game = new GameObject(workRequest.NewPlayer) {Act = Act.WaitingOpponent};
+            if (user == null)
+            {
+                workResponse.Status = Statuses.NoUser;
+                return workResponse;
+            }
+            var game = new GameObject(user) {Act = Act.WaitingOpponent};
 
             if (Server.Games.TryAdd(game.Id, game))
             {

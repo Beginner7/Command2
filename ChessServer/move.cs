@@ -16,12 +16,11 @@ namespace ChessServer
     {
         public int id { get; set; }
         public int game { get; set; }
-        public int player { get; set; }
         public string from { get; set; }
         public string to { get; set; }
         public string inWhom { get; set; }
+        public bool whiteMove { get; set; }
     
         public virtual game gameObject { get; set; }
-        public virtual user user { get; set; }
     }
 }

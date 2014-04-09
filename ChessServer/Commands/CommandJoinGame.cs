@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using Protocol;
 using Protocol.Transport;
@@ -26,36 +27,31 @@ namespace ChessServer.Commands
                 return workResponse;
             }
 
+            user user = Server._chess.users.Where(u => u.name == workRequest.NewPlayer.Name).FirstOrDefault();
+            if (user == null)
+            {
+                workResponse.Status = Statuses.NoUser;
+                return workResponse;
+            }
             if (Server.Games[workRequest.GameID].PlayerBlack == null)
             {
                 Server.Games[workRequest.GameID].Act = Act.InProgress;
-                Server.Games[workRequest.GameID].PlayerBlack = workRequest.NewPlayer;
-                Server.Games[workRequest.GameID].PlayerWhite.Messages.Add(MessageSender.OpponentJoinedGame());
-                User geted;
-                if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerWhite.Name, out geted))
-                {
-                    geted.Messages.Add(MessageSender.OpponentJoinedGame());
-                }
+                Server.Games[workRequest.GameID].PlayerBlack = user;
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerWhite.name, i => new List<Message>()).Add(MessageSender.OpponentJoinedGame());
+                workResponse.Status = Statuses.Ok;
+            }
+            else if (Server.Games[workRequest.GameID].PlayerWhite == null)
+            {
+                Server.Games[workRequest.GameID].Act = Act.InProgress;
+                Server.Games[workRequest.GameID].PlayerWhite = user; 
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerBlack.name, i => new List<Message>()).Add(MessageSender.OpponentJoinedGame());
                 workResponse.Status = Statuses.Ok;
             }
             else
             {
-                if (Server.Games[workRequest.GameID].PlayerWhite == null)
-                {
-                    Server.Games[workRequest.GameID].Act = Act.InProgress;
-                    Server.Games[workRequest.GameID].PlayerWhite = workRequest.NewPlayer;
-                    User geted;
-                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerBlack.Name, out geted))
-                    {
-                        geted.Messages.Add(MessageSender.OpponentJoinedGame());
-                    }
-                    workResponse.Status = Statuses.Ok;
-                }
-                else
-                {
-                    workResponse.Status = Statuses.GameIsRunning;
-                }
+                workResponse.Status = Statuses.GameIsRunning;
             }
+            
             return workResponse;
         }
     }

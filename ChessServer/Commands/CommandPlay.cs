@@ -1,4 +1,5 @@
-﻿using Protocol;
+﻿using System.Linq;
+using Protocol;
 using Protocol.Transport;
 using Newtonsoft.Json;
 
@@ -11,26 +12,23 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<PlayRequest>(request);
             var workResponse = new PlayResponse();
-            User user;
-            Server.Users.TryGetValue(workRequest.UserName, out user);
+            user u = Server._chess.users.Where(user => user.name == workRequest.UserName).FirstOrDefault();
+            if (u == null)
+            {
+                workResponse.Status = Statuses.NoUser;
+                return workResponse;
+            }
             if (Server.PlayersQue.ContainsKey(workRequest.UserName))
             {
                 workResponse.Status = Statuses.DuplicateUser;
                 return workResponse;
             }
-            if (user != null)
+            if (Server.PlayersQue.TryAdd(workRequest.UserName, u))
             {
-                if (Server.PlayersQue.TryAdd(workRequest.UserName, user))
-                {
-                    workResponse.Status = Statuses.Ok;
-                    return workResponse;
-                }
-            }
-            else
-            {
-                workResponse.Status = Statuses.NoUser;
+                workResponse.Status = Statuses.Ok;
                 return workResponse;
             }
+            workResponse.Status = Statuses.Unknown;
             return workResponse;
         }
     }
