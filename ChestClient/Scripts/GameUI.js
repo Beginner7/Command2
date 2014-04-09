@@ -17,15 +17,18 @@ $(document).ready(function () {
 });
 
 function FigurePosition() {
-    $.get("/Game/Status", { gameID: $.gameID }, function (data) {
+    $.get("/Game/Status", { gameID: $.gameID }, function(data) {
         $("#board td[id]").html("");
         $("#board td[id]").removeClass("spinner");
         $("#board td[id]").removeClass("check");
-        ///////////////////////////////////////////////////
+        $("#board td[id]").removeClass("move");
+        $("#board td[id]").removeClass("selectedFrom");
+        $("#board td[id]").removeClass("selectedTo");
+        ///Отображение хода противника стрелками
         /*
-        if (data.DataMoves.length > 0) {
-            var from = data.DataMoves[data.DataMoves.length - 1].From;
-            var to = data.DataMoves[data.DataMoves.length - 1].To;
+        if (data.DataMove.length > 0) {
+            var from = data.DataMove[data.DataMove.length - 1].From;
+            var to = data.DataMove[data.DataMove.length - 1].To;
             var hor = from.charCodeAt(0) - to.charCodeAt(0);
             var ver = from.charCodeAt(1) - to.charCodeAt(1);
             while (ver != 0 || hor != 0) {
@@ -45,8 +48,11 @@ function FigurePosition() {
             }
         }
         */
-        /////////////////////////////////////////////
-        $("#board td[id]").removeClass("move");
+        ///
+        if (data.DataMove.length > 0) {
+            $("#" + data.DataMove[data.DataMove.length - 1].From).addClass("selectedFrom");
+            $("#" + data.DataMove[data.DataMove.length - 1].To).addClass("selectedTo");
+        }
         for (var s in data.DataBoard) {
             if (data.DataTextStatus.indexOf("Check Black") > -1 && data.DataBoard[s] == "KB") {
                 $("#" + s).addClass("check");
