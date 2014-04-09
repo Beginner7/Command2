@@ -1,6 +1,8 @@
 ﻿$.gameID = null;
 $.cellFrom = null;
 $.InWhom = null;
+$.OppFrom = null;
+$.OppTo = null;
 
 $(document).ready(function () {
     setInterval(function () { pulseTimer(); }, 1000);
@@ -12,6 +14,8 @@ $(document).ready(function () {
                 for (var s in data.Messages) {
                     if (data.Messages[s].Type == 4) {
                         FigurePosition();
+                        $.OppFrom = data.Messages[s].Text.charAt(0) + data.Messages[s].Text.charAt(1);
+                        $.OppTo = data.Messages[s].Text.charAt(3) + data.Messages[s].Text.charAt(4);
                     }
                 }
             }
@@ -24,8 +28,7 @@ $(document).ready(function () {
         $.gameID = document.URL.substr(document.URL.lastIndexOf("?gameID=") + 8, document.URL.length);
         FigurePosition();
     }
-    else
-    {
+    else {
         alert("Wrong URL");
     }
 });
@@ -33,7 +36,13 @@ $(document).ready(function () {
 function FigurePosition() {
     $.get("/Game/Status", { gameID: $.gameID }, function (data) {
         $("#board td[id]").html("");
+        $("#board td[id]").removeClass("spinner");
         $("#board td[id]").removeClass("check");
+        $("#board td[id]").removeClass("move");
+        if (data.DataMove.length > 0) {
+            $("#" + $.OppFrom).addClass("selectedFrom");
+            $("#" + $.OppTo).addClass("selectedTo");
+        }
         for (var s in data.DataBoard) {
             if (data.DataTextStatus.indexOf("Check Black") > -1 && data.DataBoard[s] == "KB") {
                 $("#" + s).addClass("check");
@@ -100,6 +109,7 @@ function FigurePosition() {
 
 function cellClick(cellId) {
     if ($("#" + cellId).hasClass("selected")) {
+        $("#" + cellId).addClass("spinner");
         if (($.InWhom == null) && (cellId.charAt(1) == "8") && ($("#" + $.cellFrom + " img").attr("src").indexOf("PW.png") != -1)) {
             $("#dialogWhitePromotion").dialog({
                 resizable: false,
@@ -237,10 +247,16 @@ function cellClick(cellId) {
                 });
             }
         }
+        $("#board td[id]").removeClass("selectedFrom");
+        $("#board td[id]").removeClass("selectedTo");
+        $.OppFrom = null;
+        $.OppTo = null;
     } else if ($("#" + cellId + " img").length) {
         $.cellFrom = cellId;
+        $("#" + cellId).addClass("spinner");
         $.get("/Game/MoveVariants", { cell: cellId, gameID: $.gameID }, function (data) {
             $("#board td[id]").removeClass("selected");
+            $("#board td[id]").removeClass("spinner");
             for (var s in data) {
                 $("#" + data[s]).addClass("selected");
             }

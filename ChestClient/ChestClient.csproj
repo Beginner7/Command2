@@ -254,6 +254,7 @@
     <Content Include="Views\Chat\Index.cshtml" />
     <Content Include="Views\Standoff\Break.cshtml" />
     <Content Include="Views\Standoff\Draw.cshtml" />
+    <Content Include="Views\Game\RealGame.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
