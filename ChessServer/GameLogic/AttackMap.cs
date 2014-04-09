@@ -10,20 +10,12 @@ namespace ChessServer.GameLogic
     public class AttackMap
     {
         private readonly string _whiteKing;
-        public string WhiteKing
-        {
-            get { return _whiteKing; }
-        }
-
         private readonly string _blackKing;
-        public string BlackKing
-        {
-            get { return _blackKing; }
-        }
 
         public Board SourceBoard { get; private set; }
         public List<Figure>[,] Attackers = new List<Figure>[Board.BoardSize, Board.BoardSize];
         private readonly Dictionary<Figure, string> _figuresPosition = new Dictionary<Figure, string>();
+        public List<MoveResult>[,] MoveActions = new List<MoveResult>[Board.BoardSize, Board.BoardSize]; 
 
         public List<Figure> this[string cell]
         {
@@ -55,6 +47,7 @@ namespace ChessServer.GameLogic
                 for (int j = 0; j < Board.BoardSize; j++)
                 {
                     Attackers[i, j] = new List<Figure>();
+                    MoveActions[i, j] = new List<MoveResult>();
                 }
             }
             for (char currentCellX = 'a'; currentCellX <= 'h'; currentCellX++)
@@ -86,10 +79,12 @@ namespace ChessServer.GameLogic
                                     if (currentCellY == 2) // первый или нет
                                     {
                                         cellY += 1;
-                                        figure = SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + cellY];
-                                        if (figure.GetType() == typeof(FigureNone))
+                                        figure =
+                                            SourceBoard[currentCellX.ToString(CultureInfo.InvariantCulture) + cellY];
+                                        if (figure.GetType() == typeof (FigureNone))
                                             Attackers[currentCellX - 'a', cellY - 1].Add(currentFigure);
                                     }
+                                    MoveActions[currentCellX - 'a', cellY - 1].Add(MoveResult.SilentMove);
                                 }
 
                                 cellY = currentCellY + 1;
