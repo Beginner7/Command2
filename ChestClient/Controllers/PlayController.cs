@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Protocol;
 using Protocol.Transport;
 
@@ -69,7 +70,7 @@ namespace ChestClient.Controllers
         {
             var request = new StopRequest
             {
-                UserName = User.Identity.Name,
+                UserName = User.Identity.Name
             };
             var response = ServerProvider.MakeRequest<StopResponse>(request);
             string ret;
@@ -80,6 +81,56 @@ namespace ChestClient.Controllers
                     break;
                 case Statuses.NoUser:
                     ret = "User no found.";
+                    break;
+                default:
+                    ret = "Wrong status.";
+                    break;
+            }
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SurrenderRequest(string gameId)
+        {
+            var request = new SurrenderRequest {From = User.Identity.Name};
+            try
+            {
+                request.GameID = Int32.Parse(gameId);
+            }
+            catch (Exception)
+            {
+                request.GameID = 0;
+            }
+            var response = ServerProvider.MakeRequest<SurrenderResponse>(request);
+            string ret;
+            switch (response.Status)
+            {
+                case Statuses.Ok:
+                    ret = "";
+                    break;
+                default:
+                    ret = "Wrong status.";
+                    break;
+            }
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult PeaceRequest(string gameId)
+        {
+            var request = new PeaceRequest { From = User.Identity.Name };
+            try
+            {
+                request.GameID = Int32.Parse(gameId);
+            }
+            catch (Exception)
+            {
+                request.GameID = 0;
+            }
+            var response = ServerProvider.MakeRequest<PeaceResponse>(request);
+            string ret;
+            switch (response.Status)
+            {
+                case Statuses.Ok:
+                    ret = "";
                     break;
                 default:
                     ret = "Wrong status.";

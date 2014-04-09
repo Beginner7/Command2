@@ -31,6 +31,11 @@ $(document).ready(function () {
     else {
         alert("Wrong URL");
     }
+    $('#surrenderButton').button().click(function () {
+        $.get("/Play/SurrenderRequest?gameID=" + $.gameID);
+        alert("You surrendered.");
+        window.location.replace("/");
+    });
 });
 
 function FigurePosition() {
