@@ -95,7 +95,7 @@ function FigurePosition() {
             }
         }
         for (var s3 in moves) {
-            move = move + "<font size=\"4\" color=\"#330000\">" + (s3 * 1 + 1) + ". " + moves[s3].move1.From + "—" + moves[s3].move1.To + (moves[s3].move2 ? "     " + moves[s3].move2.From + "—" + moves[s3].move2.To : "") + "</font> </br>";
+            move = move + "<font size=\"4\" color=\"#330000\">" + (s3 * 1 + 1) + ". " + moves[s3].move1.From + data.DataMoveActions[s3] + moves[s3].move1.To + (moves[s3].move2 ? "     " + moves[s3].move2.From + data.DataMoveActions[s3] + moves[s3].move2.To : "") + "</font> </br>";
             $("#moveslist").html(move);
         }
 

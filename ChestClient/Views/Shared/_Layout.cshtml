@@ -40,18 +40,28 @@
                 <input name="nomer2" value="" size="20" type="text" id="search"/>
                 
                 <h2><li class="btn-slide" ><a style="cursor:pointer;">Чат</a></li></h2><br/>
-
-                  
-                <div id=panel style="display:none;position: absolute;"><h6>@Html.ActionLink("Открыть на всю страницу", "Index", "Chat")</h6>
+                <div id=panel style="display:none;position:inherit;"><h6>@Html.ActionLink("Открыть на всю страницу", "Index", "Chat")</h6>
                 </div>
                 <table >
                     <tr>
-                        <td style="position:fixed;overflow: scroll;width: 90px;height: 200px;padding: 60px;border: solid 1px black">
-                          
+                        <td style="position:fixed;overflow-y: scroll;overflow-x:visible;width: 200px;height: 300px;padding: 5px;border: solid 1px black">
+                            <div class="pane alt" style="background-color: rgb(204, 102, 102)">
+                                <h3>Guest1 says:</h3>
+                                <p>546</p>
+                                <p><a href="#" class="btn-delete">Delete</a>|</p>
+                            </div>
+                            <div class="pane spam" style="background-color: rgb(204, 204, 204);">
+                                <h3>Guest2 says:</h3>
+                                <p>123</p>
+                                <p><a href="#" class="btn-delete">Delete</a>|</p>
+                            </div>
+                            <INPUT TYPE="Text" NAME="first" MAXLENGTH="40" SIZE="40">
                         </td>
+                       
                     </tr>
                     
                 </table>
+
             </td>
             <td>
                 
@@ -59,13 +69,21 @@
                     @RenderBody()
                 </div>
                
-                
+                <!--<BODY > 
+ <FORM METHOD="Post" ACTION="bin/who">Введите ваше имя  
+<P><INPUT TYPE="TEXT" SIZE="30" NAME="form" MAXLENGTH="15" VALUE="Ваше имя"> 
+<P><INPUT TYPE=SUBMIT VALUE="Отправить">  
+</FORM> 
+</BODY> -->
+   
+
             </td>
              
         </tr>
         
 
     </table>
+
    
    
     

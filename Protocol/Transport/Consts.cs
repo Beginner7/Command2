@@ -34,4 +34,13 @@
         WhiteCheck,
         BlackCheck
     }
+
+    public enum  MoveResult
+    {
+        SilentMove ,
+        Taking ,
+        Check ,
+        Mate 
+    }
 }
+

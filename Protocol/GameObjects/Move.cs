@@ -1,4 +1,7 @@
-﻿namespace Protocol.GameObjects
+﻿
+using Protocol.Transport;
+
+namespace Protocol.GameObjects
 {
     public class Move
     {
@@ -6,5 +9,6 @@
         public string To;
         public string Player;
         public string InWhom;
+        public MoveResult Result;
     }
 }

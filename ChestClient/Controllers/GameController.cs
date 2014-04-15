@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
 using ChestClient.Models;
@@ -85,7 +87,15 @@ namespace ChestClient.Controllers
                     res = ("Unexpected act");
                     break;
             }
-            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMove = response.Moves, DataStatus = response2.Act, DataTextStatus = res,
+            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMove = response.Moves.Select(move =>
+            {
+                dynamic m = new {From = move.From, To = move.To};
+                if (move.Result != MoveResult.SilentMove)
+                {
+                    m.Result = move.Result;
+                }
+                return m;
+            }), DataMoveActions = response.MoveActions, DataStatus = response2.Act, DataTextStatus = res,
                 DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn,
                 EatedWhites = response2.EatedWhites, EatedBlacks = response2.EatedBlacks}, JsonRequestBehavior.AllowGet);
         }

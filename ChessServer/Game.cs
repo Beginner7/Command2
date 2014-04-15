@@ -20,6 +20,7 @@ namespace ChessServer
         public static int GameIdSeq = 0;
         public string EatedWhites = "";
         public string EatedBlacks = "";
+        public List<MoveResult> MoveActions = new List<MoveResult>();
 
         public Game(User user)
         {

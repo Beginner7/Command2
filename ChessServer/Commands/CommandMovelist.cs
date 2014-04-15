@@ -15,9 +15,12 @@ namespace ChessServer.Commands
         public override Response DoWork(string request)
         {
             var workRequest = JsonConvert.DeserializeObject<MoveListRequest>(request);
-            var workResponse = new MoveListResponse();
-            workResponse.Moves = Server.Games[workRequest.Game].Moves;
-            workResponse.Status = Statuses.Ok;
+            var workResponse = new MoveListResponse
+            {
+                Moves = Server.Games[workRequest.Game].Moves,
+                MoveActions = Server.Games[workRequest.Game].MoveActions,
+                Status = Statuses.Ok
+            };
             return workResponse;
         }
     }
