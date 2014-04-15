@@ -17,6 +17,10 @@ $(document).ready(function () {
                         $.OppFrom = data.Messages[s].Text.charAt(0) + data.Messages[s].Text.charAt(1);
                         $.OppTo = data.Messages[s].Text.charAt(3) + data.Messages[s].Text.charAt(4);
                     }
+                    if (data.Messages[s].Type == 5) {
+                        alert("Opponent surrendered.");
+                        window.location.replace("/");
+                    }
                     if (data.Messages[s].Type == 7) {
                         alert("Opponent accepted peace.");
                         window.location.replace("/");
@@ -68,11 +72,6 @@ $(document).ready(function () {
     else {
         alert("Wrong URL");
     }
-    $('#surrenderButton').button().click(function () {
-        $.get("/Play/SurrenderRequest?gameID=" + $.gameID);
-        alert("You surrendered.");
-        window.location.replace("/");
-    });
     $('#surrenderButton').button().click(function () {
         $.get("/Play/SurrenderRequest?gameID=" + $.gameID);
         alert("You surrendered.");
