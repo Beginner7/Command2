@@ -17,6 +17,43 @@ $(document).ready(function () {
                         $.OppFrom = data.Messages[s].Text.charAt(0) + data.Messages[s].Text.charAt(1);
                         $.OppTo = data.Messages[s].Text.charAt(3) + data.Messages[s].Text.charAt(4);
                     }
+                    if (data.Messages[s].Type == 7) {
+                        alert("Opponent accepted peace.");
+                        window.location.replace("/");
+                    }
+                    if (data.Messages[s].Type == 8) {
+                        alert("Opponent declined peace.");
+                    }
+                    isPeace = null;
+                    if (data.Messages[s].Type == 6) {
+                        $("#dialogPeaceConfirmation").dialog({
+                            resizable: false,
+                            width: 450,
+                            modal: true,
+                            open: function () {
+                                $(".ui-widget-overlay").css('background', 'black');
+                                $(".ui-dialog-titlebar-close").hide();
+                            },
+                            close: function () {
+                                if (isPeace == true) {
+                                    $.get("/Play/AcceptPeaceRequest?gameID=" + $.gameID);
+                                    alert("You accepted peace.");
+                                    window.location.replace("/");
+                                }
+                                if (isPeace == false) {
+                                    $.get("/Play/DeclinePeaceRequest?gameID=" + $.gameID);
+                                }
+                            }
+                        });
+                        $('#buttonPeaceConfirm').button().click(function () {
+                            isPeace = true;
+                            $("#dialogPeaceConfirmation").dialog("close");
+                        });
+                        $('#buttonPeaceDecline').button().click(function () {
+                            isPeace = false;
+                            $("#dialogPeaceConfirmation").dialog("close");
+                        });
+                    }
                 }
             }
         });
@@ -35,6 +72,15 @@ $(document).ready(function () {
         $.get("/Play/SurrenderRequest?gameID=" + $.gameID);
         alert("You surrendered.");
         window.location.replace("/");
+    });
+    $('#surrenderButton').button().click(function () {
+        $.get("/Play/SurrenderRequest?gameID=" + $.gameID);
+        alert("You surrendered.");
+        window.location.replace("/");
+    });
+    $('#peaceButton').button().click(function () {
+        $.get("/Play/PeaceRequest?gameID=" + $.gameID);
+        alert("Peace request sended to opponent.");
     });
 });
 

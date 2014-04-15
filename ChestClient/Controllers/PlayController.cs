@@ -138,5 +138,55 @@ namespace ChestClient.Controllers
             }
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult DeclinePeaceRequest(string gameId)
+        {
+            var request = new DeclinePeaceRequest { From = User.Identity.Name };
+            try
+            {
+                request.GameID = Int32.Parse(gameId);
+            }
+            catch (Exception)
+            {
+                request.GameID = 0;
+            }
+            var response = ServerProvider.MakeRequest<DeclinePeaceResponse>(request);
+            string ret;
+            switch (response.Status)
+            {
+                case Statuses.Ok:
+                    ret = "";
+                    break;
+                default:
+                    ret = "Wrong status.";
+                    break;
+            }
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AcceptPeaceRequest(string gameId)
+        {
+            var request = new AcceptPeaceRequest { From = User.Identity.Name };
+            try
+            {
+                request.GameID = Int32.Parse(gameId);
+            }
+            catch (Exception)
+            {
+                request.GameID = 0;
+            }
+            var response = ServerProvider.MakeRequest<AcceptPeaceResponse>(request);
+            string ret;
+            switch (response.Status)
+            {
+                case Statuses.Ok:
+                    ret = "";
+                    break;
+                default:
+                    ret = "Wrong status.";
+                    break;
+            }
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
     }
 }
