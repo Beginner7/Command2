@@ -16,7 +16,8 @@ namespace ChessServer.Commands
         {
             var userListRequest = JsonConvert.DeserializeObject<UserListRequest>(request);
             var userListResponse = new UserListResponse();
-            userListResponse.Users = Server.Users.Keys.ToArray();
+            var user = Server._chess.users.Select(u =>  u.name).ToArray();
+            userListResponse.Users = user;
             userListResponse.Status = Statuses.Ok;
             return userListResponse;
         }

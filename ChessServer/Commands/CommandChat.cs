@@ -1,4 +1,6 @@
-﻿using Protocol;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Protocol;
 using Protocol.Transport.Messages;
 using Newtonsoft.Json;
 
@@ -13,22 +15,23 @@ namespace ChessServer.Commands
             var workResponse = new ChatResponse();
             if (Server.Games.ContainsKey(workRequest.GameID))
             {
-                if (Server.Games[workRequest.GameID].PlayerWhite.Name == workRequest.From)
+                if (Server.Games[workRequest.GameID].PlayerWhite.name == workRequest.From)
                 {
-                    User geted;
-                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerBlack.Name, out geted))
+                    user geted = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameID].PlayerBlack.name).FirstOrDefault();
+                    if (geted != null)
                     {
-                        geted.Messages.Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
+                        Server.Messages.GetOrAdd(geted.name, i=> new List<Message>()).Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
                     }
                 }
                 else
                 {
-                    if (Server.Games[workRequest.GameID].PlayerBlack.Name == workRequest.From)
+                    if (Server.Games[workRequest.GameID].PlayerBlack.name == workRequest.From)
                     {
-                        User geted;
-                        if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerWhite.Name, out geted))
+                         user geted = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameID].PlayerWhite.name).FirstOrDefault();
+                    
+                        if (geted != null)
                         {
-                            geted.Messages.Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
+                            Server.Messages.GetOrAdd(geted.name, i => new List<Message>()).Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
                         }
                     }
                 }

@@ -33,12 +33,19 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +53,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chess.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Chess.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Chess.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Chess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Chess.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Chess.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Commands\CommandMove.cs" />
     <Compile Include="Commands\CommandGameStat.cs" />
     <Compile Include="Commands\CommandEcho.cs" />
@@ -57,8 +79,6 @@
     <Compile Include="Commands\CommandMoveVariants.cs" />
     <Compile Include="Commands\CommandUserlist.cs" />
     <Compile Include="Commands\CommandPulse.cs" />
-    <Compile Include="Commands\CommandDisconnect.cs" />
-    <Compile Include="Commands\CommandDeleteUser.cs" />
     <Compile Include="Commands\CommandAddUser.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
@@ -68,10 +88,19 @@
     <Compile Include="Commands\CommandDeclinePeace.cs" />
     <Compile Include="Commands\CommandPlay.cs" />
     <Compile Include="Commands\CommandStop.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="game.cs">
+      <DependentUpon>Chess.tt</DependentUpon>
+    </Compile>
     <Compile Include="GameLogic\AttackMap.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="move.cs">
+      <DependentUpon>Chess.tt</DependentUpon>
+    </Compile>
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="user.cs">
+      <DependentUpon>Chess.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Protocol\Protocol.csproj">
@@ -80,9 +109,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="Chess.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Chess.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="App.Config" />
+    <None Include="Chess.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Chess.edmx</DependentUpon>
+      <LastGenOutput>Chess.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Chess.edmx.diagram">
+      <DependentUpon>Chess.edmx</DependentUpon>
+    </None>
+    <None Include="Chess.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Chess.edmx</DependentUpon>
+      <LastGenOutput>Chess.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

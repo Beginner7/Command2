@@ -129,6 +129,7 @@ namespace ChessConsole
                     {
                         commandInput = commandInput.Replace("  ", " ");
                     }
+                    if (String.IsNullOrWhiteSpace(commandInput)) continue;
                     if (commandInput[0] == ' ')
                     {
                         commandInput = commandInput.Substring(1);

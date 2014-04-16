@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Protocol;
 using Protocol.Transport;
 using Protocol.Transport.Messages;
@@ -17,29 +18,17 @@ namespace ChessServer.Commands
             if (Server.Games[workRequest.GameID].Act == Act.WaitingOpponent)
             {
                 workResponse.Status = Statuses.NoUser;
+                return workResponse;
             }
-            else
+            if (workRequest.From == Server.Games[workRequest.GameID].PlayerWhite.name)
             {
-                if (workRequest.From == Server.Games[workRequest.GameID].PlayerWhite.Name)
-                {
-                    Server.Games[workRequest.GameID].Act = Act.BlackWon;
-                    User geted;
-                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerBlack.Name, out geted))
-                    {
-                        geted.Messages.Add(MessageSender.OpponentSurrendered());
-                    }
-                    workResponse.Status = Statuses.Ok;
-                }
-                if (workRequest.From == Server.Games[workRequest.GameID].PlayerBlack.Name)
-                {
-                    Server.Games[workRequest.GameID].Act = Act.WhiteWon;
-                    User geted;
-                    if (Server.Users.TryGetValue(Server.Games[workRequest.GameID].PlayerWhite.Name, out geted))
-                    {
-                        geted.Messages.Add(MessageSender.OpponentSurrendered());
-                    }
-                    workResponse.Status = Statuses.Ok;
-                }
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerBlack.name, i => new List<Message>()).Add(MessageSender.OpponentSurrendered());
+                workResponse.Status = Statuses.Ok;
+            }
+            if (workRequest.From == Server.Games[workRequest.GameID].PlayerBlack.name)
+            {
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerWhite.name, i => new List<Message>()).Add(MessageSender.OpponentSurrendered());
+                workResponse.Status = Statuses.Ok;
             }
             return workResponse;
         }
