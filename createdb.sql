@@ -1,4 +1,5 @@
 CREATE DATABASE `chess` /*!40100 DEFAULT CHARACTER SET utf8 */;
+use chess;
 CREATE TABLE `games` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `playerWhite` varchar(255) DEFAULT NULL,

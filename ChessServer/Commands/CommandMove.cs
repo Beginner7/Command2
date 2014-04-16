@@ -13,19 +13,9 @@ namespace ChessServer.Commands
     {
         public override string Name { get { return "move"; } }
 
-        private string SideUser(Side side, GameObject game)
+        private static string SideUser(Side side, GameObject game)
         {
-            if (side == Side.WHITE)
-            {
-                return game.PlayerWhite.name;
-            }
-
-            if (side == Side.BLACK)
-            {
-                return game.PlayerBlack.name;
-            }
-
-            return null;
+            return side == Side.WHITE ? game.PlayerWhite.name : (side == Side.BLACK ? game.PlayerBlack.name : null);
         }
 
         public override Response DoWork(string request)
@@ -33,10 +23,10 @@ namespace ChessServer.Commands
             var workRequest = JsonConvert.DeserializeObject<MoveRequest>(request);
             var workResponse = new MoveResponse();
 
-            user whitePlayer = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameId].PlayerWhite.name)
-                .FirstOrDefault();
-            user blackPlayer = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameId].PlayerBlack.name)
-                .FirstOrDefault();
+            var whitePlayerName = Server.Games[workRequest.GameId].PlayerWhite.name;
+            var whitePlayer = Server._chess.users.Where(user => user.name == whitePlayerName).FirstOrDefault();
+            var blackPlayerName = Server.Games[workRequest.GameId].PlayerBlack.name;
+            var blackPlayer = Server._chess.users.Where(user => user.name == blackPlayerName).FirstOrDefault();
             GameObject currentGame;
             Server.Games.TryGetValue(workRequest.GameId, out currentGame);
 
