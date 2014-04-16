@@ -17,6 +17,9 @@ $(document).ready(function () {
                         $.OppFrom = data.Messages[s].Text.charAt(0) + data.Messages[s].Text.charAt(1);
                         $.OppTo = data.Messages[s].Text.charAt(3) + data.Messages[s].Text.charAt(4);
                     }
+                    if (data.Messages[s].Type == 0) {
+                        alert("New message: " + data.Messages[s].Text);
+                    }
                     if (data.Messages[s].Type == 5) {
                         alert("Opponent surrendered.");
                         window.location.replace("/");

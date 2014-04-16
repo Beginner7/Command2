@@ -3,16 +3,23 @@
         $("#panel").slideToggle("fast");
         $(this).toggleClass("active");
     });
-});
-$(document).ready(function () {
 
     $(".pane:even").addClass("alt");
 
     $(".pane .btn-delete").click(function () {
-        alert("This comment will be deleted!");
-
         $(this).parents(".pane").animate({ backgroundColor: "#fbc7c7" }, "fast")
-        .animate({ opacity: "hide" }, "slow");
+            .animate({ opacity: "hide" }, "slow");
         return false;
+    });
+    $("#SendMessageButton").click(function() {
+        var text = $("#MessageArea").val();
+        if (text.length == 0) {
+            $("#MessageArea").animate({ borderColor: "red", top: 2 }, "slow")
+                .animate({ borderColor: "#A9A9A9", top: 2}, "fast");
+        } else {
+            $.get("/Chat/SendMessage", { Message: text }, function (data) {
+                alert(data);
+            });
+        }
     });
 });
