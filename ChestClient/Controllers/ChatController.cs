@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using Newtonsoft.Json;
 using Protocol;
+using Protocol.Transport;
 using Protocol.Transport.Messages;
 
 namespace ChestClient.Controllers
@@ -15,46 +17,30 @@ namespace ChestClient.Controllers
             return View();
         }
 
-        public ActionResult SendMessage()
-        {
-            return Json(Request.Params["Message"] + " received", JsonRequestBehavior.AllowGet);
-        }
-
         public string Name
         {
             get { return "chat"; }
         }
 
-        public void DoWork(string request)
+        public ActionResult SendMessage()
         {
-            var workRequest = JsonConvert.DeserializeObject<ChatRequest>(request);
-            var workResponse = new ChatResponse();
-            if (ChessServer.Server.Games.ContainsKey(workRequest.GameID))
+            int gameId;
+            if (!int.TryParse(Request.Params["GameID"], out gameId))
             {
-                if (ChessServer.Server.Games[workRequest.GameID].PlayerWhite.Name == workRequest.From)
-                {
-                    User geted;
-                    if (
-                        ChessServer.Server.Users.TryGetValue(
-                            ChessServer.Server.Games[workRequest.GameID].PlayerBlack.Name, out geted))
-                    {
-                        geted.Messages.Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
-                    }
-                }
-                else
-                {
-                    if (ChessServer.Server.Games[workRequest.GameID].PlayerBlack.Name == workRequest.From)
-                    {
-                        User geted;
-                        if (
-                            ChessServer.Server.Users.TryGetValue(
-                                ChessServer.Server.Games[workRequest.GameID].PlayerWhite.Name, out geted))
-                        {
-                            geted.Messages.Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
-                        }
-                    }
-                }
+                return Json(null, JsonRequestBehavior.AllowGet);
             }
+            var request = new ChatRequest
+            {
+                SayString = Request.Params["Message"],
+                From = User.Identity.Name,
+                GameID = gameId
+            };
+            var response = ServerProvider.MakeRequest<ChatResponse>(request);
+            if (response.Status != Statuses.Ok)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+            return Json("OK", JsonRequestBehavior.AllowGet);
         }
     }
 }
