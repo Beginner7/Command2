@@ -152,8 +152,82 @@ namespace ChessServer.Commands
                 {
                     currentGame.EatedBlacks += attackMap.SourceBoard[workRequest.To].Symbol;
                 }
+                if (attackMap.IsCheck)
+                {
+                    workRequest.Result = MoveResult.Check | MoveResult.Taking;
+                }
+                if (attackMap.IsMateBlack || attackMap.IsMateWhite)
+                {
+                    workRequest.Result = MoveResult.Mate | MoveResult.Taking;
+                }
+                if (attackMap.IsMateBlack || attackMap.IsPat)
+                {
+                    workRequest.Result = MoveResult.Pat | MoveResult.Taking;
+                }
+                workRequest.Result = MoveResult.Taking;
             }
-            moves.Add(new Move { From = workRequest.From, To = workRequest.To, Player = workRequest.Player, InWhom = workRequest.InWhom });
+            else
+            {
+                if (attackMap.IsCheck)
+                {
+                    workRequest.Result = MoveResult.Check | MoveResult.SilentMove;
+                }
+                if (attackMap.IsMateBlack || attackMap.IsMateWhite)
+                {
+                    workRequest.Result = MoveResult.Mate | MoveResult.SilentMove;
+                }
+                if (attackMap.IsMateBlack || attackMap.IsPat)
+                {
+                    workRequest.Result = MoveResult.Pat | MoveResult.SilentMove;
+                }
+                workRequest.Result = MoveResult.SilentMove;
+            }
+
+            if (attackMap.SourceBoard[workRequest.From].GetType() == typeof (FigureBishop))
+            {
+                workRequest.MovedFigure = "B";
+            }
+            else
+            {
+                if (attackMap.SourceBoard[workRequest.From].GetType() == typeof (FigureKing))
+                {
+                    workRequest.MovedFigure = "K";
+                }
+                else
+                {
+                    if (attackMap.SourceBoard[workRequest.From].GetType() == typeof (FigureKnight))
+                    {
+                        workRequest.MovedFigure = "N";
+                    }
+                    else
+                    {
+                        if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigurePawn))
+                        {
+                            workRequest.MovedFigure = "";
+                        }
+                        else
+                        {
+                            if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureQueen))
+                            {
+                                workRequest.MovedFigure = "Q";
+                            }
+                            else
+                            {
+                                if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureRook))
+                                {
+                                    workRequest.MovedFigure = "R";
+                                }
+                                else
+                                {
+                                    workRequest.MovedFigure = "";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            moves.Add(new Move { From = workRequest.From, To = workRequest.To, Player = workRequest.Player, InWhom = workRequest.InWhom, Result = workRequest.Result, MovedFigure = workRequest.MovedFigure });
 
             if (Server.Games[workRequest.GameId].Turn == Side.WHITE)
             {

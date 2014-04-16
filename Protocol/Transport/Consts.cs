@@ -1,4 +1,6 @@
-﻿namespace Protocol.Transport
+﻿using System;
+
+namespace Protocol.Transport
 {
     public static class Consts
     {
@@ -35,12 +37,14 @@
         BlackCheck
     }
 
+    [Flags]
     public enum  MoveResult
     {
         SilentMove ,
         Taking ,
         Check ,
-        Mate 
+        Mate ,
+        Pat
     }
 }
 

@@ -18,7 +18,6 @@ namespace ChessServer.Commands
             var workResponse = new MoveListResponse
             {
                 Moves = Server.Games[workRequest.Game].Moves,
-                MoveActions = Server.Games[workRequest.Game].MoveActions,
                 Status = Statuses.Ok
             };
             return workResponse;

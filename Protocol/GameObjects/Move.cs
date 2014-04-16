@@ -10,5 +10,6 @@ namespace Protocol.GameObjects
         public string Player;
         public string InWhom;
         public MoveResult Result;
+        public string MovedFigure;
     }
 }

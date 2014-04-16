@@ -1,4 +1,7 @@
-﻿namespace Protocol
+﻿using Protocol.GameObjects;
+using Protocol.Transport;
+
+namespace Protocol
 {
    public class MoveRequest: Request
    {
@@ -11,5 +14,7 @@
        public string Player;
        public int GameId;
        public string InWhom;
+       public MoveResult Result;
+       public string MovedFigure;
    }
 }

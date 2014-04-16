@@ -32,14 +32,14 @@ namespace ChestClient.Controllers
             var board = new Board();
             board.InitialPosition();
             string res;
+            string notationMove = "";
+            string notationMoveResult = "";
             var request = new MoveListRequest {Game = int.Parse(Request.Params["gameID"])};
             var response = ServerProvider.MakeRequest<MoveListResponse>(request);
             var request2 = new GameStatRequest {gameID = int.Parse(Request.Params["gameID"])};
             var response2 = ServerProvider.MakeRequest<GameStatResponse>(request2);
 
             board.ApplyMoves(response.Moves);
-            var j = -1;
-            j++;
 
             switch (response2.Act)
             {
@@ -87,7 +87,14 @@ namespace ChestClient.Controllers
                     res = ("Unexpected act");
                     break;
             }
-            return Json(new {DataBoard = board.ShowBoardToWeb(), DataMove = response.Moves.Select(move =>
+
+            foreach (var s in response.Moves)
+            {
+                notationMove = (s.Result & MoveResult.Taking) == MoveResult.Taking ? "×" : "—";
+                notationMoveResult = (s.Result & MoveResult.Check) == MoveResult.Check ? "#" : ((s.Result & MoveResult.Mate) == MoveResult.Mate ? "+" : "=");
+            }
+
+            /*   return Json(new {DataBoard = board.ShowBoardToWeb(), DataMove = response.Moves.Select(move =>
             {
                 dynamic m = new {From = move.From, To = move.To};
                 if (move.Result != MoveResult.SilentMove)
@@ -95,9 +102,34 @@ namespace ChestClient.Controllers
                     m.Result = move.Result;
                 }
                 return m;
-            }), DataMoveActions = response.MoveActions, DataStatus = response2.Act, DataTextStatus = res,
+            }),  DataStatus = response2.Act, DataTextStatus = res,
                 DataWhitePlayer = response2.PlayerWhite, DataBlackPlayer = response2.PlayerBlack, DataTurn = response2.Turn,
                 EatedWhites = response2.EatedWhites, EatedBlacks = response2.EatedBlacks}, JsonRequestBehavior.AllowGet);
+        }*/
+            return Json(new
+            {
+                DataBoard = board.ShowBoardToWeb(),
+                DataMove = response.Moves.Select(move =>
+                {
+                    dynamic m = new { 
+                        From = move.From,
+                        To = move.To, 
+                        DataMovedFigure = move.MovedFigure,
+                        InWhom = move.InWhom,
+                        Result1 = (move.Result & MoveResult.Taking) == MoveResult.Taking ? "×" : "—", 
+                        Result2 = (move.Result & MoveResult.Check) == MoveResult.Check ? "#" : ((move.Result & MoveResult.Mate) == MoveResult.Mate ? "+" : ((move.Result & MoveResult.Pat) == MoveResult.Pat) ? "=" : "" ) 
+                    };
+
+                    return m;
+                }),
+                DataStatus = response2.Act,
+                DataTextStatus = res,
+                DataWhitePlayer = response2.PlayerWhite,
+                DataBlackPlayer = response2.PlayerBlack,
+                DataTurn = response2.Turn,
+                EatedWhites = response2.EatedWhites,
+                EatedBlacks = response2.EatedBlacks
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult MoveVariants()
