@@ -16,24 +16,8 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<PulseRequest>(request);
             var workResponse = new PulseResponse();
-            User geted;
-            if (Server.Users.TryGetValue(workRequest.From, out geted))
-            {
-                workResponse.Status = Statuses.Ok;
-                geted.Lostbeats = 0;
-                if (geted.Messages.Capacity != 0)
-                {
-                    foreach (var element in geted.Messages)
-                    {
-                        workResponse.Messages.Add(element);
-                    }
-                    geted.Messages.Clear();
-                }
-            }
-            else
-            {
-                workResponse.Status = Statuses.NoUser;
-            }
+            Server.LostBeats.AddOrUpdate(workRequest.From, i => 0, (i, cv) => 0);
+            workResponse.Status = Statuses.Ok;
             return workResponse;
         }
     }
