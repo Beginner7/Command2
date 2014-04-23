@@ -108,10 +108,6 @@ namespace ChessServer
                     _chess.SaveChanges();
                     success = true;
                 }
-                catch (EntityException)
-                {
-                    success = false;
-                }
                 catch (DbUpdateException)
                 {
                     success = false;

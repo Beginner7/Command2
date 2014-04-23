@@ -1,4 +1,5 @@
 param($installPath, $toolsPath, $package, $project)
+
 try {
     # Set up variables
     $timestamp = (Get-Date).ToString('yyyyMMddHHmmss')
@@ -7,11 +8,11 @@ try {
     $connectionString ="Data Source=(LocalDb)\v11.0;Initial Catalog=$catalogName;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\$catalogName.mdf"
     $connectionStringToken = 'Data Source=(LocalDb)\v11.0;'
     $config = $project.ProjectItems | Where-Object { $_.Name -eq "Web.config" }    
-    $fileName = $config.Properties | Where-Object { $_.Name -eq "FullPath" }
+    $configPath = ($config.Properties | Where-Object { $_.Name -eq "FullPath" }).Value
     
     #Load the Config File
     $xml = New-Object System.Xml.XmlDocument
-    $xml.Load($fileName.Value)
+    $xml.Load($configPath)
     
     function CommentNode($node) {
         if (!$node) {
@@ -20,12 +21,21 @@ try {
         
         $commentNode = $xml.CreateComment($node.OuterXml)
         $parent = $node.ParentNode
-        $parent.InsertBefore($commentNode, $node)
-        $parent.RemoveChild($node)
+        $parent.InsertBefore($commentNode, $node) | Out-Null
+        $parent.RemoveChild($node) | Out-Null
     }
     
     # Comment out older providers
     $node = $xml.SelectSingleNode("/configuration/system.web/membership/providers/add[@type='System.Web.Security.SqlMembershipProvider']")
+    $addedNode = $xml.SelectSingleNode("/configuration/system.web/membership/providers/add[@name='DefaultMembershipProvider']")
+    
+    if ($node) {
+        # Copy all attributes other than 'name', 'type' and 'connectionStringName' to the newly added node.
+        $node.Attributes | Where { ! (@('name', 'type', 'connectionStringName') -contains $_.name) } | ForEach {
+            $addedNode.SetAttribute($_.name, $_.value)
+        }
+    }
+    
     $oldConnectionNode = $xml.SelectSingleNode("/configuration/connectionStrings/add[@name='$($node.connectionStringName)']")
     CommentNode $node
     CommentNode $oldConnectionNode
@@ -45,7 +55,7 @@ try {
     $connectionStrings = $xml.SelectSingleNode("/configuration/connectionStrings")
     if (!$connectionStrings) {
         $connectionStrings = $xml.CreateElement("connectionStrings")
-        $xml.configuration.AppendChild($connectionStrings)
+        $xml.configuration.AppendChild($connectionStrings) | Out-Null
     }
     
     if (!($connectionStrings.SelectNodes("add[@name='DefaultConnection']") | Where { $_.connectionString.StartsWith($connectionStringToken, 'OrdinalIgnoreCase') })) {
@@ -55,21 +65,21 @@ try {
         $newConnectionNode.SetAttribute("providerName", "System.Data.SqlClient")
         $newConnectionNode.SetAttribute("connectionString", $connectionString)
         
-        $connectionStrings.AppendChild($newConnectionNode)
+        $connectionStrings.AppendChild($newConnectionNode) | Out-Null
     }
     
     # Save the Config File 
-    $xml.Save($fileName.Value)
+    $xml.Save($configPath)
     
 } catch {
-    Write-Output "You will need to manually, change the 'Initial Catalog' in the 'DefaultConnection' to a unique name."
+    Write-Error "Unable to update the web.config file at $configPath. Add the following connection string to your config: <add name=`"DefaultConnection`" providerName=`"System.Data.SqlClient`" connectionString=`"$connectionString`" />"
 }
 
 # SIG # Begin signature block
 # MIIaRAYJKoZIhvcNAQcCoIIaNTCCGjECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUgf9e3xFZJUxs40YJd4rwwoO+
-# HOigghUtMIIEoDCCA4igAwIBAgIKYRnMkwABAAAAZjANBgkqhkiG9w0BAQUFADB5
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUM2fyakiWFghUj5OcFEF6koKx
+# /6OgghUtMIIEoDCCA4igAwIBAgIKYRnMkwABAAAAZjANBgkqhkiG9w0BAQUFADB5
 # MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVk
 # bW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSMwIQYDVQQDExpN
 # aWNyb3NvZnQgQ29kZSBTaWduaW5nIFBDQTAeFw0xMTEwMTAyMDMyMjVaFw0xMzAx
@@ -94,32 +104,32 @@ try {
 # m7iPXIgONpRsMwe4qa1RoNDC3I4iEr3D34LXVqH33fClIFcQEJ3urIZ0bHGbwfDy
 # wnBep9ttTTdYmU15QNA0XVolrmfrG05GBrCMKR+jEI+lM58j1fi1Rn3g7mOYkEs+
 # BagvsBizWaSvQVOOCAUQLSrJOgZMHC6pMVFWZKyazKyXmCmKl5CH6p22MIIEujCC
-# A6KgAwIBAgIKYQUTNgAAAAAAGjANBgkqhkiG9w0BAQUFADB3MQswCQYDVQQGEwJV
+# A6KgAwIBAgIKYQUZlgAAAAAAGzANBgkqhkiG9w0BAQUFADB3MQswCQYDVQQGEwJV
 # UzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UE
 # ChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSEwHwYDVQQDExhNaWNyb3NvZnQgVGlt
-# ZS1TdGFtcCBQQ0EwHhcNMTEwNzI1MjA0MjE3WhcNMTIxMDI1MjA0MjE3WjCBszEL
+# ZS1TdGFtcCBQQ0EwHhcNMTEwNzI1MjA0MjE5WhcNMTIxMDI1MjA0MjE5WjCBszEL
 # MAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1v
 # bmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjENMAsGA1UECxMETU9Q
-# UjEnMCUGA1UECxMebkNpcGhlciBEU0UgRVNOOjE1OUMtQTNGNy0yNTcwMSUwIwYD
+# UjEnMCUGA1UECxMebkNpcGhlciBEU0UgRVNOOjlFNzgtODY0Qi0wMzlEMSUwIwYD
 # VQQDExxNaWNyb3NvZnQgVGltZS1TdGFtcCBTZXJ2aWNlMIIBIjANBgkqhkiG9w0B
-# AQEFAAOCAQ8AMIIBCgKCAQEAnDSYGckJKWOZAhZ1qIhXfaG7qUES/GSRpdYFeL93
-# 3OzmrrhQTsDjGr3tt/34IIpxOapyknKfignlE++RQe1hJWtRre6oQ7VhQiyd8h2x
-# 0vy39Xujc3YTsyuj25RhgFWhD23d2OwW/4V/lp6IfwAujnokumidj8bK9JB5euGb
-# 7wZdfvguw2oVnDwUL+fVlMgiG1HLqVWGIbda80ESOZ/wValOqiUrY/uRcjwPfMCW
-# ctzBo8EIyt7FybXACl+lnAuqcgpdCkB9LpjQq7KIj4aA6H3RvlVr4FgsyDY/+eYR
-# w/BDBYV4AxflLKcpfNPilRcAbNvcrTwZOgLgfWLUzvYdPQIDAQABo4IBCTCCAQUw
-# HQYDVR0OBBYEFPaDiyCHEe6Dy9vehaLSaIY3YXSQMB8GA1UdIwQYMBaAFCM0+NlS
+# AQEFAAOCAQ8AMIIBCgKCAQEA08s7U6KfRKN6q01WcVOKd6o3k34BPv2rAqNTqf/R
+# sSLFAJDndW7uGOiBDhPF2GEAvh+gdjsEDQTFBKCo/ENTBqEEBLkLkpgCYjjv1DMS
+# 9ys9e++tRVeFlSCf12M0nGJGjr6u4NmeOfapVf3P53fmNRPvXOi/SJNPGkMHWDiK
+# f4UUbOrJ0Et6gm7L0xVgCBSJlKhbPzrJPyB9bS9YGn3Kiji8w8I5aNgtWBoj7SoQ
+# CFogjIKl7dGXRZKFzMM3g98NmHzF07bgmVPYeAj15SMhB2KGWmppGf1w+VM0gfcl
+# MRmGh4vAVZr9qkw1Ff1b6ZXJq1OYKV8speElD2TF8rAndQIDAQABo4IBCTCCAQUw
+# HQYDVR0OBBYEFHkj56ENvlUsaBgpYoJn1vPhNjhaMB8GA1UdIwQYMBaAFCM0+NlS
 # RnAK7UD7dvuzK7DDNbMPMFQGA1UdHwRNMEswSaBHoEWGQ2h0dHA6Ly9jcmwubWlj
 # cm9zb2Z0LmNvbS9wa2kvY3JsL3Byb2R1Y3RzL01pY3Jvc29mdFRpbWVTdGFtcFBD
 # QS5jcmwwWAYIKwYBBQUHAQEETDBKMEgGCCsGAQUFBzAChjxodHRwOi8vd3d3Lm1p
 # Y3Jvc29mdC5jb20vcGtpL2NlcnRzL01pY3Jvc29mdFRpbWVTdGFtcFBDQS5jcnQw
-# EwYDVR0lBAwwCgYIKwYBBQUHAwgwDQYJKoZIhvcNAQEFBQADggEBAGL0BQ1P5xtr
-# gudSDN95jKhVgTOX06TKyf6vSNt72m96KE/H0LeJ2NGmmcyRVgA7OOi3Mi/u+c9r
-# 2Zje1gL1QlhSa47aQNwWoLPUvyYVy0hCzNP9tPrkRIlmD0IOXvcEnyNIW7SJQcTa
-# bPg29D/CHhXfmEwAxLLs3l8BAUOcuELWIsiTmp7JpRhn/EeEHpFdm/J297GOch2A
-# djw2EUbKfjpI86/jSfYXM427AGOCnFejVqfDbpCjPpW3/GTRXRjCCwFQY6f889GA
-# noTjMjTdV5VAo21+2usuWgi0EAZeMskJ6TKCcRan+savZpiJ+dmetV8QI6N3gPJN
-# 1igAclCFvOUwggW8MIIDpKADAgECAgphMyYaAAAAAAAxMA0GCSqGSIb3DQEBBQUA
+# EwYDVR0lBAwwCgYIKwYBBQUHAwgwDQYJKoZIhvcNAQEFBQADggEBAEfCdoFbMd1v
+# 0zyZ8npsfpcTUCwFFxsQuEShtYz0Vs+9sCG0ZG1hHNju6Ov1ku5DohhEw/r67622
+# XH+XbUu1Q/snYXgIVHyx+a+YCrR0xKroLVDEff59TqGZ1icot67Y37GPgyKOzvN5
+# /GEUbb/rzISw36O7WwW36lT1Yh1sJ6ZjS/rjofq734WWZWlTsLZxmGQmZr3F8Vxi
+# vJH0PZxLQgANzzgFFCZa3CoFS39qmTjY3XOZos6MUCSepOv1P4p4zFSZXSVmpEEG
+# KK9JxLRSlOzeAoNk/k3U/0ui/CmA2+4/qzztM4jKvyJg0Fw7BLAKtJhtPKc6T5rR
+# ARYRYopBdqAwggW8MIIDpKADAgECAgphMyYaAAAAAAAxMA0GCSqGSIb3DQEBBQUA
 # MF8xEzARBgoJkiaJk/IsZAEZFgNjb20xGTAXBgoJkiaJk/IsZAEZFgltaWNyb3Nv
 # ZnQxLTArBgNVBAMTJE1pY3Jvc29mdCBSb290IENlcnRpZmljYXRlIEF1dGhvcml0
 # eTAeFw0xMDA4MzEyMjE5MzJaFw0yMDA4MzEyMjI5MzJaMHkxCzAJBgNVBAYTAlVT
@@ -187,24 +197,24 @@ try {
 # b3JhdGlvbjEjMCEGA1UEAxMaTWljcm9zb2Z0IENvZGUgU2lnbmluZyBQQ0ECCmEZ
 # zJMAAQAAAGYwCQYFKw4DAhoFAKCBrjAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIB
 # BDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQU
-# 4YYXugrPBTWDAQpBvdGd0vIfejwwTgYKKwYBBAGCNwIBDDFAMD6gJIAiAE0AaQBj
+# 9xYM6Gt10B10F4T8cFicUQvWvVIwTgYKKwYBBAGCNwIBDDFAMD6gJIAiAE0AaQBj
 # AHIAbwBzAG8AZgB0ACAAQQBTAFAALgBOAEUAVKEWgBRodHRwOi8vd3d3LmFzcC5u
-# ZXQvIDANBgkqhkiG9w0BAQEFAASCAQARGTaw8bW+F/fOnj7i22pdXsJmn3yT7m3l
-# PYq03q4w4Aj3t+tSLCv9kYaAjafqiQn6Iz6pYRPaoMuoye2yAl6alh3UQjfpseHZ
-# fDEaxLeUv/WlbMFT1FiqADJJHKcAFNzx+eZyMChH8lkmKy3Lo+Q2hx6OFAxpLfTR
-# 0/rwnfUVrq8Amnfn0JikPQA6Nzp7gQnrTBjbCoYLzuDa+coX1MUa/I6U/5Yl5hLZ
-# Y6qe0ZZFF2Ueoajkw++swT7djUAV2KOQ7AxspQ/8/Dl7OakVn7j6FNqKX1Dj9Ly4
-# uc5i95WtOBVFjWl3/kXPDec21b7Z8V0dmT9onZgP4sQla0hpOTRVoYICHTCCAhkG
+# ZXQvIDANBgkqhkiG9w0BAQEFAASCAQCuP8jCT3sq6XqWKCAcNJF601H1Zr+nKpXF
+# UkZm2Og5DjNN0EovL6vbw5GFU3+jnvW3NTGF3w8Ni/IkJj9KLbnz/MamhpoCY2N8
+# p3adGz5bvVxacZsiIcq3LRcOiasKCxuFu/bemfulxcOeho9rVc3zudiu3GbgsErb
+# ZH098KrmX7Vc/0VZgR9hlhN9QNXY0+ZkuKaB2URiowz8CePkSaMW5kuCF3H5eUpA
+# WUImlvqdgCsNDwUxIAVr5gkDjFZwky+VhNPT8e/ZtQiXxZBnftYujuRpp2wZTwLk
+# vAz/SA/X+mTKZJwtZloO4//l5WnBj2tg6ML3U4qk+mvhZIylsCy/oYICHTCCAhkG
 # CSqGSIb3DQEJBjGCAgowggIGAgEBMIGFMHcxCzAJBgNVBAYTAlVTMRMwEQYDVQQI
 # EwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3Nv
 # ZnQgQ29ycG9yYXRpb24xITAfBgNVBAMTGE1pY3Jvc29mdCBUaW1lLVN0YW1wIFBD
-# QQIKYQUTNgAAAAAAGjAHBgUrDgMCGqBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-# BwEwHAYJKoZIhvcNAQkFMQ8XDTEyMDQxMjIzMTAwMVowIwYJKoZIhvcNAQkEMRYE
-# FITBruHvuVB9K6o3uVZM6nxO+eQvMA0GCSqGSIb3DQEBBQUABIIBAFQ5S5RYeI9I
-# HlJz7lMB2uOg6AGmGTOcmH38GQ08t0Y94bzhQ7YkAVIKcwIAmr0hjkDwOtlHoVh3
-# lyhrq1KudBByqnAYSSPJD4sTcBNzAU2hX4eLp3t09bL0314s7sItDwrnI+LOb1HP
-# 5PvZ1ZN8uLsds0XaQeTbFFxZ05than+YX9FI34GIy330n3+jfhSitRQJw7FK+Tng
-# aQLnBzY+D94zKmCQGlUVyRxVcCiZrtOevFNGlnXD0CySQGdbpaz7+c6V3d+ZYaim
-# YL42YdDT8g2Gs6Q9QmeRtYBp94alIxejcMde1XmkxKmPy06+OgPsCbTFLWHeGidi
-# Ccfaqu4af48=
+# QQIKYQUZlgAAAAAAGzAHBgUrDgMCGqBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+# BwEwHAYJKoZIhvcNAQkFMQ8XDTEyMDYwNDE2NTkzMFowIwYJKoZIhvcNAQkEMRYE
+# FEHQYQK8DGgOoGQf028vCOnG6FGYMA0GCSqGSIb3DQEBBQUABIIBAGzVRWMbRJoL
+# kuebcjjH8n5+KlB8oAcCLRgU+unIJP105kip47XIqvUH/8AOFVN4Oto6RVtqwNA2
+# a+uYuSdfwdZjKNL/SjkXd0vSB5j86xEx7ac6Apd+/6YES1SsuAm2OR7swBkXiTId
+# EIlkZ1XekIZ7dHz4bu+Ee5FoVm2wKn4RZbTtEcyGHr/BAPHXwWuoObDrt6KJW+qK
+# ivYWvN05JqNal/Zsd3P+azKaEk9FJncuK1zdSJXmixam8ZHm+ixNlwO3nX5bi8ix
+# yJORXvJZGE2QrSufiH/+HhONa8n6YMRuWw6Ws/2io5w+NGlThiTe0n3AuKbB773Z
+# YZgAzu+XkmI=
 # SIG # End signature block

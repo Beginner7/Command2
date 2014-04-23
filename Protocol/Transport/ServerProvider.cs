@@ -37,7 +37,7 @@ namespace Protocol.Transport
 
                 return JsonConvert.DeserializeObject<T>(responseString);
             }
-            catch
+            catch (Exception e)
             {
                 Console.WriteLine("Can't connect to server.");
                 return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(new Response { RequestCommand = null, Status = Statuses.Unknown })); 

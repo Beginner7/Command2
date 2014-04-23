@@ -12,7 +12,8 @@ namespace ChessServer
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public partial class chessEntities : DbContext
     {
         public chessEntities()

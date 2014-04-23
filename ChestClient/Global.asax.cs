@@ -1,6 +1,4 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace ChestClient
@@ -30,9 +28,6 @@ namespace ChestClient
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
-            // Использовать LocalDB для Entity Framework по умолчанию
-            Database.DefaultConnectionFactory = new SqlConnectionFactory(@"Data Source=(localdb)\v11.0; Integrated Security=True; MultipleActiveResultSets=True");
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);

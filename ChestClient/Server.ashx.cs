@@ -14,10 +14,17 @@ namespace ChestClient
 
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.ContentType = "text/json";
-            var s = new ChessServer.Server();
-            var request = new StreamReader(context.Request.InputStream).ReadToEnd();
-            context.Response.Write(s.ProcessRequest(request));
+            try
+            {
+                context.Response.ContentType = "text/json";
+                var s = new ChessServer.Server();
+                var request = new StreamReader(context.Request.InputStream).ReadToEnd();
+                context.Response.Write(s.ProcessRequest(request));
+            }
+            catch (Exception e)
+            {
+                context.Response.Write(e);
+            }
         }
 
         public bool IsReusable
