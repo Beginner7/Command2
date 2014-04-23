@@ -16,7 +16,7 @@ namespace ChessServer
         public Side Turn = Side.WHITE;
         public DateTime TimeCreateGame = new DateTime(); //время создания игры
         public DateTime TimeStartGame; //время начала игры
-        public List<Move> Moves = new List<Move>();
+        public List<Move> Moves = new List<Move>(); 
         public static int GameIdSeq = 0;
         public string EatedWhites = "";
         public string EatedBlacks = "";

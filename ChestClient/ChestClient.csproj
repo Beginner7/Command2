@@ -263,10 +263,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessServer\ChessServer.csproj">
-      <Project>{54ba3b5b-fc49-4806-b93b-b4944c8131af}</Project>
-      <Name>ChessServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Protocol\Protocol.csproj">
       <Project>{e947168d-b945-423e-b437-08c1314fc492}</Project>
       <Name>Protocol</Name>

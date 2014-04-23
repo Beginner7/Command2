@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Protocol.Transport;
+using Protocol;
 
 namespace Protocol.GameObjects
 {

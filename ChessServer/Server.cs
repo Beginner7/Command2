@@ -17,7 +17,7 @@ namespace ChessServer
         internal static chessEntities _chess = new chessEntities();
         public static ConcurrentDictionary<int, GameObject> Games = new ConcurrentDictionary<int, GameObject>();
         public static ConcurrentDictionary<string, user> PlayersQue = new ConcurrentDictionary<string, user>();
-        public static ConcurrentDictionary<string,List<Message>> Messages = new ConcurrentDictionary<string, List<Message>>();
+        public static ConcurrentDictionary<string, List<Message>> Messages = new ConcurrentDictionary<string, List<Message>>();
         public static ConcurrentDictionary<string, int> LostBeats = new ConcurrentDictionary<string, int>();
         private static int _userNumber = 1;
 

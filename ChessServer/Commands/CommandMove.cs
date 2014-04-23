@@ -72,6 +72,7 @@ namespace ChessServer.Commands
 
             var fakeMoves = moves.ToList();
             fakeMoves.Add(new Move { From = workRequest.From, To = workRequest.To, Player = workRequest.Player, InWhom = workRequest.InWhom });
+            
             var fakeAttackMap = new AttackMap(fakeMoves);
 
             if (fakeAttackMap.SourceBoard.IsNeedPawnPromotion)
@@ -218,8 +219,19 @@ namespace ChessServer.Commands
                 }
             }
 
-            moves.Add(new Move { From = workRequest.From, To = workRequest.To, Player = workRequest.Player, InWhom = workRequest.InWhom, Result = workRequest.Result, MovedFigure = workRequest.MovedFigure });
-
+            moves.Add(new Move { From = workRequest.From, To = workRequest.To, Player = workRequest.Player, 
+            InWhom = workRequest.InWhom, Result = workRequest.Result, MovedFigure = workRequest.MovedFigure });
+            
+            Server._chess.moves.Add(new move
+            {
+                game = currentGame.Id,
+                from = workRequest.From.ToString(),
+                to = workRequest.To.ToString(),
+                whiteMove = userSide == Side.WHITE ? true : false,
+                inWhom = workRequest.InWhom
+            });
+            Server._chess.SaveChanges();
+            
             if (Server.Games[workRequest.GameId].Turn == Side.WHITE)
             {
                 Server.Games[workRequest.GameId].Turn = Side.BLACK;
