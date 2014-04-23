@@ -47,20 +47,17 @@
                     </div>
                     <table >
                         <tr>
-                            <td style="position:fixed;overflow-y: scroll;overflow-x:visible;width: 200px;height: 300px;padding: 5px;border: solid 1px black">
-                                <div class="pane alt" style="background-color: rgb(204, 102, 102)">
-                                    <h3>Guest1:</h3>
-                                    <p>546</p>
-                                    <p><a href="#" class="btn-delete">Delete</a>|</p>
-                                </div>
-                                <div class="pane spam" style="background-color: rgb(204, 204, 204);">
-                                    <h3>Guest2:</h3>
-                                    <p>123</p>
-                                    <p><a href="#" class="btn-delete">Delete</a>|</p>
-                                </div>
-                            
+                            <td style="position:absolute;overflow-y: scroll;overflow-x:visible;width: 200px;height: 300px;padding: 5px;border: solid 1px black">
+                                <!--
+                                    <div id="mymessage" class="pane alt">
+                                        <p><a href="#" class="btn-delete">Delete</a>|</p>
+                                    </div>
+                                    <div id="ennemysmessage"class="pane spam">
+                                        <p><a href="#" class="btn-delete">Delete</a>|</p>
+                                    </div>
+                                    -->
+                                <div id="messagesclass"></div>
                                 <form>
-                                
                                     <input type=text id="MessageArea" name="Message" size=10>
                                     <input type="button" id="SendMessageButton" name="SendMessage" value="Отправить">
                                 </form>
@@ -80,7 +77,7 @@
         </table>
         <div id="footer">
             Copyright © Command2 2014 &nbsp;<br />
-            Все права защищены&nbsp; 
+            Все права защищены&nbsp;
         </div>
 
     </body>

@@ -222,9 +222,7 @@ header h1, #header h1 {
 
 #footer {
     width: 100%;
-    position:absolute;
-    bottom:0;
-    clear:both;
+    position:relative;
     text-align:right;
 
 }
@@ -605,3 +603,18 @@ table#board  {
     -moz-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
 }
+
+#mymessage {
+    width: 183px;
+    height: 79px;
+    background-color: rgb(204, 102, 102):
+}
+
+#ennemysmessage {
+    width: 183px;
+    height: 79px;
+    background-color: rgb(204, 204, 204):
+}
+
+
+

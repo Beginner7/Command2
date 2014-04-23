@@ -74,7 +74,6 @@ function FigurePosition() {
         }
         var eatedwhites = "";
         for (i = 0; i < data.EatedWhites.length; i++) {
-            
             eatedwhites += "<img src = \"/Content/figure/" + data.EatedWhites.charAt(i) + "W.png\" width = 24 height = 24/>";
         }
         var eatedblacks = "";
