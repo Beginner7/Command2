@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>EntityFramework.ru</id>
+    <version>6.0.2</version>
+    <title>Русскоязычные ресурсы по Entity Framework</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=320539&amp;clcid=0x419</licenseUrl>
+    <projectUrl>http://go.microsoft.com/fwlink/?LinkId=320540&amp;clcid=0x419</projectUrl>
+    <iconUrl>http://go.microsoft.com/fwlink/?LinkID=386613&amp;clcid=0x419</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Этот пакет содержит русскоязычные сборки дополнений для Entity Framework</description>
+    <summary>Русскоязычные ресурсы для пакета Entity Framework</summary>
+    <language>ru</language>
+    <dependencies>
+      <dependency id="EntityFramework" version="[6.0.2]" />
+    </dependencies>
+  </metadata>
+</package>
