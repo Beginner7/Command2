@@ -23,7 +23,7 @@ namespace ChestClient
             }
             catch (Exception e)
             {
-                context.Response.Write(e + e.StackTrace);
+                context.Response.Write(e);
             }
         }
 
