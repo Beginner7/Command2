@@ -44,7 +44,9 @@ namespace Protocol.Transport
         Taking ,
         Check ,
         Mate ,
-        Pat
+        Pat,
+        LongCastling,
+        ShortCastling
     }
 }
 

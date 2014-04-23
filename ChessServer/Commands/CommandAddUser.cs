@@ -18,7 +18,7 @@ namespace ChessServer.Commands
             {
                 Server._chess.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 workResponse.Status = Statuses.DuplicateUser;
             }

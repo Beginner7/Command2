@@ -32,8 +32,6 @@ namespace ChestClient.Controllers
             var board = new Board();
             board.InitialPosition();
             string res;
-            string notationMove = "";
-            string notationMoveResult = "";
             var request = new MoveListRequest {Game = int.Parse(Request.Params["gameID"])};
             var response = ServerProvider.MakeRequest<MoveListResponse>(request);
             var request2 = new GameStatRequest {gameID = int.Parse(Request.Params["gameID"])};
@@ -88,11 +86,6 @@ namespace ChestClient.Controllers
                     break;
             }
 
-            foreach (var s in response.Moves)
-            {
-                notationMove = (s.Result & MoveResult.Taking) == MoveResult.Taking ? "×" : "—";
-                notationMoveResult = (s.Result & MoveResult.Check) == MoveResult.Check ? "#" : ((s.Result & MoveResult.Mate) == MoveResult.Mate ? "+" : "=");
-            }
 
             /*   return Json(new {DataBoard = board.ShowBoardToWeb(), DataMove = response.Moves.Select(move =>
             {
@@ -117,7 +110,8 @@ namespace ChestClient.Controllers
                         DataMovedFigure = move.MovedFigure,
                         InWhom = move.InWhom,
                         Result1 = (move.Result & MoveResult.Taking) == MoveResult.Taking ? "×" : "—", 
-                        Result2 = (move.Result & MoveResult.Check) == MoveResult.Check ? "#" : ((move.Result & MoveResult.Mate) == MoveResult.Mate ? "+" : ((move.Result & MoveResult.Pat) == MoveResult.Pat) ? "=" : "" ) 
+                        Result2 = (move.Result & MoveResult.Check) == MoveResult.Check ? "+" : ((move.Result & MoveResult.Mate) == MoveResult.Mate ? "#" : ((move.Result & MoveResult.Pat) == MoveResult.Pat) ? "=" : "" ),
+                        Result3 = (move.Result & MoveResult.LongCastling) == MoveResult.LongCastling ? "0—0—0" : ((move.Result & MoveResult.ShortCastling) == MoveResult.ShortCastling ? "0—0" : "")
                     };
 
                     return m;

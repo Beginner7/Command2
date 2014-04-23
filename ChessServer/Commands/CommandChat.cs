@@ -17,7 +17,8 @@ namespace ChessServer.Commands
             {
                 if (Server.Games[workRequest.GameID].PlayerWhite.name == workRequest.From)
                 {
-                    user geted = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameID].PlayerBlack.name).FirstOrDefault();
+                    string blackName = Server.Games[workRequest.GameID].PlayerBlack.name;
+                    user geted = Server._chess.users.Where(user => user.name == blackName).FirstOrDefault();
                     if (geted != null)
                     {
                         Server.Messages.GetOrAdd(geted.name, i=> new List<Message>()).Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
@@ -27,7 +28,8 @@ namespace ChessServer.Commands
                 {
                     if (Server.Games[workRequest.GameID].PlayerBlack.name == workRequest.From)
                     {
-                         user geted = Server._chess.users.Where(user => user.name == Server.Games[workRequest.GameID].PlayerWhite.name).FirstOrDefault();
+                        string whiteName = Server.Games[workRequest.GameID].PlayerWhite.name;
+                         user geted = Server._chess.users.Where(user => user.name == whiteName).FirstOrDefault();
                     
                         if (geted != null)
                         {

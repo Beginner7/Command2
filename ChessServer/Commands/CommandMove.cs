@@ -143,36 +143,66 @@ namespace ChessServer.Commands
                 {
                     currentGame.EatedBlacks += attackMap.SourceBoard[workRequest.To].Symbol;
                 }
-                if (attackMap.IsCheck)
+                if (fakeAttackMap.IsCheck )
                 {
                     workRequest.Result = MoveResult.Check | MoveResult.Taking;
                 }
-                if (attackMap.IsMateBlack || attackMap.IsMateWhite)
+                else
                 {
-                    workRequest.Result = MoveResult.Mate | MoveResult.Taking;
+                    if (fakeAttackMap.IsMateBlack || attackMap.IsMateWhite)
+                    {
+                        workRequest.Result = MoveResult.Mate | MoveResult.Taking;
+                    }
+                    else
+                    {
+                        if (fakeAttackMap.IsPat)
+                        {
+                            workRequest.Result = MoveResult.Pat | MoveResult.Taking;
+                        }
+                        else
+                        {
+                            workRequest.Result = MoveResult.Taking;
+                        }
+                    }
                 }
-                if (attackMap.IsMateBlack || attackMap.IsPat)
-                {
-                    workRequest.Result = MoveResult.Pat | MoveResult.Taking;
-                }
-                workRequest.Result = MoveResult.Taking;
             }
             else
             {
-                if (attackMap.IsCheck)
+                if (fakeAttackMap.IsCheck )
                 {
                     workRequest.Result = MoveResult.Check | MoveResult.SilentMove;
                 }
-                if (attackMap.IsMateBlack || attackMap.IsMateWhite)
+                else
                 {
-                    workRequest.Result = MoveResult.Mate | MoveResult.SilentMove;
+                    if (fakeAttackMap.IsMateBlack || attackMap.IsMateWhite)
+                    {
+                        workRequest.Result = MoveResult.Mate | MoveResult.SilentMove;
+                    }
+                    else
+                    {
+                        if (fakeAttackMap.IsPat)
+                        {
+                            workRequest.Result = MoveResult.Pat | MoveResult.SilentMove;
+                        }
+                        else
+                        {
+                            workRequest.Result = MoveResult.SilentMove;
+                        }
+                    }
                 }
-                if (attackMap.IsMateBlack || attackMap.IsPat)
+                if (workRequest.To == "c1" || workRequest.To == "c8")
                 {
-                    workRequest.Result = MoveResult.Pat | MoveResult.SilentMove;
+                    workRequest.Result = workRequest.Result | MoveResult.LongCastling;
                 }
-                workRequest.Result = MoveResult.SilentMove;
+                else
+                {
+                    if (workRequest.To == "g1" || workRequest.To == "g8")
+                    {
+                        workRequest.Result = workRequest.Result | MoveResult.ShortCastling;
+                    }
+                }
             }
+
 
             if (attackMap.SourceBoard[workRequest.From].GetType() == typeof (FigureBishop))
             {
