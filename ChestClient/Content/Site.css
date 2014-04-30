@@ -222,9 +222,7 @@ header h1, #header h1 {
 
 #footer {
     width: 100%;
-    position:absolute;
-    bottom:0;
-    clear:both;
+    position:relative;
     text-align:right;
 
 }
@@ -435,16 +433,12 @@ table#board  {
     width: 50px;
 }
 
+#board td.selectedFrom, #board td.selectedTo {
+    border: 4px solid green !important;
+}
+
 #board td.selected {
     border: 4px solid red !important;
-}
-
-#board td.selectedFrom {
-    border: 4px solid lightblue !important;
-}
-
-#board td.selectedTo {
-    border: 4px solid lightskyblue !important;
 }
 
 #board td.spinner {
@@ -605,3 +599,24 @@ table#board  {
     -moz-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
 }
+
+.mymessage {
+    background-color: rgb(228, 203, 173);
+}
+
+.ennemysmessage {
+    background-color: rgb(245, 245, 245);
+}
+
+#MessageArea {
+    width: 180px;
+    height: 20px;
+    vertical-align: initial;
+}
+
+ #SendMessageButton{
+     vertical-align: initial;
+}
+
+
+

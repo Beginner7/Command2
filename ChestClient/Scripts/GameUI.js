@@ -1,18 +1,97 @@
 ﻿$.gameID = null;
 $.cellFrom = null;
 $.InWhom = null;
+$.OppFrom = null;
+$.OppTo = null;
 
 $(document).ready(function () {
-    $.get("/Game/StartFree", function (data) {
-        if (data == null)
-            alert("НЕ удалось создать игру");
-        else {
-            $.gameID = data;
-            FigurePosition();
-        }
-    });
+    setInterval(function () { pulseTimer(); }, 3000);
+    function pulseTimer() {
+        $.get("/Play/PulseRequest", {}, function (data) {
+            if (data.Ret)
+                alert(data.Ret);
+            if (data.Messages.length > 0) {
+                for (var s in data.Messages) {
+                    if (data.Messages[s].Type == 4) {
+                        FigurePosition();
+                        $.OppFrom = data.Messages[s].Text.charAt(0) + data.Messages[s].Text.charAt(1);
+                        $.OppTo = data.Messages[s].Text.charAt(3) + data.Messages[s].Text.charAt(4);
+                    }
+                    if (data.Messages[s].Type == 0) {
+                        messagestabs = $("#messagesclass").html() + "<div class=\"pane alt ennemysmessage\">" + data.Messages[s].Text + "</div>";
+                        $("#messagesclass").html(messagestabs);
+                    }
+                    if (data.Messages[s].Type == 5) {
+                        alert("Opponent surrendered.");
+                        window.location.replace("/");
+                    }
+                    if (data.Messages[s].Type == 7) {
+                        alert("Opponent accepted peace.");
+                        window.location.replace("/");
+                    }
+                    if (data.Messages[s].Type == 8) {
+                        alert("Opponent declined peace.");
+                    }
+                    isPeace = null;
+                    if (data.Messages[s].Type == 6) {
+                        $("#dialogPeaceConfirmation").dialog({
+                            resizable: false,
+                            width: 450,
+                            modal: true,
+                            open: function () {
+                                $(".ui-widget-overlay").css('background', 'black');
+                                $(".ui-dialog-titlebar-close").hide();
+                            },
+                            close: function () {
+                                if (isPeace == true) {
+                                    $.get("/Play/AcceptPeaceRequest?gameID=" + $.gameID);
+                                    alert("You accepted peace.");
+                                    window.location.replace("/");
+                                }
+                                if (isPeace == false) {
+                                    $.get("/Play/DeclinePeaceRequest?gameID=" + $.gameID);
+                                }
+                            }
+                        });
+                        $('#buttonPeaceConfirm').button().click(function () {
+                            isPeace = true;
+                            $("#dialogPeaceConfirmation").dialog("close");
+                        });
+                        $('#buttonPeaceDecline').button().click(function () {
+                            isPeace = false;
+                            $("#dialogPeaceConfirmation").dialog("close");
+                        });
+                    }
+                }
+            }
+        });
+    }
+
     $("#board td[id]").click(function (eventObject) {
         cellClick(eventObject.currentTarget.id);
+    });
+    if (document.URL.indexOf("?gameID=") >= 0) {
+        $.gameID = document.URL.substr(document.URL.lastIndexOf("?gameID=") + 8, document.URL.length);
+        FigurePosition();
+    }
+    else {
+        $.get("/Game/StartFree", function (data) {
+            if (data == null)
+                alert("НЕ удалось создать игру");
+            else {
+                $.gameID = data;
+                FigurePosition();
+            }
+        });
+    }
+    $('#surrenderButton').button().click(function () {
+        $.get("/Play/SurrenderRequest?gameID=" + $.gameID);
+        alert("You surrendered.");
+        window.location.replace("/");
+    });
+    $('#peaceButton').button().click(function () {
+        $.get("/Play/PeaceRequest?gameID=" + $.gameID);
+        alert("Peace request sended to opponent.");
     });
 });
 
@@ -57,9 +136,9 @@ function FigurePosition() {
             if (data.DataTextStatus.indexOf("Check Black") > -1 && data.DataBoard[s] == "KB") {
                 $("#" + s).addClass("check");
             }
-            if (data.DataTextStatus.indexOf("Now in progress")) {
-                $("#" + s).addClass("move");
-            }
+            //if (data.DataTextStatus.indexOf("Now in progress")) {
+            //    $("#" + s).addClass("move");
+            //}
             if (data.DataTextStatus.indexOf("Check White") > -1 && data.DataBoard[s] == "KW") {
                 $("#" + s).addClass("check");
             }
@@ -74,7 +153,6 @@ function FigurePosition() {
         }
         var eatedwhites = "";
         for (i = 0; i < data.EatedWhites.length; i++) {
-            
             eatedwhites += "<img src = \"/Content/figure/" + data.EatedWhites.charAt(i) + "W.png\" width = 24 height = 24/>";
         }
         var eatedblacks = "";
@@ -317,6 +395,10 @@ function cellClick(cellId) {
                 });
             }
         }
+        $("#board td[id]").removeClass("selectedFrom");
+        $("#board td[id]").removeClass("selectedTo");
+        $.OppFrom = null;
+        $.OppTo = null;
     } else if ($("#" + cellId + " img").length) {
         $.cellFrom = cellId;
         $("#" + cellId).addClass("spinner");

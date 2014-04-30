@@ -13,12 +13,14 @@
     });
     $("#SendMessageButton").click(function() {
         var text = $("#MessageArea").val();
+        $("#MessageArea").val("");
         if (text.length == 0) {
             $("#MessageArea").animate({ borderColor: "red", top: 2 }, "slow")
                 .animate({ borderColor: "#A9A9A9", top: 2}, "fast");
         } else {
             $.get("/Chat/SendMessage", { Message: text, GameID: $.gameID }, function (data) {
-                alert(data);
+                messagestabs = $("#messagesclass").html() + "<div class=\"pane alt mymessage\">" + text + "</div>";
+                $("#messagesclass").html(messagestabs);
             });
         }
     });
