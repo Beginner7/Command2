@@ -258,7 +258,7 @@ namespace ChessServer.Commands
             else
             {
                 Server.Games[workRequest.GameId].Turn = Side.WHITE;
-                Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
+                Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
             }
 
             workResponse.Status = Statuses.Ok;
