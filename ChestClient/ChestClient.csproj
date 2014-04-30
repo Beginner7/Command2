@@ -213,7 +213,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\client\ChessClient.zip" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
-    <Content Include="Scripts\RealGameUI.js" />
     <Content Include="Scripts\GameUI.js" />
     <Content Include="Scripts\ChatUI.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
