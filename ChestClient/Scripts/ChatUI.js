@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-    var messagestabs = "";
     $(".btn-slide").click(function () {
         $("#panel").slideToggle("fast");
         $(this).toggleClass("active");
@@ -20,7 +19,7 @@
                 .animate({ borderColor: "#A9A9A9", top: 2}, "fast");
         } else {
             $.get("/Chat/SendMessage", { Message: text, GameID: $.gameID }, function (data) {
-                messagestabs += "<div id=\"mymessage\" class=\"pane alt\"><p><h6>" + text + "</h6><a href=\"#\" class=\"btn-delete\">Delete</a>|</p></div>";                
+                messagestabs = $("#messagesclass").html() + "<div class=\"pane alt\">" + text + "</div>";                
                 $("#messagesclass").html(messagestabs);
             });
         }
