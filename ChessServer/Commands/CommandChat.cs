@@ -15,25 +15,25 @@ namespace ChessServer.Commands
             var workResponse = new ChatResponse();
             if (Server.Games.ContainsKey(workRequest.GameID))
             {
-                if (Server.Games[workRequest.GameID].PlayerWhite.name == workRequest.From)
+                if (Server.Games[workRequest.GameID].PlayerWhite.Name == workRequest.From)
                 {
-                    string blackName = Server.Games[workRequest.GameID].PlayerBlack.name;
-                    user geted = Server._chess.users.Where(user => user.name == blackName).FirstOrDefault();
+                    var blackName = Server.Games[workRequest.GameID].PlayerBlack.Name;
+                    var geted = Server.Users.Values.FirstOrDefault(user => user.Name == blackName);
                     if (geted != null)
                     {
-                        Server.Messages.GetOrAdd(geted.name, i=> new List<Message>()).Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
+                        Server.Messages.GetOrAdd(geted.Name, i => new List<Message>()).Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
                     }
                 }
                 else
                 {
-                    if (Server.Games[workRequest.GameID].PlayerBlack.name == workRequest.From)
+                    if (Server.Games[workRequest.GameID].PlayerBlack.Name == workRequest.From)
                     {
-                        string whiteName = Server.Games[workRequest.GameID].PlayerWhite.name;
-                         user geted = Server._chess.users.Where(user => user.name == whiteName).FirstOrDefault();
+                        var whiteName = Server.Games[workRequest.GameID].PlayerWhite.Name;
+                        var geted = Server.Users.Values.FirstOrDefault(user => user.Name == whiteName);
                     
                         if (geted != null)
                         {
-                            Server.Messages.GetOrAdd(geted.name, i => new List<Message>()).Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
+                            Server.Messages.GetOrAdd(geted.Name, i => new List<Message>()).Add(MessageSender.ChatMessage(workRequest.From, workRequest.SayString));
                         }
                     }
                 }

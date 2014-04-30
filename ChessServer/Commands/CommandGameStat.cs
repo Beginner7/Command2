@@ -14,11 +14,11 @@ namespace ChessServer.Commands
             EatedWhites = game.EatedWhites, EatedBlacks = game.EatedBlacks};
             if (game.PlayerBlack != null)
             {
-                workResponse.PlayerBlack = game.PlayerBlack.name;
+                workResponse.PlayerBlack = game.PlayerBlack.Name;
             }
             if (game.PlayerWhite != null)
             {
-                workResponse.PlayerWhite = game.PlayerWhite.name;
+                workResponse.PlayerWhite = game.PlayerWhite.Name;
             }
             workResponse.Turn = game.Turn;
             workResponse.Status = Statuses.Ok;

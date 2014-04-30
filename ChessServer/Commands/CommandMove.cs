@@ -15,7 +15,7 @@ namespace ChessServer.Commands
 
         private static string SideUser(Side side, GameObject game)
         {
-            return side == Side.WHITE ? game.PlayerWhite.name : (side == Side.BLACK ? game.PlayerBlack.name : null);
+            return side == Side.WHITE ? game.PlayerWhite.Name : (side == Side.BLACK ? game.PlayerBlack.Name : null);
         }
 
         public override Response DoWork(string request)
@@ -23,10 +23,10 @@ namespace ChessServer.Commands
             var workRequest = JsonConvert.DeserializeObject<MoveRequest>(request);
             var workResponse = new MoveResponse();
 
-            var whitePlayerName = Server.Games[workRequest.GameId].PlayerWhite.name;
-            var whitePlayer = Server._chess.users.Where(user => user.name == whitePlayerName).FirstOrDefault();
-            var blackPlayerName = Server.Games[workRequest.GameId].PlayerBlack.name;
-            var blackPlayer = Server._chess.users.Where(user => user.name == blackPlayerName).FirstOrDefault();
+            var whitePlayerName = Server.Games[workRequest.GameId].PlayerWhite.Name;
+            var whitePlayer = Server.Users.Values.FirstOrDefault(user => user.Name == whitePlayerName);
+            var blackPlayerName = Server.Games[workRequest.GameId].PlayerBlack.Name;
+            var blackPlayer = Server.Users.Values.FirstOrDefault(user => user.Name == blackPlayerName);
             GameObject currentGame;
             Server.Games.TryGetValue(workRequest.GameId, out currentGame);
 
@@ -85,14 +85,14 @@ namespace ChessServer.Commands
                 if (fakeAttackMap.IsMateBlack)
                 {
                     currentGame.Act = Act.WhiteWon;
-                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.YouLoose());
-                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.YouWin());
+                    Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.YouLoose());
+                    Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.YouWin());
                 }
                 else
                 {
                     currentGame.Act = Act.BlackCheck;
-                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.CheckToYou());
-                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.CheckToOpponent());
+                    Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.CheckToYou());
+                    Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.CheckToOpponent());
                 }
             } else if (currentGame.Act == Act.BlackCheck)
             {
@@ -104,14 +104,14 @@ namespace ChessServer.Commands
                 if (fakeAttackMap.IsMateWhite)
                 {
                     currentGame.Act = Act.BlackWon;
-                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.YouWin());
-                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.YouLoose());
+                    Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.YouWin());
+                    Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.YouLoose());
                 }
                 else
                 {
                     currentGame.Act = Act.WhiteCheck;
-                    Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.CheckToOpponent());
-                    Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.CheckToYou());
+                    Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.CheckToOpponent());
+                    Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.CheckToYou());
                 }
             }
             else if (currentGame.Act == Act.WhiteCheck)
@@ -122,15 +122,15 @@ namespace ChessServer.Commands
             if (fakeAttackMap.IsPat)
             {
                 currentGame.Act = Act.Pat;
-                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.Pat());
-                Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.Pat());
+                Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.Pat());
+                Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.Pat());
             }
 
             if (!(attackMap.IsCheck || attackMap.IsPat) && fakeAttackMap.IsDraw)
             {
                 currentGame.Act = Act.Draw;
-                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.GameDraw());
-                Server.Messages.GetOrAdd(whitePlayer.name, i => new List<Message>()).Add(MessageSender.GameDraw());
+                Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.GameDraw());
+                Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.GameDraw());
             }
 
             if (attackMap.SourceBoard[workRequest.To].GetType() != typeof(FigureNone))
@@ -253,12 +253,12 @@ namespace ChessServer.Commands
             if (Server.Games[workRequest.GameId].Turn == Side.WHITE)
             {
                 Server.Games[workRequest.GameId].Turn = Side.BLACK;
-                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
+                Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
             }
             else
             {
                 Server.Games[workRequest.GameId].Turn = Side.WHITE;
-                Server.Messages.GetOrAdd(blackPlayer.name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
+                Server.Messages.GetOrAdd(blackPlayer.Name, i => new List<Message>()).Add(MessageSender.OpponentMove(workRequest.From, workRequest.To));
             }
 
             workResponse.Status = Statuses.Ok;
