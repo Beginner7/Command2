@@ -600,16 +600,12 @@ table#board  {
     border-radius: 10px 10px 10px 10px;
 }
 
-#mymessage {
-    width: 183px;
-    height: 79px;
-    background-color: rgb(204, 102, 102):
+.mymessage {
+    background-color: rgb(228, 203, 173);
 }
 
-#ennemysmessage {
-    width: 183px;
-    height: 79px;
-    background-color: rgb(204, 204, 204):
+.ennemysmessage {
+    background-color: rgb(245, 245, 245);
 }
 
 #MessageArea {

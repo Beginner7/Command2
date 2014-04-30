@@ -19,7 +19,7 @@
                 .animate({ borderColor: "#A9A9A9", top: 2}, "fast");
         } else {
             $.get("/Chat/SendMessage", { Message: text, GameID: $.gameID }, function (data) {
-                messagestabs = $("#messagesclass").html() + "<div class=\"pane alt\">" + text + "</div>";                
+                messagestabs = $("#messagesclass").html() + "<div class=\"pane alt mymessage\">" + text + "</div>";
                 $("#messagesclass").html(messagestabs);
             });
         }

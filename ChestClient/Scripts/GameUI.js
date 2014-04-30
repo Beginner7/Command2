@@ -18,7 +18,7 @@ $(document).ready(function () {
                         $.OppTo = data.Messages[s].Text.charAt(3) + data.Messages[s].Text.charAt(4);
                     }
                     if (data.Messages[s].Type == 0) {
-                        messagestabs = $("#messagesclass").html() + "<div class=\"pane alt\">" + data.Messages[s].Text + "</div>";
+                        messagestabs = $("#messagesclass").html() + "<div class=\"pane alt ennemysmessage\">" + data.Messages[s].Text + "</div>";
                         $("#messagesclass").html(messagestabs);
                     }
                     if (data.Messages[s].Type == 5) {
@@ -70,7 +70,7 @@ $(document).ready(function () {
     $("#board td[id]").click(function (eventObject) {
         cellClick(eventObject.currentTarget.id);
     });
-    if (document.URL.indexOf("?gameID=") > 0) {
+    if (document.URL.indexOf("?gameID=") >= 0) {
         $.gameID = document.URL.substr(document.URL.lastIndexOf("?gameID=") + 8, document.URL.length);
         FigurePosition();
     }
