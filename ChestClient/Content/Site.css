@@ -616,5 +616,15 @@ table#board  {
     background-color: rgb(204, 204, 204):
 }
 
+#MessageArea {
+    width: 180px;
+    height: 20px;
+    vertical-align: initial;
+}
+
+ #SendMessageButton{
+     vertical-align: initial;
+}
+
 
 
