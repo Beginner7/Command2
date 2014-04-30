@@ -222,7 +222,7 @@ header h1, #header h1 {
 
 #footer {
     width: 100%;
-    position:relative;
+    position:fixed;
     text-align:right;
 
 }

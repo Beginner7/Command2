@@ -11,7 +11,7 @@
     
     <body>
        <style> #mainblock { z-index: 1; }
-        #footer { z-index: 2; }</style>
+        #footer { z-index: -2; }</style>
         <div id="logindisplay">
             @Html.Partial("_LogOnPartial")
         </div>
@@ -39,7 +39,7 @@
                     <h2><li style="cursor:pointer;">Чат</li></h2><br/>
                     <table >
                         <tr>
-                            <td style="position:absolute;overflow-y: scroll;overflow-x:visible;width: 200px;height: 300px;padding: 5px;border: solid 1px black">
+                            <td style="overflow-y: scroll;overflow-x:scroll;width: 200px;height: 300px;padding: 5px;border: solid 1px black">
                                 <!--
                                     <div id="mymessage" class="pane alt">
                                         <p><a href="#" class="btn-delete">Delete</a>|</p>
