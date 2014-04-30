@@ -11,8 +11,8 @@ namespace ChessServer
     {
         public Act Act;
         public readonly int Id;
-        public user PlayerWhite;
-        public user PlayerBlack;
+        public User PlayerWhite;
+        public User PlayerBlack;
         public Side Turn = Side.WHITE;
         public DateTime TimeCreateGame = new DateTime(); //время создания игры
         public DateTime TimeStartGame; //время начала игры
@@ -22,7 +22,7 @@ namespace ChessServer
         public string EatedBlacks = "";
         public List<MoveResult> MoveActions = new List<MoveResult>();
 
-        public GameObject(user user)
+        public GameObject(User user)
         {
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;
@@ -37,7 +37,7 @@ namespace ChessServer
             }
         }
 
-        public GameObject(user user1, user user2)
+        public GameObject(User user1, User user2)
         {
             Interlocked.Increment(ref GameIdSeq);
             Id = GameIdSeq;

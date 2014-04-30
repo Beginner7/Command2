@@ -19,14 +19,14 @@ namespace ChessServer.Commands
                 workResponse.Status = Statuses.NoUser;
                 return workResponse;
             }
-            if (workRequest.From == Server.Games[workRequest.GameID].PlayerWhite.name)
+            if (workRequest.From == Server.Games[workRequest.GameID].PlayerWhite.Name)
             {
-                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerBlack.name, i => new List<Message>()).Add(MessageSender.OpponentDeclinedPeace());
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerBlack.Name, i => new List<Message>()).Add(MessageSender.OpponentDeclinedPeace());
                 workResponse.Status = Statuses.Ok;
             }
-            if (workRequest.From == Server.Games[workRequest.GameID].PlayerBlack.name)
+            if (workRequest.From == Server.Games[workRequest.GameID].PlayerBlack.Name)
             {
-                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerWhite.name, i => new List<Message>()).Add(MessageSender.OpponentDeclinedPeace());
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerWhite.Name, i => new List<Message>()).Add(MessageSender.OpponentDeclinedPeace());
                 workResponse.Status = Statuses.Ok;
             }
             return workResponse;

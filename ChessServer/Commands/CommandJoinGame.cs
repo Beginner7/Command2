@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Protocol;
 using Protocol.Transport;
@@ -27,7 +26,7 @@ namespace ChessServer.Commands
                 return workResponse;
             }
 
-            user user = Server._chess.users.Where(u => u.name == workRequest.NewPlayer.Name).FirstOrDefault();
+            var user = Server.Users.Values.FirstOrDefault(u => u.Name == workRequest.NewPlayer.Name);
             if (user == null)
             {
                 workResponse.Status = Statuses.NoUser;
@@ -37,14 +36,14 @@ namespace ChessServer.Commands
             {
                 Server.Games[workRequest.GameID].Act = Act.InProgress;
                 Server.Games[workRequest.GameID].PlayerBlack = user;
-                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerWhite.name, i => new List<Message>()).Add(MessageSender.OpponentJoinedGame());
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerWhite.Name, i => new List<Message>()).Add(MessageSender.OpponentJoinedGame());
                 workResponse.Status = Statuses.Ok;
             }
             else if (Server.Games[workRequest.GameID].PlayerWhite == null)
             {
                 Server.Games[workRequest.GameID].Act = Act.InProgress;
-                Server.Games[workRequest.GameID].PlayerWhite = user; 
-                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerBlack.name, i => new List<Message>()).Add(MessageSender.OpponentJoinedGame());
+                Server.Games[workRequest.GameID].PlayerWhite = user;
+                Server.Messages.GetOrAdd(Server.Games[workRequest.GameID].PlayerBlack.Name, i => new List<Message>()).Add(MessageSender.OpponentJoinedGame());
                 workResponse.Status = Statuses.Ok;
             }
             else

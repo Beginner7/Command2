@@ -32,7 +32,7 @@ namespace UnitTest
 
             //a - arange
             //a - act
-            var user = new user();
+            var user = new User();
             var game = new GameObject(user);
             //a - assert
             Assert.IsTrue(game.PlayerBlack != null || game.PlayerWhite != null);

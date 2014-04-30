@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using Newtonsoft.Json;
 using Protocol;
@@ -14,9 +12,9 @@ namespace ChessServer
 {
     public class Server
     {
-        internal static chessEntities _chess = new chessEntities();
+        public static ConcurrentDictionary<string, User> Users = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<int, GameObject> Games = new ConcurrentDictionary<int, GameObject>();
-        public static ConcurrentDictionary<string, user> PlayersQue = new ConcurrentDictionary<string, user>();
+        public static ConcurrentDictionary<string, User> PlayersQue = new ConcurrentDictionary<string, User>();
         public static ConcurrentDictionary<string,List<Message>> Messages = new ConcurrentDictionary<string, List<Message>>();
         public static ConcurrentDictionary<string, int> LostBeats = new ConcurrentDictionary<string, int>();
         private static int _userNumber = 1;
@@ -42,11 +40,11 @@ namespace ChessServer
             {
                 var game = new GameObject(players[i*2], players[i*2 + 1]) {Act = Act.InProgress};
                 if (!Games.TryAdd(game.Id, game)) continue;
-                user dummy;
-                PlayersQue.TryRemove(players[i*2].name, out dummy);
-                PlayersQue.TryRemove(players[i*2 + 1].name, out dummy);
-                Messages.GetOrAdd(players[i * 2].name, k => new List<Message>()).Add(MessageSender.GameIsReady(game.Id));
-                Messages.GetOrAdd(players[i * 2 + 1].name, k => new List<Message>()).Add(MessageSender.GameIsReady(game.Id));
+                User dummy;
+                PlayersQue.TryRemove(players[i*2].Name, out dummy);
+                PlayersQue.TryRemove(players[i*2 + 1].Name, out dummy);
+                Messages.GetOrAdd(players[i * 2].Name, k => new List<Message>()).Add(MessageSender.GameIsReady(game.Id));
+                Messages.GetOrAdd(players[i * 2 + 1].Name, k => new List<Message>()).Add(MessageSender.GameIsReady(game.Id));
             }
         }
 
@@ -59,19 +57,19 @@ namespace ChessServer
             }
             foreach (var elementGame in Games)
             {
-                if (elementGame.Value.PlayerWhite != null 
-                    && LostBeats.GetOrAdd(elementGame.Value.PlayerWhite.name, name => 0) >= MAX_LOSTBEATS)
+                if (elementGame.Value.PlayerWhite != null
+                    && LostBeats.GetOrAdd(elementGame.Value.PlayerWhite.Name, name => 0) >= MAX_LOSTBEATS)
                 {
                     if (elementGame.Value.PlayerBlack != null)
-                        Messages.GetOrAdd(elementGame.Value.PlayerBlack.name, i => new List<Message>())
+                        Messages.GetOrAdd(elementGame.Value.PlayerBlack.Name, i => new List<Message>())
                             .Add(MessageSender.OpponentLostConnection());
                     elementGame.Value.Act = Act.AbandonedByWhite;
                 }
                 if (elementGame.Value.PlayerBlack != null
-                    && LostBeats.GetOrAdd(elementGame.Value.PlayerBlack.name, name => 0) >= MAX_LOSTBEATS)
+                    && LostBeats.GetOrAdd(elementGame.Value.PlayerBlack.Name, name => 0) >= MAX_LOSTBEATS)
                 {
                     if (elementGame.Value.PlayerWhite != null)
-                        Messages.GetOrAdd(elementGame.Value.PlayerWhite.name, i => new List<Message>())
+                        Messages.GetOrAdd(elementGame.Value.PlayerWhite.Name, i => new List<Message>())
                             .Add(MessageSender.OpponentLostConnection());
                     elementGame.Value.Act = Act.AbandonedByBlack;
                 }
@@ -91,29 +89,15 @@ namespace ChessServer
             return JsonConvert.SerializeObject(new Response { RequestCommand = req.Command, Status = Statuses.Unknown });
         }
 
-        public static user CreateRandomNewUser()
+        public static User CreateRandomNewUser()
         {
-            user user = null;
-            bool success = true;
+            User user;
             do
             {
-                if (user != null)
-                {
-                    _chess.users.Remove(user);
-                }
-                user = new user {name = Consts.GUEST_PREFIX + _userNumber++};
-                _chess.users.Add(user);
-                try
-                {
-                    _chess.SaveChanges();
-                    success = true;
-                }
-                catch (DbUpdateException)
-                {
-                    success = false;
-                }
-            } while (!success);
-            LostBeats.TryAdd(user.name, 0);
+                user = new User { Name = Consts.GUEST_PREFIX + _userNumber++ };
+
+            } while (!Users.TryAdd(user.Name, user));
+            LostBeats.TryAdd(user.Name, 0);
             return user;
         }
     }

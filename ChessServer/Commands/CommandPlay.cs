@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Protocol;
-using Protocol.Transport;
 using Newtonsoft.Json;
 
 namespace ChessServer.Commands
@@ -12,7 +11,7 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<PlayRequest>(request);
             var workResponse = new PlayResponse();
-            user u = Server._chess.users.Where(user => user.name == workRequest.UserName).FirstOrDefault();
+            var u = Server.Users.Values.FirstOrDefault(user => user.Name == workRequest.UserName);
             if (u == null)
             {
                 workResponse.Status = Statuses.NoUser;

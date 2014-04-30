@@ -1,5 +1,4 @@
 ﻿using Protocol;
-using Protocol.Transport;
 using Newtonsoft.Json;
 
 namespace ChessServer.Commands
@@ -11,7 +10,7 @@ namespace ChessServer.Commands
         {
             var workRequest = JsonConvert.DeserializeObject<PlayRequest>(request);
             var workResponse = new PlayResponse();
-            user user;
+            User user;
             workResponse.Status = Server.PlayersQue.TryRemove(workRequest.UserName, out user) ? Statuses.Ok : Statuses.NoUser;
 
             return workResponse;
