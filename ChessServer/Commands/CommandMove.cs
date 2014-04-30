@@ -133,6 +133,50 @@ namespace ChessServer.Commands
                 Server.Messages.GetOrAdd(whitePlayer.Name, i => new List<Message>()).Add(MessageSender.GameDraw());
             }
 
+            if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureBishop))
+            {
+                workRequest.MovedFigure = "B";
+            }
+            else
+            {
+                if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureKing))
+                {
+                    workRequest.MovedFigure = "K";
+                }
+                else
+                {
+                    if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureKnight))
+                    {
+                        workRequest.MovedFigure = "N";
+                    }
+                    else
+                    {
+                        if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigurePawn))
+                        {
+                            workRequest.MovedFigure = "&nbsp";
+                        }
+                        else
+                        {
+                            if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureQueen))
+                            {
+                                workRequest.MovedFigure = "Q";
+                            }
+                            else
+                            {
+                                if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureRook))
+                                {
+                                    workRequest.MovedFigure = "R";
+                                }
+                                else
+                                {
+                                    workRequest.MovedFigure = "";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             if (attackMap.SourceBoard[workRequest.To].GetType() != typeof(FigureNone))
             {
                 if (attackMap.SourceBoard[workRequest.To].Side == Side.WHITE)
@@ -190,60 +234,15 @@ namespace ChessServer.Commands
                         }
                     }
                 }
-                if (workRequest.To == "c1" || workRequest.To == "c8")
+                if ((workRequest.To == "c1" && workRequest.MovedFigure == "K") || (workRequest.To == "c8" && workRequest.MovedFigure == "K"))
                 {
                     workRequest.Result = workRequest.Result | MoveResult.LongCastling;
                 }
                 else
                 {
-                    if (workRequest.To == "g1" || workRequest.To == "g8")
+                    if ((workRequest.To == "g1" && workRequest.MovedFigure == "K") || (workRequest.To == "g8" && workRequest.MovedFigure == "K"))
                     {
                         workRequest.Result = workRequest.Result | MoveResult.ShortCastling;
-                    }
-                }
-            }
-
-
-            if (attackMap.SourceBoard[workRequest.From].GetType() == typeof (FigureBishop))
-            {
-                workRequest.MovedFigure = "B";
-            }
-            else
-            {
-                if (attackMap.SourceBoard[workRequest.From].GetType() == typeof (FigureKing))
-                {
-                    workRequest.MovedFigure = "K";
-                }
-                else
-                {
-                    if (attackMap.SourceBoard[workRequest.From].GetType() == typeof (FigureKnight))
-                    {
-                        workRequest.MovedFigure = "N";
-                    }
-                    else
-                    {
-                        if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigurePawn))
-                        {
-                            workRequest.MovedFigure = "";
-                        }
-                        else
-                        {
-                            if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureQueen))
-                            {
-                                workRequest.MovedFigure = "Q";
-                            }
-                            else
-                            {
-                                if (attackMap.SourceBoard[workRequest.From].GetType() == typeof(FigureRook))
-                                {
-                                    workRequest.MovedFigure = "R";
-                                }
-                                else
-                                {
-                                    workRequest.MovedFigure = "&nbsp";
-                                }
-                            }
-                        }
                     }
                 }
             }

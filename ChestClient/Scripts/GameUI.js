@@ -96,12 +96,10 @@ function FigurePosition() {
         }
         for (var s3 in moves) {
             move = move + "<font size=\"3\" color=\"#330000\">" + (s3 * 1 + 1) + ". " + /*Есть ли рокировка?*/
-                                                                                        (moves[s3].move1.Result3.indexOf("y") == 0 ?
-                                                                                        /*Ответ нет для рокировки.
-                                                                                          Сейчас сделала ход пешка?*/
-                                                                                        (
-                                                                                        /*Фигура, которой пошли*/
-                                                                                        moves[s3].move1.DataMovedFigure +
+                                                                                        (moves[s3].move1.Result3.indexOf("y") >= 0 ?
+                                                                                        /*Ответ нет для рокировки.*/
+                                                                                        /*Фигура, которой пошли с проверкой на необходимость пробела*/
+                                                                                        ((moves[s3].move1.InWhom ? "" : moves[s3].move1.DataMovedFigure) +
                                                                                         /*Откуда*/
                                                                                         moves[s3].move1.From +
                                                                                         /*Убила кого нибудь или в стелсе пошла*/
@@ -114,8 +112,8 @@ function FigurePosition() {
                                                                                         moves[s3].move1.Result2) :
                                                                                         /*Решение с рокировкой(И короткая, и длинная)*/
                                                                                         (moves[s3].move1.Result3.indexOf("0—0") != 0 ? "&nbsp" + "&nbsp" + moves[s3].move1.Result3 + "&nbsp" : "&nbsp" + moves[s3].move1.Result3)) +
-                                                                                        /*Дополнительный пробел*/
-                                                                                        " &nbsp" +
+                                                                                        /*Дополнительный таб*/
+                                                                                        "\t"  +
 
 
 
@@ -125,11 +123,11 @@ function FigurePosition() {
                                                                                         (moves[s3].move2 ?
                                                                                         /*Да, ходил*/
                                                                                         /*Есть ли рокировка?*/
-                                                                                        (moves[s3].move2.Result3.indexOf("y") == 0 ?
+                                                                                        (moves[s3].move2.Result3.indexOf("y") >= 0 ?
                                                                                         /* Сейчас сделала ход пешка?*/
 
-                                                                                        /*Фигура, которой пошли*/
-                                                                                        moves[s3].move2.DataMovedFigure +
+                                                                                        /*Фигура, которой пошли с проверкой на необходимость пробела*/
+                                                                                        ((moves[s3].move2.InWhom ? "" : moves[s3].move2.DataMovedFigure) +
                                                                                         /*Откуда*/
                                                                                         moves[s3].move2.From +
                                                                                         /*Убила кого нибудь или в стелсе пошла*/
@@ -139,9 +137,9 @@ function FigurePosition() {
                                                                                         /*Сделали ли пешке пластическую операцию?*/
                                                                                         (moves[s3].move2.InWhom ? moves[s3].move2.InWhom : "") +
                                                                                         /*Обозначение шаха или мата.*/
-                                                                                        moves[s3].move2.Result2 :
+                                                                                        moves[s3].move2.Result2) :
                                                                                         /*Решение с рокировкой(И короткая, и длинная)*/
-                                                                                        (moves[s3].move1.Result3.indexOf("0—0") != 0 ? "&nbsp" + "&nbsp" + moves[s3].move1.Result3 + "&nbsp" : moves[s3].move1.Result3 + "&nbsp"))
+                                                                                        (moves[s3].move2.Result3.indexOf("0—0") != 0 ? "&nbsp" + "&nbsp" + moves[s3].move2.Result3 + "&nbsp" : moves[s3].move2.Result3 + "&nbsp"))
                                                                                         /*Ответ нет на вопрос ходил ли второй игрок.*/
                                                                                         : "") +
                                                                                         /*Окончание*/
