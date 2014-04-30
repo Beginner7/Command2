@@ -95,8 +95,57 @@ function FigurePosition() {
             }
         }
         for (var s3 in moves) {
-            move = move + "<font size=\"3\" color=\"#330000\">" + (s3 * 1 + 1) + ". " + (move[s3].move1.Result3.indexOf("") == 0 ? (moves[s3].move1.DataMovedFigure + moves[s3].move1.From + moves[s3].move1.Result1 + moves[s3].move1.To + (moves[s3].move1.InWhom ? moves[s3].move1.InWhom + "  " : "") + moves[s3].move1.Result2) : move[s3].move1.Result3) + " &nbsp" +
-                                                                                        (move[s3].move2.Result3.indexOf("") == 0 ? (moves[s3].move2 ? moves[s3].move2.DataMovedFigure + moves[s3].move2.From + moves[s3].move2.Result1 + moves[s3].move2.To + (moves[s3].move2.InWhom ? moves[s3].move2.InWhom + "  " : "") + moves[s3].move2.Result2 : "") : move[s3].move2.Result3) + "</font> </br>";
+            move = move + "<font size=\"3\" color=\"#330000\">" + (s3 * 1 + 1) + ". " + /*Есть ли рокировка?*/
+                                                                                        (moves[s3].move1.Result3.indexOf("y") == 0 ?
+                                                                                        /*Ответ нет для рокировки.
+                                                                                          Сейчас сделала ход пешка?*/
+                                                                                        (
+                                                                                        /*Фигура, которой пошли*/
+                                                                                        moves[s3].move1.DataMovedFigure +
+                                                                                        /*Откуда*/
+                                                                                        moves[s3].move1.From +
+                                                                                        /*Убила кого нибудь или в стелсе пошла*/
+                                                                                        moves[s3].move1.Result1 +
+                                                                                        /*Куда*/
+                                                                                        moves[s3].move1.To +
+                                                                                        /*Сделали ли пешке пластическую операцию?*/
+                                                                                        (moves[s3].move1.InWhom ? moves[s3].move1.InWhom : "") +
+                                                                                        /*Обозначение шаха или мата.*/
+                                                                                        moves[s3].move1.Result2) :
+                                                                                        /*Решение с рокировкой(И короткая, и длинная)*/
+                                                                                        (moves[s3].move1.Result3.indexOf("0—0") != 0 ? "&nbsp" + "&nbsp" + moves[s3].move1.Result3 + "&nbsp" : "&nbsp" + moves[s3].move1.Result3)) +
+                                                                                        /*Дополнительный пробел*/
+                                                                                        " &nbsp" +
+
+
+
+
+                                                                                        /*Начало нотации второго игрока*/
+                                                                                        /*Ходил ли второй игрок?*/
+                                                                                        (moves[s3].move2 ?
+                                                                                        /*Да, ходил*/
+                                                                                        /*Есть ли рокировка?*/
+                                                                                        (moves[s3].move2.Result3.indexOf("y") == 0 ?
+                                                                                        /* Сейчас сделала ход пешка?*/
+
+                                                                                        /*Фигура, которой пошли*/
+                                                                                        moves[s3].move2.DataMovedFigure +
+                                                                                        /*Откуда*/
+                                                                                        moves[s3].move2.From +
+                                                                                        /*Убила кого нибудь или в стелсе пошла*/
+                                                                                        moves[s3].move2.Result1 +
+                                                                                        /*Куда*/
+                                                                                        moves[s3].move2.To +
+                                                                                        /*Сделали ли пешке пластическую операцию?*/
+                                                                                        (moves[s3].move2.InWhom ? moves[s3].move2.InWhom : "") +
+                                                                                        /*Обозначение шаха или мата.*/
+                                                                                        moves[s3].move2.Result2 :
+                                                                                        /*Решение с рокировкой(И короткая, и длинная)*/
+                                                                                        (moves[s3].move1.Result3.indexOf("0—0") != 0 ? "&nbsp" + "&nbsp" + moves[s3].move1.Result3 + "&nbsp" : moves[s3].move1.Result3 + "&nbsp"))
+                                                                                        /*Ответ нет на вопрос ходил ли второй игрок.*/
+                                                                                        : "") +
+                                                                                        /*Окончание*/
+                                                                                        "</font> </br>";
             $("#moveslist").html(move);
         }
 

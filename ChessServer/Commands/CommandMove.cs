@@ -240,7 +240,7 @@ namespace ChessServer.Commands
                                 }
                                 else
                                 {
-                                    workRequest.MovedFigure = "";
+                                    workRequest.MovedFigure = "&nbsp";
                                 }
                             }
                         }

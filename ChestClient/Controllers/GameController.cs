@@ -111,7 +111,7 @@ namespace ChestClient.Controllers
                         InWhom = move.InWhom,
                         Result1 = (move.Result & MoveResult.Taking) == MoveResult.Taking ? "×" : "—", 
                         Result2 = (move.Result & MoveResult.Check) == MoveResult.Check ? "+" : ((move.Result & MoveResult.Mate) == MoveResult.Mate ? "#" : ((move.Result & MoveResult.Pat) == MoveResult.Pat) ? "=" : "" ),
-                        Result3 = (move.Result & MoveResult.LongCastling) == MoveResult.LongCastling ? "0—0—0" : ((move.Result & MoveResult.ShortCastling) == MoveResult.ShortCastling ? "0—0" : "")
+                        Result3 = (move.Result & MoveResult.LongCastling) == MoveResult.LongCastling ? "0—0—0" : ((move.Result & MoveResult.ShortCastling) == MoveResult.ShortCastling ? "0—0" : "y")
                     };
 
                     return m;
